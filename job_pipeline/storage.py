@@ -237,7 +237,7 @@ def append_run_history(
     df: pd.DataFrame,
     pipeline: str,
     history_path: Path,
-    max_runs: int = 48,
+    max_runs: int = 720,  # 30 days × ~24 runs/day
 ) -> None:
     """
     Append a compact run summary to ``run_history.json`` (max_runs entries).
