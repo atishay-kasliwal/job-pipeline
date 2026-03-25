@@ -1,0 +1,14 @@
+# Core dependency — job scraping
+jobspy>=0.1.0
+
+# Data processing
+pandas>=2.0.0
+
+# MongoDB driver
+pymongo[srv]>=4.6.0
+
+# Loads .env file automatically in local dev
+python-dotenv>=1.0.0
+
+# Used transitively by jobspy but pinned for reproducibility
+requests>=2.31.0

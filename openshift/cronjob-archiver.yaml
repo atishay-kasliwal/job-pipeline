@@ -1,0 +1,69 @@
+# ── Daily archiver CronJob ────────────────────────────────────────────────────
+# Runs once per day at 02:00 UTC.
+# Finds sessions older than ARCHIVE_RETENTION_DAYS, exports each to a
+# date-stamped CSV on the PVC, then moves them to the archived_jobs collection.
+#
+# Apply:
+#   oc apply -f openshift/cronjob-archiver.yaml
+#
+# Trigger manually (dry run):
+#   oc create job --from=cronjob/job-pipeline-archiver manual-archive-$(date +%s)
+# ──────────────────────────────────────────────────────────────────────────────
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: job-pipeline-archiver
+  labels:
+    app: job-pipeline
+    component: archiver
+spec:
+  # Every day at 02:00 UTC
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 7
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        metadata:
+          labels:
+            app: job-pipeline
+            component: archiver
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: archiver
+              image: image-registry.openshift-image-registry.svc:5000/<your-namespace>/job-pipeline:latest
+              imagePullPolicy: Always
+              command:
+                - python
+                - -m
+                - job_pipeline.archiver
+                - --log-level
+                - $(LOG_LEVEL)
+              env:
+                - name: MONGO_URI
+                  valueFrom:
+                    secretKeyRef:
+                      name: job-pipeline-mongo
+                      key: MONGO_URI
+                - name: LOG_LEVEL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: job-pipeline-config
+                      key: LOG_LEVEL
+              volumeMounts:
+                - name: archives
+                  mountPath: /app/archives
+              resources:
+                requests:
+                  cpu: "100m"
+                  memory: "256Mi"
+                limits:
+                  cpu: "500m"
+                  memory: "512Mi"
+          volumes:
+            - name: archives
+              persistentVolumeClaim:
+                claimName: job-pipeline-archives

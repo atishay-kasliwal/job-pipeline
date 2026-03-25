@@ -1,0 +1,20 @@
+# ── Pipeline runtime configuration ───────────────────────────────────────────
+# Non-secret tunables injected as environment variables.
+# Override these without rebuilding the image.
+#
+# Apply:
+#   oc apply -f openshift/configmap.yaml
+# ──────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: job-pipeline-config
+  labels:
+    app: job-pipeline
+data:
+  HOURS_OLD: "1"
+  RESULTS_WANTED: "200"
+  SEARCH_TERM: "software engineer"
+  LOCATION: "United States"
+  ARCHIVE_RETENTION_DAYS: "7"
+  LOG_LEVEL: "INFO"

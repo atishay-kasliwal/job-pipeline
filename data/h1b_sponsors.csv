@@ -1,0 +1,68 @@
+company,category
+Google,Big Tech
+Alphabet,Big Tech
+Amazon,Big Tech
+Amazon Web Services,Big Tech
+Microsoft,Big Tech
+Meta,Big Tech
+Apple,Big Tech
+Netflix,Big Tech
+Nvidia,Semiconductor
+Oracle,Enterprise
+Salesforce,Enterprise
+Uber,Tech
+Airbnb,Tech
+Stripe,Fintech
+Databricks,Data/AI
+Snowflake,Data/Cloud
+Palantir,Data/Defense
+Lyft,Tech
+Adobe,Enterprise
+Intel,Semiconductor
+Qualcomm,Semiconductor
+Broadcom,Semiconductor
+Cisco,Networking
+IBM,Enterprise
+VMware,Cloud
+ServiceNow,Enterprise
+Workday,Enterprise
+Splunk,Security/Data
+Twilio,Communications
+Okta,Identity
+Cloudflare,Security/Networking
+Datadog,Observability
+MongoDB,Database
+Confluent,Data Streaming
+Block,Fintech
+PayPal,Fintech
+Coinbase,Crypto
+OpenAI,AI
+Anthropic,AI
+Scale AI,AI
+Robinhood,Fintech
+DoorDash,Tech
+Instacart,Tech
+Snap,Social
+Pinterest,Social
+Reddit,Social
+Zoom,Communications
+Dropbox,Productivity
+Box,Productivity
+Roblox,Gaming
+Epic Games,Gaming
+Unity Technologies,Gaming
+CrowdStrike,Security
+Palo Alto Networks,Security
+Zscaler,Security
+SentinelOne,Security
+Samsara,IoT
+Verkada,IoT
+Rippling,HR Tech
+Gusto,HR Tech
+Toast,Restaurant Tech
+Klaviyo,Martech
+Amplitude,Analytics
+Benchling,Biotech
+Veeva Systems,Life Sciences
+Brex,Fintech
+Affirm,Fintech

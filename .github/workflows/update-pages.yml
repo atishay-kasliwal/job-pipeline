@@ -1,0 +1,41 @@
+name: Update GitHub Pages
+
+on:
+  schedule:
+    # Every hour at :30 — 30 min after the OpenShift scraper runs at :00
+    - cron: "30 * * * *"
+  workflow_dispatch: # Allow manual trigger from the GitHub Actions UI
+
+permissions:
+  contents: write
+
+jobs:
+  export-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install "pymongo[srv]>=4.6.0" "pandas>=2.0.0" "python-dotenv>=1.0.0"
+
+      - name: Export job data from MongoDB → docs/
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: python -m job_pipeline.export_static
+
+      - name: Commit and push updated docs/
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          git diff --staged --quiet \
+            && echo "No changes to commit." \
+            || (git commit -m "chore: update job data $(date -u +'%Y-%m-%dT%H:%M:%SZ') [skip ci]" && git push)

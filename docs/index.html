@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Pipeline Dashboard</title>
+  <style>
+    /* ── Reset & base ────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --border:    #2a2d3a;
+      --text:      #e2e8f0;
+      --muted:     #8892a4;
+      --accent:    #6366f1;
+      --accent-2:  #a855f7;
+      --green:     #22c55e;
+      --yellow:    #eab308;
+      --red:       #ef4444;
+      --radius:    10px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ──────────────────────────────────────────────────── */
+    .wrapper { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── Header ──────────────────────────────────────────────────── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .last-updated {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── Stats row ───────────────────────────────────────────────── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      padding: 24px 0 20px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      text-align: center;
+    }
+
+    .stat-card .value {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-card .label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card.accent  .value { color: var(--accent); }
+    .stat-card.accent2 .value { color: var(--accent-2); }
+    .stat-card.green   .value { color: var(--green); }
+    .stat-card.yellow  .value { color: var(--yellow); }
+
+    /* ── Controls ────────────────────────────────────────────────── */
+    .controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .tabs {
+      display: flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .tab {
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .tab:not(.active):hover { background: var(--border); color: var(--text); }
+
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+      max-width: 360px;
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-box:focus { border-color: var(--accent); }
+    .search-box::placeholder { color: var(--muted); }
+
+    .result-count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ── Table ───────────────────────────────────────────────────── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    thead th:hover { color: var(--text); }
+
+    thead th .sort-icon { margin-left: 4px; opacity: 0.4; }
+    thead th.asc  .sort-icon::after { content: " ▲"; opacity: 1; }
+    thead th.desc .sort-icon::after { content: " ▼"; opacity: 1; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.1s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(99, 102, 241, 0.06); }
+
+    td {
+      padding: 12px 16px;
+      vertical-align: middle;
+    }
+
+    .td-title { font-weight: 500; max-width: 260px; }
+    .td-company { color: var(--muted); white-space: nowrap; }
+    .td-location { color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .td-date { color: var(--muted); font-size: 12px; white-space: nowrap; }
+
+    /* Score badge */
+    .score {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 24px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .score.high   { background: rgba(34, 197, 94,  0.15); color: var(--green);  }
+    .score.medium { background: rgba(234, 179, 8,  0.15); color: var(--yellow); }
+    .score.low    { background: rgba(139, 148, 164, 0.1); color: var(--muted);  }
+
+    /* Competition badge */
+    .comp {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 24px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .comp.low    { background: rgba(34, 197, 94,  0.1); color: var(--green);  }
+    .comp.medium { background: rgba(234, 179, 8,  0.1); color: var(--yellow); }
+    .comp.high   { background: rgba(239, 68, 68,  0.1); color: var(--red);    }
+
+    .apply-btn {
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: opacity 0.15s;
+    }
+
+    .apply-btn:hover { opacity: 0.85; text-decoration: none; }
+
+    /* ── Empty / loading state ───────────────────────────────────── */
+    .empty {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty .icon { font-size: 40px; margin-bottom: 12px; }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    footer {
+      padding: 28px 0;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrapper header-inner">
+    <h1>Job Pipeline Dashboard</h1>
+    <span class="last-updated" id="last-updated">Loading…</span>
+  </div>
+</header>
+
+<main class="wrapper">
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card accent">
+      <div class="value" id="stat-standard">—</div>
+      <div class="label">Standard Jobs</div>
+    </div>
+    <div class="stat-card accent2">
+      <div class="value" id="stat-important">—</div>
+      <div class="label">Priority Jobs</div>
+    </div>
+    <div class="stat-card green">
+      <div class="value" id="stat-top-score">—</div>
+      <div class="label">Top Score</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="value" id="stat-new-grad">—</div>
+      <div class="label">New Grad Roles</div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="tabs">
+      <button class="tab active" data-tab="standard">Standard Pipeline</button>
+      <button class="tab"        data-tab="important">High Priority</button>
+    </div>
+    <input
+      class="search-box"
+      id="search"
+      type="search"
+      placeholder="Search title, company, location…"
+    />
+    <span class="result-count" id="result-count"></span>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table id="jobs-table">
+      <thead id="thead"></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrapper">
+    Powered by <strong>JobSpy</strong> · Data refreshed hourly via GitHub Actions · Read-only view
+  </div>
+</footer>
+
+<script>
+  // ── State ──────────────────────────────────────────────────────────────────
+  let standardJobs  = [];
+  let importantJobs = [];
+  let activeTab     = "standard";
+  let sortCol       = null;
+  let sortDir       = "desc";
+  let query         = "";
+
+  // ── Fetch all data ─────────────────────────────────────────────────────────
+  async function loadAll() {
+    try {
+      const [meta, std, imp] = await Promise.all([
+        fetch("metadata.json").then(r => r.json()),
+        fetch("jobs.json").then(r => r.json()),
+        fetch("important_jobs.json").then(r => r.json()),
+      ]);
+
+      standardJobs  = std  || [];
+      importantJobs = imp  || [];
+
+      // Stats
+      const ts = new Date(meta.last_updated);
+      document.getElementById("last-updated").textContent =
+        "Last updated: " + ts.toLocaleString();
+
+      document.getElementById("stat-standard").textContent  = meta.standard_count  ?? standardJobs.length;
+      document.getElementById("stat-important").textContent = meta.important_count ?? importantJobs.length;
+
+      const allJobs   = [...standardJobs, ...importantJobs];
+      const topScore  = allJobs.reduce((m, j) => Math.max(m, j.score ?? j.priority_score ?? 0), 0);
+      const newGrads  = allJobs.filter(j =>
+        (j.title + " " + (j.description || "")).toLowerCase().includes("new grad")
+      ).length;
+
+      document.getElementById("stat-top-score").textContent = topScore;
+      document.getElementById("stat-new-grad").textContent  = newGrads;
+
+      render();
+    } catch (err) {
+      document.getElementById("tbody").innerHTML =
+        `<tr><td colspan="7"><div class="empty"><div class="icon">⚠️</div>Could not load job data.<br/>${err.message}</div></td></tr>`;
+    }
+  }
+
+  // ── Render ─────────────────────────────────────────────────────────────────
+  function render() {
+    const isImportant = activeTab === "important";
+    let jobs = isImportant ? importantJobs : standardJobs;
+
+    // Search
+    if (query) {
+      const q = query.toLowerCase();
+      jobs = jobs.filter(j =>
+        (j.title    || "").toLowerCase().includes(q) ||
+        (j.company  || "").toLowerCase().includes(q) ||
+        (j.location || "").toLowerCase().includes(q)
+      );
+    }
+
+    // Sort
+    if (sortCol) {
+      jobs = [...jobs].sort((a, b) => {
+        let va = a[sortCol] ?? "";
+        let vb = b[sortCol] ?? "";
+        if (typeof va === "number" && typeof vb === "number") {
+          return sortDir === "asc" ? va - vb : vb - va;
+        }
+        va = String(va).toLowerCase();
+        vb = String(vb).toLowerCase();
+        return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
+      });
+    }
+
+    document.getElementById("result-count").textContent =
+      jobs.length + " job" + (jobs.length !== 1 ? "s" : "");
+
+    // Build header
+    const scoreCol = isImportant ? "priority_score" : "score";
+    const cols = isImportant
+      ? [
+          { key: "title",          label: "Title" },
+          { key: "company",        label: "Company" },
+          { key: "location",       label: "Location" },
+          { key: scoreCol,         label: "Priority" },
+          { key: "date_posted",    label: "Posted" },
+          { key: "_apply",         label: "Apply", nosort: true },
+        ]
+      : [
+          { key: "title",          label: "Title" },
+          { key: "company",        label: "Company" },
+          { key: "location",       label: "Location" },
+          { key: scoreCol,         label: "Score" },
+          { key: "competition_score", label: "Competition" },
+          { key: "date_posted",    label: "Posted" },
+          { key: "_apply",         label: "Apply", nosort: true },
+        ];
+
+    document.getElementById("thead").innerHTML = `<tr>${
+      cols.map(c => {
+        const cls = c.nosort ? "" :
+          (sortCol === c.key ? (sortDir === "asc" ? " asc" : " desc") : "");
+        const sortAttr = c.nosort ? "" : `data-col="${c.key}"`;
+        return `<th class="${cls}" ${sortAttr}>${c.label}<span class="sort-icon"></span></th>`;
+      }).join("")
+    }</tr>`;
+
+    // Attach sort listeners
+    document.querySelectorAll("thead th[data-col]").forEach(th => {
+      th.addEventListener("click", () => {
+        const col = th.dataset.col;
+        if (sortCol === col) {
+          sortDir = sortDir === "desc" ? "asc" : "desc";
+        } else {
+          sortCol = col;
+          sortDir = "desc";
+        }
+        render();
+      });
+    });
+
+    // Build rows
+    if (!jobs.length) {
+      document.getElementById("tbody").innerHTML =
+        `<tr><td colspan="${cols.length}"><div class="empty">
+           <div class="icon">🔍</div>No jobs match your search.
+         </div></td></tr>`;
+      return;
+    }
+
+    document.getElementById("tbody").innerHTML = jobs.map(j => {
+      const score  = j[scoreCol] ?? 0;
+      const scoreClass = score >= 5 ? "high" : score >= 2 ? "medium" : "low";
+      const scoreBadge = `<span class="score ${scoreClass}">${score}</span>`;
+
+      let compBadge = "";
+      if (!isImportant) {
+        const comp = j.competition_score ?? 0;
+        const compClass = comp <= 2 ? "low" : comp <= 4 ? "medium" : "high";
+        compBadge = `<td><span class="comp ${compClass}">${comp}</span></td>`;
+      }
+
+      const posted = j.date_posted
+        ? new Date(j.date_posted).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+        : "—";
+
+      const applyBtn = j.job_url
+        ? `<a class="apply-btn" href="${j.job_url}" target="_blank" rel="noopener">Apply ↗</a>`
+        : "—";
+
+      return `<tr>
+        <td class="td-title">${j.title || "—"}</td>
+        <td class="td-company">${j.company || "—"}</td>
+        <td class="td-location">${j.location || "Remote"}</td>
+        <td>${scoreBadge}</td>
+        ${compBadge}
+        <td class="td-date">${posted}</td>
+        <td>${applyBtn}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  // ── Events ─────────────────────────────────────────────────────────────────
+  document.querySelectorAll(".tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      btn.classList.add("active");
+      activeTab = btn.dataset.tab;
+      sortCol   = null;
+      query     = document.getElementById("search").value;
+      render();
+    });
+  });
+
+  document.getElementById("search").addEventListener("input", e => {
+    query = e.target.value;
+    render();
+  });
+
+  // ── Boot ───────────────────────────────────────────────────────────────────
+  loadAll();
+</script>
+
+</body>
+</html>

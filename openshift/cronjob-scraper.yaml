@@ -1,0 +1,77 @@
+# ── Hourly scraper CronJob ────────────────────────────────────────────────────
+# Runs both pipelines every hour, stores results in MongoDB Atlas.
+#
+# Prerequisites (apply first):
+#   oc apply -f openshift/secret.yaml
+#   oc apply -f openshift/configmap.yaml
+#   oc apply -f openshift/pvc.yaml
+#
+# Apply:
+#   oc apply -f openshift/cronjob-scraper.yaml
+#
+# Trigger manually:
+#   oc create job --from=cronjob/job-pipeline-scraper manual-scrape-$(date +%s)
+# ──────────────────────────────────────────────────────────────────────────────
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: job-pipeline-scraper
+  labels:
+    app: job-pipeline
+    component: scraper
+spec:
+  # Every hour at :00
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid          # skip if previous run still active
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        metadata:
+          labels:
+            app: job-pipeline
+            component: scraper
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: scraper
+              # Replace with your actual image registry path after oc build
+              image: image-registry.openshift-image-registry.svc:5000/<your-namespace>/job-pipeline:latest
+              imagePullPolicy: Always
+              command:
+                - python
+                - -m
+                - job_pipeline.main
+                - --pipeline
+                - both
+                - --log-level
+                - $(LOG_LEVEL)
+              env:
+                # Secret: MongoDB URI
+                - name: MONGO_URI
+                  valueFrom:
+                    secretKeyRef:
+                      name: job-pipeline-mongo
+                      key: MONGO_URI
+                # ConfigMap: tunables
+                - name: LOG_LEVEL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: job-pipeline-config
+                      key: LOG_LEVEL
+              volumeMounts:
+                - name: archives
+                  mountPath: /app/archives
+              resources:
+                requests:
+                  cpu: "250m"
+                  memory: "512Mi"
+                limits:
+                  cpu: "1"
+                  memory: "1Gi"
+          volumes:
+            - name: archives
+              persistentVolumeClaim:
+                claimName: job-pipeline-archives

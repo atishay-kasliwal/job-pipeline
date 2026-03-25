@@ -1,0 +1,20 @@
+# ── PersistentVolumeClaim for archive storage ─────────────────────────────────
+# Mounts at /app/archives inside the container.
+# CSV exports survive pod restarts and image upgrades.
+#
+# Apply:
+#   oc apply -f openshift/pvc.yaml
+# ──────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: job-pipeline-archives
+  labels:
+    app: job-pipeline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  # storageClassName: standard   # uncomment and set to match your cluster's class
