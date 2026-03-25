@@ -113,6 +113,37 @@ def filter_by_sponsorship(df: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+def filter_by_experience(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Remove jobs that explicitly require more than 5 years of experience.
+
+    Checks title + description for patterns like "6+ years", "7 or more years",
+    "minimum 6 years", etc.  Neutral postings (no mention) are kept.
+    """
+    _OVERQUALIFIED = re.compile(
+        # "6 years", "7+ years", "10 years", "15 years" — any standalone high number
+        r"\b([6-9]|\d{2})\+?\s*years?\b"
+        # ranges where the LOWER bound is already too high: "6-8 years", "8–10+ years"
+        r"|\b([6-9]|\d{2})\s*[-–—to]+\s*\d+\+?\s*years?"
+        # ranges where lower bound is 5 but upper is high: "5-8 years", "5–10 years"
+        r"|\b5\s*[-–—]\s*([7-9]|\d{2})\+?\s*years?"
+        # explicit phrases
+        r"|minimum\s+(?:of\s+)?[6-9]\s+years?"
+        r"|at\s+least\s+[6-9]\s+years?"
+        r"|[6-9]\s+or\s+more\s+years?"
+        r"|\d{2}\s+or\s+more\s+years?"
+    )
+
+    def _passes(row: pd.Series) -> bool:
+        text = _concat_cols(row, "title", "description")
+        return not bool(_OVERQUALIFIED.search(text))
+
+    before = len(df)
+    result = df[df.apply(_passes, axis=1)].copy()
+    logger.info("Experience filter  : %4d → %4d rows", before, len(result))
+    return result
+
+
 def filter_by_remote(
     df: pd.DataFrame,
     remote_only: bool = REMOTE_ONLY,
@@ -134,17 +165,76 @@ def filter_by_remote(
     return result
 
 
+def _normalize_title(title: str) -> str:
+    """Normalize a job title for fuzzy deduplication (strip years, punctuation)."""
+    t = str(title or "").lower()
+    t = re.sub(r"\b20\d{2}\b", "", t)   # remove years like 2024 / 2025 / 2026
+    t = re.sub(r"[^\w\s]", " ", t)      # punctuation → space
+    t = re.sub(r"\s+", " ", t).strip()
+    return t
+
+
 def deduplicate(df: pd.DataFrame) -> pd.DataFrame:
     """
     Drop duplicate job postings.
 
     Strategy:
     1. Deduplicate on ``job_url`` (most precise).
-    2. Then deduplicate on ``(title, company)`` to catch cross-site duplicates.
+    2. Exact ``(title, company)`` duplicates.
+    3. Normalized ``(title, company)`` — catches reposts with minor variants
+       like differing punctuation, appended years, or bracket suffixes.
     """
     before = len(df)
     if "job_url" in df.columns:
         df = df.drop_duplicates(subset=["job_url"])
     df = df.drop_duplicates(subset=["title", "company"])
+
+    # Fuzzy pass: normalize titles then dedup again
+    df = df.copy()
+    df["_norm_title"]   = df["title"].apply(_normalize_title)
+    df["_norm_company"] = df["company"].str.lower().str.strip() if "company" in df.columns else ""
+    df = df.drop_duplicates(subset=["_norm_title", "_norm_company"])
+    df = df.drop(columns=["_norm_title", "_norm_company"])
+
     logger.info("Deduplication      : %4d → %4d rows", before, len(df))
     return df.copy()
+
+
+# ── Level tagger ──────────────────────────────────────────────────────────────
+
+_LEVEL_SIGNALS: list[tuple[str, list[str]]] = [
+    # Most specific first — checked in order, first match wins
+    ("New Grad", [
+        "new grad", "new-grad", "new graduate", "university graduate",
+        "campus hire", "recent grad", "recent graduate",
+    ]),
+    ("Mid", [
+        "mid-level", "mid level", "swe ii", "sde ii", "eng ii",
+        "software engineer ii", "level ii", "level 2",
+        "2-5 year", "3-5 year", "2 to 5 year", "3 to 5 year",
+    ]),
+    ("Entry", [
+        "entry level", "entry-level", "junior", "jr.", " jr ",
+        "associate", "0-2 year", "0 to 2 year", "swe i", "sde i",
+        "eng i", "software engineer i", "level i", "level 1",
+    ]),
+]
+
+
+def tag_level(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Add a ``level`` column classifying each job as New Grad / Entry / Mid.
+
+    Because the pipeline's role filter already excludes senior/staff/lead,
+    unlabelled rows default to 'Entry'.
+    """
+    def _detect(row: pd.Series) -> str:
+        text = " " + _concat_cols(row, "title", "description") + " "
+        for level, signals in _LEVEL_SIGNALS:
+            if any(s in text for s in signals):
+                return level
+        return "Entry"
+
+    df = df.copy()
+    df["level"] = df.apply(_detect, axis=1)
+    return df

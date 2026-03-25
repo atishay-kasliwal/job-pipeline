@@ -3,15 +3,23 @@ MongoDB storage layer for the job pipeline.
 
 Collections
 -----------
-sessions      : one document per pipeline run (metadata + status)
+run_stats     : one summary document per pipeline run — easy to browse in Atlas
 jobs          : active job documents — the last ARCHIVE_RETENTION_DAYS days
+sessions      : lightweight run metadata (used by the archiver)
 archived_jobs : jobs moved out of the active collection by the archiver
+
+``run_stats`` is the main "table" for reviewing hourly runs at a glance.
+Each document contains counts, level breakdown, top companies, and score
+distribution so you can open Atlas and immediately see what each run found.
 
 All writes are idempotent on job_url so re-running a scrape does not
 produce duplicate documents in MongoDB.
 """
+import json
 import logging
+from collections import Counter
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 import pandas as pd
@@ -120,6 +128,150 @@ def insert_run(
         len(records), sid, pipeline, inserted,
     )
     return sid
+
+
+def _build_run_summary(
+    df: pd.DataFrame,
+    pipeline: str,
+    session_id: str,
+    now: datetime,
+) -> dict[str, Any]:
+    """
+    Build a compact summary document for one pipeline run.
+
+    This document goes into the ``run_stats`` collection and is designed to be
+    immediately human-readable when browsing MongoDB Atlas.
+    """
+    total = len(df)
+
+    # Level breakdown
+    level_counts: dict[str, int] = {}
+    if "level" in df.columns:
+        for lvl, cnt in df["level"].value_counts().items():
+            level_counts[str(lvl)] = int(cnt)
+
+    # Score stats (standard pipeline)
+    score_stats: dict[str, Any] = {}
+    score_col = "score" if "score" in df.columns else (
+        "priority_score" if "priority_score" in df.columns else None
+    )
+    if score_col and total:
+        scores = df[score_col].dropna()
+        score_stats = {
+            "avg":  round(float(scores.mean()), 1),
+            "max":  int(scores.max()),
+            "high": int((scores >= 5).sum()),   # high-quality jobs
+        }
+
+    # Top 5 companies by posting count
+    top_companies: list[str] = []
+    if "company" in df.columns:
+        top_companies = [
+            c for c, _ in Counter(df["company"].dropna().tolist()).most_common(5)
+        ]
+
+    return {
+        "session_id":    session_id,
+        "run_at":        now,
+        "pipeline":      pipeline,
+        "total_jobs":    total,
+        "levels":        level_counts,
+        "scores":        score_stats,
+        "top_companies": top_companies,
+    }
+
+
+def insert_run_stats(
+    df: pd.DataFrame,
+    pipeline: str,
+    session_id: str | None = None,
+) -> None:
+    """
+    Write a human-readable summary of this run to the ``run_stats`` collection.
+
+    One document per (session_id, pipeline) pair.  Safe to call multiple times —
+    subsequent calls overwrite the existing document for that session.
+    """
+    if df.empty:
+        return
+
+    now = datetime.now(tz=timezone.utc)
+    sid = session_id or now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    doc = _build_run_summary(df, pipeline, sid, now)
+
+    _col("run_stats").update_one(
+        {"session_id": sid, "pipeline": pipeline},
+        {"$set": doc},
+        upsert=True,
+    )
+    logger.info("run_stats: stored summary for session='%s' pipeline='%s'.", sid, pipeline)
+
+
+def _snapshot_filename(session_id: str, pipeline: str) -> str:
+    """Return a filesystem-safe snapshot filename for a run."""
+    safe_sid = session_id.replace(":", "-")
+    return f"{safe_sid}_{pipeline}.json"
+
+
+def save_run_snapshot(
+    df: pd.DataFrame,
+    pipeline: str,
+    session_id: str,
+    runs_dir: Path,
+) -> str:
+    """
+    Save the jobs for this run as a JSON file in ``runs_dir``.
+
+    Returns the filename (not full path) so it can be stored in run_history.json.
+    """
+    filename = _snapshot_filename(session_id, pipeline)
+    runs_dir.mkdir(parents=True, exist_ok=True)
+    snapshot_path = runs_dir / filename
+    records = json.loads(df.to_json(orient="records", date_format="iso", default_handler=str))
+    snapshot_path.write_text(json.dumps(records, indent=2, default=str))
+    logger.info("Snapshot saved → %s (%d jobs).", filename, len(records))
+    return filename
+
+
+def append_run_history(
+    df: pd.DataFrame,
+    pipeline: str,
+    history_path: Path,
+    max_runs: int = 48,
+) -> None:
+    """
+    Append a compact run summary to ``run_history.json`` (max_runs entries).
+
+    Also saves a per-run job snapshot to ``output/runs/`` so the dashboard
+    can fetch and display any previous hour's listings on demand.
+    """
+    now = datetime.now(tz=timezone.utc)
+    sid = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    summary = _build_run_summary(df, pipeline, sid, now)
+    # Serialise datetime for JSON
+    summary["run_at"] = now.isoformat()
+
+    # Save per-run snapshot and record its filename
+    runs_dir = history_path.parent / "runs"
+    try:
+        summary["snapshot_file"] = save_run_snapshot(df, pipeline, sid, runs_dir)
+    except Exception as exc:
+        logger.warning("Could not save run snapshot (non-fatal): %s", exc)
+
+    history: list[dict] = []
+    if history_path.exists():
+        try:
+            history = json.loads(history_path.read_text())
+        except Exception:
+            history = []
+
+    history.append(summary)
+    if len(history) > max_runs:
+        history = history[-max_runs:]
+
+    history_path.parent.mkdir(parents=True, exist_ok=True)
+    history_path.write_text(json.dumps(history, indent=2, default=str))
+    logger.info("run_history.json: appended run %s (%s).", sid, pipeline)
 
 
 def _df_to_records(

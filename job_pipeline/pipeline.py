@@ -13,14 +13,17 @@ import pandas as pd
 from job_pipeline import config
 from job_pipeline.filters import (
     deduplicate,
+    filter_by_experience,
     filter_by_location,
     filter_by_remote,
     filter_by_role,
     filter_by_sponsorship,
+    tag_level,
 )
 from job_pipeline.scraper import scrape
 from job_pipeline.scoring import apply_scores
-from job_pipeline.storage import insert_run
+from job_pipeline.storage import append_run_history, insert_run, insert_run_stats
+from job_pipeline.deploy import deploy_output
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +32,7 @@ _OUTPUT_COLUMNS: list[str] = [
     "title",
     "company",
     "location",
+    "level",
     "job_url",
     "date_posted",
     "score",
@@ -51,6 +55,7 @@ def run_standard_pipeline(
     output_json: Path = config.OUTPUT_JSON,
     save: bool = True,
     store: bool = True,
+    deploy: bool = False,
 ) -> pd.DataFrame:
     """
     Execute the full standard pipeline end-to-end.
@@ -91,17 +96,21 @@ def run_standard_pipeline(
     # 2. Deduplicate
     df = deduplicate(df)
 
-    # 3–6. Filtering chain
+    # 3–7. Filtering chain
     df = filter_by_role(df)
     df = filter_by_location(df)
     df = filter_by_sponsorship(df)
+    df = filter_by_experience(df)
     df = filter_by_remote(df, remote_only=remote_only)
 
     if df.empty:
         logger.warning("All jobs filtered out — nothing to score.")
         return df
 
-    # 7. Scoring
+    # 7. Level tagging
+    df = tag_level(df)
+
+    # 8. Scoring
     df = apply_scores(df)
     df = _ensure_output_columns(df)
 
@@ -118,8 +127,22 @@ def run_standard_pipeline(
     if store:
         try:
             insert_run(df_out, pipeline="standard")
+            insert_run_stats(df_out, pipeline="standard")
         except Exception as exc:
             logger.error("MongoDB insert failed (non-fatal): %s", exc)
+
+    if save:
+        try:
+            history_path = output_csv.parent / "run_history.json"
+            append_run_history(df_out, pipeline="standard", history_path=history_path)
+        except Exception as exc:
+            logger.error("run_history.json update failed (non-fatal): %s", exc)
+
+    if deploy:
+        try:
+            deploy_output()
+        except Exception as exc:
+            logger.error("Dashboard deploy failed (non-fatal): %s", exc)
 
     logger.info("=" * 55)
     logger.info("  Standard Pipeline — DONE  (%d jobs)", len(df_out))

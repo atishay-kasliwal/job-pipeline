@@ -29,7 +29,12 @@ import sys
 from typing import Any
 
 from job_pipeline import config
-from job_pipeline.more_important import run_important_pipeline
+from job_pipeline.more_important import (
+    run_h1b2026_pipeline,
+    run_important_pipeline,
+    run_keywords_pipeline,
+    run_top500_pipeline,
+)
 from job_pipeline.pipeline import run_standard_pipeline
 
 
@@ -42,13 +47,14 @@ def _build_parser() -> argparse.ArgumentParser:
 
     parser.add_argument(
         "--pipeline",
-        choices=["standard", "important", "both"],
+        choices=["standard", "important", "top500", "h1b2026", "keywords", "all"],
         default="standard",
         help=(
-            "Which pipeline to run.  "
-            "'standard' applies full filters + scoring.  "
-            "'important' keeps only top companies with visa-friendly postings.  "
-            "'both' runs both sequentially."
+            "'standard'  — full filter + scoring pipeline.  "
+            "'important' — curated top companies + sponsorship filter.  "
+            "'top500'    — top-500 US tech companies.  "
+            "'h1b2026'   — custom H1B 2026 company list (data/h1b_2026.csv).  "
+            "'all'       — runs all four sequentially."
         ),
     )
 
@@ -99,6 +105,12 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Do not write CSV/JSON files; print results to stdout only.",
     )
     output_group.add_argument(
+        "--deploy",
+        action="store_true",
+        default=False,
+        help="Push results to the GitHub Pages dashboard after each run.",
+    )
+    output_group.add_argument(
         "--top",
         type=int,
         default=20,
@@ -139,32 +151,61 @@ def main() -> None:
     pd.set_option("display.max_colwidth", 55)
     pd.set_option("display.width", 200)
 
-    if args.pipeline in ("standard", "both"):
+    def _print(label: str, df: "pd.DataFrame") -> None:
+        if not df.empty:
+            print(f"\n{'─'*60}")
+            print(f"  {label} — top {args.top} results")
+            print(f"{'─'*60}")
+            print(df.head(args.top).to_string(index=False))
+        else:
+            print(f"\n{label}: no results.")
+
+    run_standard  = args.pipeline in ("standard",  "all")
+    run_important = args.pipeline in ("important", "all")
+    run_top500    = args.pipeline in ("top500",    "all")
+    run_h1b2026   = args.pipeline in ("h1b2026",   "all")
+    run_keywords  = args.pipeline in ("keywords",  "all")
+
+    if run_standard:
         df = run_standard_pipeline(
             scraper_overrides=overrides,
             remote_only=args.remote,
             save=not args.no_save,
+            deploy=args.deploy,
         )
-        if not df.empty:
-            print(f"\n{'─'*60}")
-            print(f"  Standard Pipeline — top {args.top} results")
-            print(f"{'─'*60}")
-            print(df.head(args.top).to_string(index=False))
-        else:
-            print("\nStandard Pipeline: no results.")
+        _print("Standard Pipeline", df)
 
-    if args.pipeline in ("important", "both"):
+    if run_important:
         df = run_important_pipeline(
             scraper_overrides=overrides,
             save=not args.no_save,
+            deploy=args.deploy,
         )
-        if not df.empty:
-            print(f"\n{'─'*60}")
-            print(f"  Important Pipeline — top {args.top} results")
-            print(f"{'─'*60}")
-            print(df.head(args.top).to_string(index=False))
-        else:
-            print("\nImportant Pipeline: no results.")
+        _print("Important Pipeline", df)
+
+    if run_top500:
+        df = run_top500_pipeline(
+            scraper_overrides=overrides,
+            save=not args.no_save,
+            deploy=args.deploy,
+        )
+        _print("Top-500 Pipeline", df)
+
+    if run_h1b2026:
+        df = run_h1b2026_pipeline(
+            scraper_overrides=overrides,
+            save=not args.no_save,
+            deploy=args.deploy,
+        )
+        _print("H1B-2026 Pipeline", df)
+
+    if run_keywords:
+        df = run_keywords_pipeline(
+            scraper_overrides=overrides,
+            save=not args.no_save,
+            deploy=args.deploy,
+        )
+        _print("Keywords Pipeline", df)
 
 
 if __name__ == "__main__":
