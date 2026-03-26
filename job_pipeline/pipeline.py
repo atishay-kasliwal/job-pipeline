@@ -37,6 +37,7 @@ _OUTPUT_COLUMNS: list[str] = [
     "date_posted",
     "score",
     "competition_score",
+    "site",
 ]
 
 

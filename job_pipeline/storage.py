@@ -258,10 +258,12 @@ def update_daily_jobs(df: pd.DataFrame, output_dir: Path) -> None:
     new_records = json.loads(
         df.to_json(orient="records", date_format="iso", default_handler=str)
     )
+    batch_ts = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     added = 0
     for job in new_records:
         key = job.get("job_url") or f"{job.get('title')}-{job.get('company')}"
         if key not in seen:
+            job["batch_time"] = batch_ts
             existing.append(job)
             seen.add(key)
             added += 1

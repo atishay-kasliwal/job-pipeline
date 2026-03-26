@@ -38,6 +38,7 @@ _OUTPUT_COLUMNS: list[str] = [
     "job_url",
     "date_posted",
     "priority_score",
+    "site",
 ]
 
 
@@ -366,7 +367,7 @@ def run_keywords_pipeline(
     df = df.sort_values("keyword_score", ascending=False).reset_index(drop=True)
 
     out_cols = ["title", "company", "location", "level", "job_url",
-                "date_posted", "keyword_score"]
+                "date_posted", "keyword_score", "site"]
     df_out = df[[c for c in out_cols if c in df.columns]].copy()
 
     if save:

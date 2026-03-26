@@ -25,12 +25,16 @@ H1B_SPONSORS_CSV = DATA_DIR / "h1b_sponsors.csv"
 
 # ── Scraper settings ──────────────────────────────────────────────────────────
 SCRAPER: dict = {
-    "site_name": ["linkedin"],
+    "site_name": ["linkedin", "indeed"],
     "search_term": "software engineer",
     "location": "United States",
     "hours_old": 1,
-    "results_wanted": 200,
+    "results_wanted": 150,   # per site; ~300 raw total before filtering
     "linkedin_fetch_description": True,
+    # Boards tested and currently broken in jobspy:
+    #   glassdoor  — 400 bot-protection
+    #   google     — returns 0 results (scraper breaks when Google changes layout)
+    #   zip_recruiter — returns 0 results
 }
 
 # ── Role filter ───────────────────────────────────────────────────────────────
@@ -220,6 +224,11 @@ SCORE_BOOSTS: dict[str, int] = {
 SCORE_PENALTIES: dict[str, int] = {
     "stale_job": -2,   # posted > 24 hours ago
     "big_tech": -2,    # big-tech companies attract more applicants
+}
+
+# Source priority: LinkedIn and Google have richer data / better signal
+SOURCE_BOOSTS: dict[str, int] = {
+    "linkedin": 1,   # richer descriptions → better sponsorship filtering
 }
 
 # Companies that attract large applicant pools (higher competition)

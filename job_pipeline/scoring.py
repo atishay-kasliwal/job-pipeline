@@ -6,11 +6,11 @@ Scoring and competition-estimation logic.
 ``apply_scores``          — vectorised application across a full DataFrame.
 """
 import logging
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 import pandas as pd
 
-from job_pipeline.config import BIG_TECH_COMPANIES, SCORE_BOOSTS, SCORE_PENALTIES
+from job_pipeline.config import BIG_TECH_COMPANIES, SCORE_BOOSTS, SCORE_PENALTIES, SOURCE_BOOSTS
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +47,10 @@ def _hours_since_posted(row: pd.Series) -> float:
             posted = pd.to_datetime(posted, utc=True)
         except Exception:
             return 0.0
+
+    # Convert bare date → datetime at midnight UTC
+    if isinstance(posted, date) and not isinstance(posted, datetime):
+        posted = datetime(posted.year, posted.month, posted.day, tzinfo=timezone.utc)
 
     # Ensure timezone-aware for arithmetic
     if hasattr(posted, "tzinfo") and posted.tzinfo is None:
@@ -86,6 +90,9 @@ def calculate_score(row: pd.Series) -> int:
 
     if _is_big_tech(row):
         score += SCORE_PENALTIES["big_tech"]
+
+    site = str(row.get("site", "") or "").lower()
+    score += SOURCE_BOOSTS.get(site, 0)
 
     return score
 

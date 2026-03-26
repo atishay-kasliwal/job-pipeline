@@ -1,5 +1,5 @@
 # Core dependency — job scraping
-jobspy>=0.1.0
+python-jobspy>=1.1.0
 
 # Data processing
 pandas>=2.0.0
