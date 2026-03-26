@@ -22,7 +22,7 @@ from job_pipeline.filters import (
 )
 from job_pipeline.scraper import scrape
 from job_pipeline.scoring import apply_scores
-from job_pipeline.storage import append_run_history, insert_run, insert_run_stats
+from job_pipeline.storage import append_run_history, insert_run, insert_run_stats, update_daily_jobs
 from job_pipeline.deploy import deploy_output
 
 logger = logging.getLogger(__name__)
@@ -137,6 +137,10 @@ def run_standard_pipeline(
             append_run_history(df_out, pipeline="standard", history_path=history_path)
         except Exception as exc:
             logger.error("run_history.json update failed (non-fatal): %s", exc)
+        try:
+            update_daily_jobs(df_out, output_csv.parent)
+        except Exception as exc:
+            logger.error("today_jobs.json update failed (non-fatal): %s", exc)
 
     if deploy:
         try:

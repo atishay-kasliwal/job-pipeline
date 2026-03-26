@@ -207,6 +207,77 @@ def insert_run_stats(
     logger.info("run_stats: stored summary for session='%s' pipeline='%s'.", sid, pipeline)
 
 
+def update_daily_jobs(df: pd.DataFrame, output_dir: Path) -> None:
+    """
+    Accumulate today's standard-pipeline jobs in ``today_jobs.json``.
+
+    At midnight, today's file is rotated to ``yesterday_jobs.json`` so the
+    dashboard can show both "Today" and "Yesterday" views without re-fetching
+    dozens of snapshot files.
+
+    Only call this from the standard pipeline to avoid duplicates.
+    """
+    if df.empty:
+        return
+
+    today_str   = datetime.now().strftime("%Y-%m-%d")
+    today_path  = output_dir / "today_jobs.json"
+    yest_path   = output_dir / "yesterday_jobs.json"
+    meta_path   = output_dir / "daily_meta.json"
+
+    # Detect midnight rollover
+    meta: dict = {}
+    if meta_path.exists():
+        try:
+            meta = json.loads(meta_path.read_text())
+        except Exception:
+            pass
+
+    if meta.get("date") != today_str:
+        # Rotate today → yesterday
+        if today_path.exists():
+            import shutil
+            shutil.copy(today_path, yest_path)
+            logger.info("Daily rotation: today_jobs.json → yesterday_jobs.json")
+        today_path.write_text("[]")
+        meta = {"date": today_str}
+
+    # Load existing today jobs
+    existing: list[dict] = []
+    if today_path.exists():
+        try:
+            existing = json.loads(today_path.read_text())
+        except Exception:
+            existing = []
+
+    # Merge new jobs (deduplicate by job_url, fall back to title+company)
+    seen: set[str] = set()
+    for j in existing:
+        seen.add(j.get("job_url") or f"{j.get('title')}-{j.get('company')}")
+
+    new_records = json.loads(
+        df.to_json(orient="records", date_format="iso", default_handler=str)
+    )
+    added = 0
+    for job in new_records:
+        key = job.get("job_url") or f"{job.get('title')}-{job.get('company')}"
+        if key not in seen:
+            existing.append(job)
+            seen.add(key)
+            added += 1
+
+    # Sort by score descending
+    existing.sort(
+        key=lambda j: j.get("score") or j.get("priority_score") or 0,
+        reverse=True,
+    )
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    today_path.write_text(json.dumps(existing, indent=2, default=str))
+    meta_path.write_text(json.dumps(meta))
+    logger.info("today_jobs.json: +%d new jobs (%d total).", added, len(existing))
+
+
 def _snapshot_filename(session_id: str, pipeline: str) -> str:
     """Return a filesystem-safe snapshot filename for a run."""
     safe_sid = session_id.replace(":", "-")

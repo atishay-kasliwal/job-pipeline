@@ -158,6 +158,8 @@ def deploy_output() -> bool:
         h1b2026     = _read_json(OUTPUT_DIR / "h1b2026_jobs.json"),
         keywords    = _read_json(OUTPUT_DIR / "keywords_jobs.json"),
         run_history = _read_json(OUTPUT_DIR / "run_history.json"),
+        today       = _read_json(OUTPUT_DIR / "today_jobs.json"),
+        yesterday   = _read_json(OUTPUT_DIR / "yesterday_jobs.json"),
     )
 
 
@@ -168,6 +170,8 @@ def _deploy(
     h1b2026: list | None = None,
     keywords: list | None = None,
     run_history: list | None = None,
+    today: list | None = None,
+    yesterday: list | None = None,
 ) -> bool:
     """Push all job data files to the dashboard repo."""
     logger.info("Deploying to https://atriveo-airflow.github.io/ …")
@@ -184,6 +188,8 @@ def _deploy(
         "top500_count":    len(top500 or []),
         "h1b2026_count":   len(h1b2026 or []),
         "keywords_count":  len(keywords or []),
+        "today_count":     len(today or []),
+        "yesterday_count": len(yesterday or []),
     }
 
     def _enc(obj: list) -> str:
@@ -196,6 +202,8 @@ def _deploy(
         _put_file("docs/h1b2026_jobs.json",   _enc(h1b2026 or []),     message, hdrs),
         _put_file("docs/keywords_jobs.json",  _enc(keywords or []),    message, hdrs),
         _put_file("docs/run_history.json",    _enc(run_history or []), message, hdrs),
+        _put_file("docs/today_jobs.json",     _enc(today or []),       message, hdrs),
+        _put_file("docs/yesterday_jobs.json", _enc(yesterday or []),   message, hdrs),
         _put_file("docs/metadata.json",       json.dumps(metadata, indent=2), message, hdrs),
     ]
 
