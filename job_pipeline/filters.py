@@ -127,7 +127,7 @@ def filter_by_experience(df: pd.DataFrame) -> pd.DataFrame:
         # "4 years experience", "4+ years of experience",
         # "5+ years of professional software development experience"
         # allows up to 5 words between "years" and "experience"
-        r"\b([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*years?\s+(?:\w+\s+){0,5}experience\b"
+        r"(?<!\d)(?<!-)([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*years?\s+(?:\w+\s+){0,5}experience\b"
         # "experience of 4 years", "experience: 4+ years"
         r"|experience\s*(?:of|:)\s*([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*years?\b"
         # ── explicit requirement phrases ────────────────────────────────────
