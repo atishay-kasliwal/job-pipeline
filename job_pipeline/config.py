@@ -25,10 +25,10 @@ H1B_SPONSORS_CSV = DATA_DIR / "h1b_sponsors.csv"
 
 # ── Scraper settings ──────────────────────────────────────────────────────────
 SCRAPER: dict = {
-    "site_name": ["linkedin", "indeed"],
+    "site_name": ["linkedin"],
     "search_term": "software engineer",
     "location": "United States",
-    "hours_old": 1,
+    "hours_old": 4,
     "results_wanted": 150,   # per site; ~300 raw total before filtering
     "linkedin_fetch_description": True,
     # Boards tested and currently broken in jobspy:
@@ -96,6 +96,7 @@ ALLOWED_STATES: list[str] = [
 SPONSORSHIP_REJECT_PHRASES: list[str] = [
     # Sponsorship rejections
     "no sponsorship",
+    "Must have the right to work in the UK without current or future sponsorship"
     "will not sponsor",
     "cannot sponsor",
     "does not sponsor",
@@ -135,6 +136,7 @@ SPONSORSHIP_REJECT_PHRASES: list[str] = [
     "work authorization without sponsorship",
     "work in the us without sponsorship",
     "eligible to work in the us without sponsorship",
+    "legally authorized to work for any company in the united states without sponsorship",
     "without the need for sponsorship",
     "without requiring sponsorship",
     "permanent resident",
@@ -179,59 +181,49 @@ SPONSORSHIP_PREFER_PHRASES: list[str] = [
 # ── Remote filter ─────────────────────────────────────────────────────────────
 REMOTE_ONLY: bool = False  # Set True to keep only remote positions
 
-# ── Scoring weights ───────────────────────────────────────────────────────────
-SCORE_BOOSTS: dict[str, int] = {
-    # Career level (highest priority — directly relevant roles)
-    "new grad": 4,
-    "new graduate": 4,
-    "entry level": 3,
-    "entry-level": 3,
-    "0-2 years": 3,
-    "0 to 2 years": 3,
-    "1-3 years": 2,
-    "1 to 3 years": 2,
-    "junior": 2,
-    # Core stack — Java/Spring (3 years experience)
-    "spring boot": 4,
-    "spring": 3,
-    "java": 3,
-    "microservices": 2,
-    "distributed systems": 2,
-    "rest api": 2,
-    "restful": 1,
-    # Python stack (research + FastAPI work)
-    "fastapi": 4,
-    "python": 3,
-    "django": 1,
-    "flask": 1,
-    # Cloud / infra (AWS heavy)
-    "aws": 3,
-    "lambda": 2,
-    "ecs": 2,
-    "kubernetes": 3,
-    "docker": 2,
-    "terraform": 2,
-    "kafka": 3,
-    "ci/cd": 2,
-    # Data / secondary skills
-    "postgresql": 2,
-    "typescript": 2,
-    "react": 1,
-    "graphql": 2,
-    "airflow": 2,
+# ── Scoring: personal tech stack ──────────────────────────────────────────────
+# Each keyword earns points when found in title + description (binary, not frequency).
+PERSONAL_STACK: dict[str, dict[str, int]] = {
+    "core": {
+        "java": 5, "spring": 6, "spring boot": 8, "python": 4, "fastapi": 6,
+    },
+    "cloud": {
+        "aws": 7, "lambda": 5, "ecs": 5, "sqs": 4, "sns": 4, "api gateway": 5,
+    },
+    "backend": {
+        "microservices": 7, "rest": 6, "api": 6, "distributed systems": 8,
+    },
+    "devops": {
+        "docker": 6, "kubernetes": 7, "ci/cd": 6, "jenkins": 4, "terraform": 5,
+    },
 }
 
-SCORE_PENALTIES: dict[str, int] = {
-    "stale_job": -2,   # posted > 24 hours ago
-    "big_tech": -2,    # big-tech companies attract more applicants
+# Bonus points when a full tech combo appears together (order-independent).
+SYNERGY_COMBOS: list[tuple[list[str], int]] = [
+    (["java", "spring", "aws"],               10),
+    (["python", "fastapi", "aws"],             8),
+    (["microservices", "docker", "kubernetes"],10),
+    (["rest", "api", "backend"],               6),
+]
+
+# Level keywords matched against the job title.
+LEVEL_SCORES: dict[str, int] = {
+    "new grad":  2,
+    "entry":     6,
+    "associate": 8,
+    "mid":       10,
+    "sde2":      10,
+    "senior":    -3,
 }
 
-# Source priority: LinkedIn and Google have richer data / better signal
-SOURCE_BOOSTS: dict[str, int] = {
-    "linkedin": 1,   # richer descriptions → better sponsorship filtering
-}
+# H1B sponsor bonus — applied when the company appears in h1b_2026.csv.
+H1B_SCORE_BONUS: int = 8
 
-# Companies that attract large applicant pools (higher competition)
+# Practical maximum raw score used for % normalisation.
+# Represents a near-perfect job match (not every keyword firing at once).
+SCORE_MAX_RAW: int = 130
+
+# Companies that attract large applicant pools (higher competition estimate).
 BIG_TECH_COMPANIES: list[str] = [
     "google",
     "amazon",
@@ -244,26 +236,6 @@ BIG_TECH_COMPANIES: list[str] = [
     "twitter",
     "x corp",
 ]
-
-# ── Priority score boosts (more_important pipeline) ───────────────────────────
-PRIORITY_SCORE_BOOSTS: dict[str, int] = {
-    "new grad": 4,
-    "new graduate": 4,
-    "entry level": 3,
-    "entry-level": 3,
-    "0-2 years": 3,
-    "1-3 years": 2,
-    "backend": 2,
-    "spring boot": 4,
-    "java": 3,
-    "python": 3,
-    "fastapi": 4,
-    "aws": 3,
-    "kubernetes": 3,
-    "kafka": 3,
-    "microservices": 2,
-    "distributed": 2,
-}
 
 # ── Output paths ──────────────────────────────────────────────────────────────
 OUTPUT_CSV = OUTPUT_DIR / "jobs.csv"
@@ -294,7 +266,7 @@ RESUME_KEYWORDS: list[str] = [
     "microservices", "distributed systems", "distributed",
     "rest api", "restful",
 ]
-KEYWORDS_MIN_SCORE: int = 3   # job must match at least 3 keyword points to appear
+KEYWORDS_MIN_SCORE: int = 15  # job must score ≥15 keyword points (≈2-3 strong stack matches)
 
 TOP_500_COMPANIES_CSV = DATA_DIR / "top_500_companies.csv"
 H1B_2026_CSV = DATA_DIR / "h1b_2026.csv"

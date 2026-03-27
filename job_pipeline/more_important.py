@@ -16,7 +16,8 @@ from typing import Any
 import pandas as pd
 
 from job_pipeline import config
-from job_pipeline.filters import deduplicate, filter_by_experience, filter_by_role, filter_by_sponsorship, tag_level
+from job_pipeline.filters import deduplicate, extract_exp_range, filter_by_experience, filter_by_role, filter_by_sponsorship, tag_level
+from job_pipeline.scoring import apply_scores
 from job_pipeline.important_filter import (
     apply_important_filter,
     filter_by_companies,
@@ -35,31 +36,16 @@ _OUTPUT_COLUMNS: list[str] = [
     "company",
     "location",
     "level",
+    "min_exp",
+    "max_exp",
     "job_url",
     "date_posted",
     "priority_score",
+    "score_pct",
     "site",
 ]
 
 
-# ── Scoring ───────────────────────────────────────────────────────────────────
-
-def _calculate_priority_score(row: pd.Series) -> int:
-    """
-    Lightweight priority scorer for the high-priority pipeline.
-
-    Boosts come from config.PRIORITY_SCORE_BOOSTS and target
-    new-grad / entry-level / backend language in title+description.
-    """
-    text = " ".join(
-        str(row.get(col, "") or "") for col in ("title", "description")
-    ).lower()
-
-    return sum(
-        boost
-        for keyword, boost in config.PRIORITY_SCORE_BOOSTS.items()
-        if keyword in text
-    )
 
 
 # ── Pipeline ──────────────────────────────────────────────────────────────────
@@ -129,12 +115,11 @@ def run_important_pipeline(
         logger.warning("No jobs passed the important filter.")
         return df
 
-    # 5. Level tagging
+    # 5. Level tagging + experience extraction + scoring
     df = tag_level(df)
-
-    # 6. Priority score
-    df = df.copy()
-    df["priority_score"] = df.apply(_calculate_priority_score, axis=1)
+    df = extract_exp_range(df)
+    df = apply_scores(df)
+    df["priority_score"] = df["score"]
     df = df.sort_values("priority_score", ascending=False).reset_index(drop=True)
 
     df_out = df[[c for c in _OUTPUT_COLUMNS if c in df.columns]].copy()
@@ -219,7 +204,9 @@ def _run_company_list_pipeline(
         return df
 
     df = tag_level(df)
-    df["priority_score"] = df.apply(_calculate_priority_score, axis=1)
+    df = extract_exp_range(df)
+    df = apply_scores(df)
+    df["priority_score"] = df["score"]
     df = df.sort_values("priority_score", ascending=False).reset_index(drop=True)
 
     cols = [c for c in _OUTPUT_COLUMNS if c in df.columns]
@@ -318,7 +305,7 @@ def run_keywords_pipeline(
     config.RESUME_KEYWORDS AND whose total keyword score meets the minimum
     threshold (config.KEYWORDS_MIN_SCORE).
 
-    Each keyword that appears in the text contributes its SCORE_BOOSTS value;
+    Each keyword that appears in the text contributes its PERSONAL_STACK weight;
     the job is kept only if the cumulative keyword score ≥ KEYWORDS_MIN_SCORE.
     """
     logger.info("=" * 55)
@@ -341,18 +328,17 @@ def run_keywords_pipeline(
         return df
 
     df = tag_level(df)
+    df = extract_exp_range(df)
 
-    # Keyword scoring — sum of SCORE_BOOSTS for matched keywords
-    boosts = config.SCORE_BOOSTS
-
-    def _keyword_score(row: pd.Series) -> int:
-        text = " ".join(
-            str(row.get(c, "") or "") for c in ("title", "description")
-        ).lower()
-        return sum(v for k, v in boosts.items() if k in text)
-
+    # Keyword scoring — uses new PERSONAL_STACK weights from scoring module
+    from job_pipeline.scoring import keyword_score as _ks
     df = df.copy()
-    df["keyword_score"] = df.apply(_keyword_score, axis=1)
+    df["keyword_score"] = df.apply(
+        lambda row: _ks(
+            " ".join(str(row.get(c, "") or "") for c in ("title", "description")).lower()
+        ),
+        axis=1,
+    )
 
     # Keep only jobs that actually match the resume
     before = len(df)
@@ -366,7 +352,7 @@ def run_keywords_pipeline(
 
     df = df.sort_values("keyword_score", ascending=False).reset_index(drop=True)
 
-    out_cols = ["title", "company", "location", "level", "job_url",
+    out_cols = ["title", "company", "location", "level", "min_exp", "job_url",
                 "date_posted", "keyword_score", "site"]
     df_out = df[[c for c in out_cols if c in df.columns]].copy()
 

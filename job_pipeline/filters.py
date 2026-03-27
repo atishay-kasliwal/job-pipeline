@@ -115,23 +115,36 @@ def filter_by_sponsorship(df: pd.DataFrame) -> pd.DataFrame:
 
 def filter_by_experience(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Remove jobs that explicitly require more than 5 years of experience.
+    Remove jobs that explicitly require more than 3 years of experience.
 
-    Checks title + description for patterns like "6+ years", "7 or more years",
-    "minimum 6 years", etc.  Neutral postings (no mention) are kept.
+    Checks title + description for all common patterns. Neutral postings
+    (no mention) are always kept — we only drop explicit rejections.
+
+    Threshold: min years > 3  →  discard.
     """
     _OVERQUALIFIED = re.compile(
-        # "6 years", "7+ years", "10 years", "15 years" — any standalone high number
-        r"\b([6-9]|\d{2})\+?\s*years?\b"
-        # ranges where the LOWER bound is already too high: "6-8 years", "8–10+ years"
-        r"|\b([6-9]|\d{2})\s*[-–—to]+\s*\d+\+?\s*years?"
-        # ranges where lower bound is 5 but upper is high: "5-8 years", "5–10 years"
-        r"|\b5\s*[-–—]\s*([7-9]|\d{2})\+?\s*years?"
-        # explicit phrases
-        r"|minimum\s+(?:of\s+)?[6-9]\s+years?"
-        r"|at\s+least\s+[6-9]\s+years?"
-        r"|[6-9]\s+or\s+more\s+years?"
-        r"|\d{2}\s+or\s+more\s+years?"
+        # ── number > 3 followed by experience context ──────────────────────
+        # "4 years experience", "4+ years of experience",
+        # "5+ years of professional software development experience"
+        # allows up to 5 words between "years" and "experience"
+        r"\b([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*years?\s+(?:\w+\s+){0,5}experience\b"
+        # "experience of 4 years", "experience: 4+ years"
+        r"|experience\s*(?:of|:)\s*([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*years?\b"
+        # ── explicit requirement phrases ────────────────────────────────────
+        # "minimum 4 years", "minimum of 4 years", "min. 4 years"
+        r"|(?:minimum|min\.?)\s+(?:of\s+)?([4-9]|\d{2})\s*\+?\s*years?"
+        # "at least 4 years"
+        r"|at\s+least\s+([4-9]|\d{2})\s*\+?\s*years?"
+        # "4 or more years"
+        r"|\b([4-9]|\d{2})\+?\s*or\s+more\s+years?"
+        # "requires 4 years", "requiring 4+ years"
+        r"|requires?\s+([4-9]|\d{2})\s*\+?\s*years?"
+        # ── ranges where lower bound > 3 ───────────────────────────────────
+        # "4-6 years", "5–8 years", "4 to 6 years of experience"
+        r"|\b([4-9]|\d{2})\s*(?:[-–—]|to)\s*\d+\s*\+?\s*years?\s+(?:of\s+)?experience\b"
+        # two-digit standalone: "10 years", "12+ years" (anywhere — always senior)
+        r"|\b\d{2}\+?\s*years?\b",
+        re.IGNORECASE,
     )
 
     def _passes(row: pd.Series) -> bool:
@@ -198,6 +211,59 @@ def deduplicate(df: pd.DataFrame) -> pd.DataFrame:
 
     logger.info("Deduplication      : %4d → %4d rows", before, len(df))
     return df.copy()
+
+
+# ── Experience extractor ──────────────────────────────────────────────────────
+
+_EXP_RANGE_RE = re.compile(
+    # "2 years experience", "2-4 years of experience", "2+ years experience"
+    r'\b(\d+)\s*(?:[-–—]\s*(\d+))?\+?\s*years?\s+(?:of\s+)?(?:relevant\s+|professional\s+|work\s+)?experience\b'
+    # "minimum 2 years", "at least 3-5 years of experience"
+    r'|(?:minimum|at\s+least)\s+(?:of\s+)?(\d+)\s*(?:[-–—]\s*(\d+))?\+?\s*years?\s+(?:of\s+)?(?:work\s+)?experience\b'
+    # "experience of 2-4 years", "experience: 2 years"
+    r'|experience\s*(?:of|:)\s*(\d+)\s*(?:[-–—]\s*(\d+))?\+?\s*years?\b',
+    re.IGNORECASE,
+)
+
+
+def extract_exp_range(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Add ``min_exp`` and ``max_exp`` columns from explicit experience requirements
+    in the title or description.
+
+    ``min_exp`` — lowest bound found (e.g. 2 from "2-4 years")
+    ``max_exp`` — highest bound found (e.g. 4 from "2-4 years"); equals min if no range
+
+    Both are None when no experience requirement is detected.
+    """
+    def _extract(row: pd.Series) -> "tuple[int | None, int | None]":
+        text = _concat_cols(row, "title", "description")
+        mins, maxs = [], []
+        for m in _EXP_RANGE_RE.finditer(text):
+            g = m.groups()
+            # 3 patterns × 2 groups each = 6 groups: (mn0,mx0, mn1,mx1, mn2,mx2)
+            for i in range(0, 6, 2):
+                if g[i]:
+                    mn = int(g[i])
+                    mx = int(g[i + 1]) if g[i + 1] else mn
+                    mins.append(mn)
+                    maxs.append(mx)
+        min_exp = min(mins) if mins else None
+        max_exp = max(maxs) if maxs else None
+        return min_exp, max_exp
+
+    df = df.copy()
+    df[["min_exp", "max_exp"]] = df.apply(
+        lambda row: pd.Series(_extract(row)), axis=1
+    )
+    return df
+
+
+# Keep old name as a thin wrapper for backward compatibility with any callers.
+def extract_exp_years(df: pd.DataFrame) -> pd.DataFrame:
+    df = extract_exp_range(df)
+    df["exp_years"] = df["min_exp"]
+    return df
 
 
 # ── Level tagger ──────────────────────────────────────────────────────────────

@@ -13,6 +13,7 @@ import pandas as pd
 from job_pipeline import config
 from job_pipeline.filters import (
     deduplicate,
+    extract_exp_range,
     filter_by_experience,
     filter_by_location,
     filter_by_remote,
@@ -33,9 +34,12 @@ _OUTPUT_COLUMNS: list[str] = [
     "company",
     "location",
     "level",
+    "min_exp",
+    "max_exp",
     "job_url",
     "date_posted",
     "score",
+    "score_pct",
     "competition_score",
     "site",
 ]
@@ -108,8 +112,9 @@ def run_standard_pipeline(
         logger.warning("All jobs filtered out — nothing to score.")
         return df
 
-    # 7. Level tagging
+    # 7. Level tagging + experience extraction
     df = tag_level(df)
+    df = extract_exp_range(df)
 
     # 8. Scoring
     df = apply_scores(df)
