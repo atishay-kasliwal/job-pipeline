@@ -87,13 +87,14 @@ def scrape(overrides: dict[str, Any] | None = None) -> pd.DataFrame:
         Deduplicated raw DataFrame combining all search terms.
     """
     base_params: dict[str, Any] = {**SCRAPER, **(overrides or {})}
-    terms = overrides.get("search_term") if overrides and "search_term" in overrides else None
 
-    # If caller passed a single explicit term, use just that; otherwise loop all
-    if terms:
-        search_terms = [terms]
+    # Use SEARCH_TERMS unless caller explicitly passed a *different* search_term
+    explicit_term = (overrides or {}).get("search_term")
+    if explicit_term and explicit_term not in SEARCH_TERMS:
+        search_terms = [explicit_term]
     else:
         search_terms = SEARCH_TERMS
+        base_params.pop("search_term", None)  # will be set per-term below
 
     frames: list[pd.DataFrame] = []
     for term in search_terms:
