@@ -26,16 +26,24 @@ H1B_SPONSORS_CSV = DATA_DIR / "h1b_sponsors.csv"
 # ── Scraper settings ──────────────────────────────────────────────────────────
 SCRAPER: dict = {
     "site_name": ["linkedin"],
-    "search_term": "software engineer",
+    "search_term": "software engineer",  # overridden per-term in scraper.py
     "location": "United States",
     "hours_old": 4,
-    "results_wanted": 500,   # per site; ~500 raw before filtering
+    "results_wanted": 500,   # per search term; deduplicated before filtering
     "linkedin_fetch_description": True,
     # Boards tested and currently broken in jobspy:
     #   glassdoor  — 400 bot-protection
     #   google     — returns 0 results (scraper breaks when Google changes layout)
     #   zip_recruiter — returns 0 results
 }
+
+# Multiple search terms — scraper runs once per term and merges results.
+SEARCH_TERMS: list[str] = [
+    "software engineer",
+    "backend engineer",
+    "sde",
+    "software developer",
+]
 
 # ── Role filter ───────────────────────────────────────────────────────────────
 ROLE_INCLUDE_KEYWORDS: list[str] = [
@@ -48,6 +56,7 @@ ROLE_INCLUDE_KEYWORDS: list[str] = [
 ROLE_EXCLUDE_KEYWORDS: list[str] = [
     # Seniority
     "senior",
+    "sr",
     "staff",
     "principal",
     "manager",

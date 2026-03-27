@@ -17,7 +17,7 @@ from typing import Any
 import pandas as pd
 from jobspy import scrape_jobs
 
-from job_pipeline.config import SCRAPER
+from job_pipeline.config import SCRAPER, SEARCH_TERMS
 
 logger = logging.getLogger(__name__)
 
@@ -46,30 +46,11 @@ def _rotate_tor_ip() -> bool:
         return False
 
 
-def scrape(overrides: dict[str, Any] | None = None) -> pd.DataFrame:
-    """
-    Scrape jobs from LinkedIn via JobSpy.
-
-    Attempts to rotate the Tor exit-node IP before each scrape.
-    Falls back to a direct connection if Tor is not running.
-
-    Args:
-        overrides: Optional mapping of JobSpy parameters that supersede the
-                   defaults defined in config.SCRAPER.  Useful for CLI
-                   arguments such as ``--hours-old`` or ``--results``.
-
-    Returns:
-        Raw DataFrame exactly as returned by JobSpy (may contain nulls).
-
-    Raises:
-        Exception: Re-raises any exception thrown by JobSpy after logging it.
-    """
-    params: dict[str, Any] = {**SCRAPER, **(overrides or {})}
-
-    # Rotate IP via Tor if available; inject proxy into jobspy params
+def _scrape_one(params: dict[str, Any]) -> pd.DataFrame:
+    """Run a single JobSpy scrape and return the raw DataFrame."""
     using_tor = _rotate_tor_ip()
     if using_tor:
-        params.setdefault("proxies", _TOR_PROXY)
+        params = {**params, "proxies": _TOR_PROXY}
 
     logger.info(
         "Scraping up to %d jobs for '%s' in '%s' (hours_old=%s, tor=%s) …",
@@ -83,8 +64,58 @@ def scrape(overrides: dict[str, Any] | None = None) -> pd.DataFrame:
     try:
         df: pd.DataFrame = scrape_jobs(**params)
     except Exception as exc:
-        logger.error("JobSpy scrape failed: %s", exc)
-        raise
+        logger.error("JobSpy scrape failed for '%s': %s", params["search_term"], exc)
+        return pd.DataFrame()
 
-    logger.info("Raw results: %d rows", len(df))
+    logger.info("  → %d raw results for '%s'", len(df), params["search_term"])
     return df
+
+
+def scrape(overrides: dict[str, Any] | None = None) -> pd.DataFrame:
+    """
+    Scrape jobs from LinkedIn across all SEARCH_TERMS and merge results.
+
+    Runs one JobSpy request per search term, concatenates, and deduplicates
+    on job_url so the same posting found under multiple terms is kept once.
+
+    Args:
+        overrides: Optional mapping of JobSpy parameters that supersede the
+                   defaults defined in config.SCRAPER.  Useful for CLI
+                   arguments such as ``--hours-old`` or ``--results``.
+
+    Returns:
+        Deduplicated raw DataFrame combining all search terms.
+    """
+    base_params: dict[str, Any] = {**SCRAPER, **(overrides or {})}
+    terms = overrides.get("search_term") if overrides and "search_term" in overrides else None
+
+    # If caller passed a single explicit term, use just that; otherwise loop all
+    if terms:
+        search_terms = [terms]
+    else:
+        search_terms = SEARCH_TERMS
+
+    frames: list[pd.DataFrame] = []
+    for term in search_terms:
+        params = {**base_params, "search_term": term}
+        df = _scrape_one(params)
+        if not df.empty:
+            frames.append(df)
+
+    if not frames:
+        logger.warning("All search terms returned 0 results.")
+        return pd.DataFrame()
+
+    combined = pd.concat(frames, ignore_index=True)
+
+    # Deduplicate by job_url (primary) then title+company (fallback)
+    before = len(combined)
+    if "job_url" in combined.columns:
+        combined = combined.drop_duplicates(subset=["job_url"])
+    combined = combined.reset_index(drop=True)
+
+    logger.info(
+        "Combined %d terms → %d raw rows (%d dupes removed)",
+        len(search_terms), len(combined), before - len(combined),
+    )
+    return combined
