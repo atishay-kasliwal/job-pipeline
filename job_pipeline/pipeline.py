@@ -123,6 +123,26 @@ def run_standard_pipeline(
     # Select and order output columns (drop any extras)
     df_out = df[[c for c in _OUTPUT_COLUMNS if c in df.columns]].copy()
 
+    # 9. Drop jobs already seen today — only surface net-new postings each run
+    today_path = output_csv.parent / "today_jobs.json"
+    if today_path.exists():
+        try:
+            import json as _json
+            seen = {
+                j.get("job_url")
+                for j in _json.loads(today_path.read_text())
+                if j.get("job_url")
+            }
+            before = len(df_out)
+            df_out = df_out[~df_out["job_url"].isin(seen)].copy()
+            logger.info("Already-seen filter: %4d → %4d rows", before, len(df_out))
+        except Exception as exc:
+            logger.warning("Could not load today_jobs.json for dedup (non-fatal): %s", exc)
+
+    if df_out.empty:
+        logger.info("No new jobs this run — all already seen today.")
+        return df_out
+
     if save:
         output_csv.parent.mkdir(parents=True, exist_ok=True)
         df_out.to_csv(output_csv, index=False)
