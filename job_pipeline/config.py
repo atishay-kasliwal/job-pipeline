@@ -29,7 +29,7 @@ SCRAPER: dict = {
     "search_term": "software engineer",
     "location": "United States",
     "hours_old": 4,
-    "results_wanted": 150,   # per site; ~300 raw total before filtering
+    "results_wanted": 500,   # per site; ~500 raw before filtering
     "linkedin_fetch_description": True,
     # Boards tested and currently broken in jobspy:
     #   glassdoor  — 400 bot-protection
@@ -96,6 +96,7 @@ ALLOWED_STATES: list[str] = [
 SPONSORSHIP_REJECT_PHRASES: list[str] = [
     # Sponsorship rejections
     "no sponsorship",
+    "No need for visa sponsorship",
     "Must have the right to work in the UK without current or future sponsorship"
     "will not sponsor",
     "cannot sponsor",

@@ -280,6 +280,39 @@ def update_daily_jobs(df: pd.DataFrame, output_dir: Path) -> None:
     logger.info("today_jobs.json: +%d new jobs (%d total).", added, len(existing))
 
 
+def save_descriptions(df: pd.DataFrame, output_dir: Path) -> None:
+    """
+    Append/update job_url → description mapping to descriptions.json.
+
+    Only adds entries not already present so the file grows incrementally.
+    Used later by the ATS resume analyzer to avoid re-scraping.
+    """
+    if "description" not in df.columns:
+        return
+
+    desc_path = output_dir / "descriptions.json"
+
+    existing: dict[str, str] = {}
+    if desc_path.exists():
+        try:
+            existing = json.loads(desc_path.read_text())
+        except Exception:
+            pass
+
+    added = 0
+    for _, row in df.iterrows():
+        url = row.get("job_url")
+        desc = row.get("description")
+        if url and desc and not pd.isna(desc) and url not in existing:
+            existing[url] = str(desc)
+            added += 1
+
+    if added:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        desc_path.write_text(json.dumps(existing, indent=2))
+        logger.info("descriptions.json: +%d new descriptions (%d total).", added, len(existing))
+
+
 def _snapshot_filename(session_id: str, pipeline: str) -> str:
     """Return a filesystem-safe snapshot filename for a run."""
     safe_sid = session_id.replace(":", "-")

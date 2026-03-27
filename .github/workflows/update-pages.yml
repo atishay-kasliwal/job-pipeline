@@ -1,10 +1,9 @@
 name: Update GitHub Pages
 
 on:
-  schedule:
-    # Every hour at :30 — 30 min after the OpenShift scraper runs at :00
-    - cron: "30 * * * *"
-  workflow_dispatch: # Allow manual trigger from the GitHub Actions UI
+  # Disabled — replaced by scrape.yml which does scraping + deploy in one step.
+  # workflow_dispatch: # Uncomment to re-enable manual trigger if needed
+  workflow_dispatch:
 
 permissions:
   contents: write

@@ -1,10 +1,13 @@
 """
 Entry point for the job pipeline.
 
-Supports three pipeline modes:
-  standard  — full filter + score pipeline  → output/jobs.csv / jobs.json
-  important — top-company + sponsorship     → output/important_jobs.csv / .json
-  both      — runs both pipelines in sequence
+Supports five pipeline modes:
+  standard  — full filter + score pipeline  → output/jobs.json
+  important — curated top companies         → output/important_jobs.json
+  top500    — top-500 US tech companies     → output/top500_jobs.json
+  h1b2026   — known H1B 2026 sponsors      → output/h1b2026_jobs.json
+  keywords  — keyword score ≥ 3            → output/keywords_jobs.json
+  all       — runs all five sequentially
 
 Usage examples
 --------------
@@ -17,8 +20,15 @@ Usage examples
     # High-priority pipeline only
     python -m job_pipeline.main --pipeline important
 
-    # Both pipelines, 50 results, no file output
-    python -m job_pipeline.main --pipeline both --results 50 --no-save
+    # All pipelines, 50 results, no file output
+    python -m job_pipeline.main --pipeline all --results 50 --no-save
+
+    # All pipelines + deploy to dashboard
+    python -m job_pipeline.main --pipeline all --deploy
+
+    # ATS resume gap analysis for today's top jobs
+    python -m job_pipeline.main --ats
+    python -m job_pipeline.main --ats --ats-top 5 --ats-threshold 60
 
     # Debug mode
     python -m job_pipeline.main --log-level DEBUG
@@ -54,7 +64,7 @@ def _build_parser() -> argparse.ArgumentParser:
             "'important' — curated top companies + sponsorship filter.  "
             "'top500'    — top-500 US tech companies.  "
             "'h1b2026'   — custom H1B 2026 company list (data/h1b_2026.csv).  "
-            "'all'       — runs all four sequentially."
+            "'all'       — runs all five sequentially."
         ),
     )
 
@@ -118,6 +128,33 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Number of top rows to print to stdout.",
     )
 
+    # ATS analysis
+    ats_group = parser.add_argument_group("ATS resume analysis")
+    ats_group.add_argument(
+        "--ats",
+        action="store_true",
+        default=False,
+        help=(
+            "Run ATS resume gap analysis instead of scraping. "
+            "Reads data/resume.txt and today_jobs.json, calls Claude API "
+            "for each top job, saves Markdown reports to output/ats/."
+        ),
+    )
+    ats_group.add_argument(
+        "--ats-top",
+        type=int,
+        default=10,
+        metavar="N",
+        help="Max number of jobs to analyze (highest score_pct first).",
+    )
+    ats_group.add_argument(
+        "--ats-threshold",
+        type=int,
+        default=50,
+        metavar="PCT",
+        help="Minimum score_pct (0-100) required to include a job.",
+    )
+
     # Logging
     parser.add_argument(
         "--log-level",
@@ -159,6 +196,12 @@ def main() -> None:
             print(df.head(args.top).to_string(index=False))
         else:
             print(f"\n{label}: no results.")
+
+    # ATS analysis mode — runs independently, no scraping
+    if args.ats:
+        from job_pipeline.resume.analyzer import run_ats_analysis
+        run_ats_analysis(top=args.ats_top, threshold=args.ats_threshold)
+        return
 
     run_standard  = args.pipeline in ("standard",  "all")
     run_important = args.pipeline in ("important", "all")

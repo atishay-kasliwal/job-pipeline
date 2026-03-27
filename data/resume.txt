@@ -1,0 +1,41 @@
+Atishay Kasliwal
+(934) 246-1198 | katishay@gmail.com | Linkedin | Github | atishaykasliwal.com | New York (Open to Relocation)
+
+
+EDUCATION
+Stony Brook University, New York, United States of America	August 2024 - May 2026
+Master of Science in Data Science	GPA: 3.64/4             
+Coursework: Neural Networks, Big Data Algorithms and Networks, Big Data Analytics, Statistical Computing, Data Management  
+
+Symbiosis University of Applied Sciences, Indore, India	May 2018 - May 2022
+Bachelor of Technology in Computer Science and Information Technology	GPA: 3.6/4
+Coursework: Distributed Systems, Operating Systems, Computer Networks, Software Development, Data Structures, Algorithms
+
+EXPERIENCE
+Graduate Research Assistant - Stony Brook University	November 2024 - Present
+• Architected high availability distributed APIs using Node.js (Express) and Python (FastAPI) on AWS (ECS, Lambda, API Gateway), handling 10K+ concurrent daily requests and reducing latency by 83%.
+• Led CI/CD pipelines built for fault tolerance using Jenkins, Docker, and AWS on Linux, cutting deployment time from 6 hours to 90 seconds and enabling continuous delivery with 5× faster releases.
+• Implemented self-healing monitoring, observability, and disaster recovery alerting via CloudWatch and Prometheus, reducing MTTR by 50% and achieving 99.9% uptime across distributed systems.
+• Authored technical design documents and built consensus across 10+ distributed systems, driving scalable architecture decisions and improving system reliability.
+
+Senior Software Engineer - Bounteous	August 2021 - August 2024
+• Architected billing and payments integration systems using Java, Spring Boot, and AWS (RDS, SQS, SNS, S3), ensuring secure and compliant data management for 100K+ users across distributed microservices.
+• Designed and systematically tested REST APIs and optimized microservices for performance and reliability, reducing P99 latency by 40% and eliminating Sev1 incidents across production systems.
+• Standardized CI/CD pipelines using Jenkins, Docker, Kubernetes, and Terraform, enabling 20+ monthly production releases with automated failover across hybrid cloud and on premises environments.
+• Developed React components backed by Java Spring Boot and PostgreSQL, enabling real-time data visualization for 5K+ users and reducing dashboard query latency by 35%.
+• Collaborated across globally distributed teams, mentored junior engineers, and led code reviews and on-call rotations, driving operational excellence for enterprise production systems.
+
+Software Engineer Intern - Shriffle	August 2020 - May 2021
+• Developed concurrent billing microservices using Java and Spring Boot on GCP, processing 10K+ ACID compliant transactions ($50K+ revenue), containerized with Docker on Linux for REST API and JSON integrations.
+• Partnered with product managers in Agile/Scrum sprints to translate requirements into scalable designs, led engineering reviews, and reduced rework by 30% through production-quality testing, debugging, and QA.
+
+PROJECTS
+Atriveo (Link) (2026)	
+• Engineered open source Python (FastAPI) REST APIs with third party billing integrations for distributed SaaS, processing 2K+ daily transactions with high availability and PostgreSQL backed data exchange.
+• Built a full stack SaaS platform using React, TypeScript, PostgreSQL, and AWS, integrating generative AI-powered insights and secure authentication, deployed via Docker on OpenShift for continuous delivery.
+
+TECHNICAL SKILLS
+LANGUAGES: Java, C++, Python, Node.js, Go, TypeScript, SQL
+BACKEND/DATA: Generative AI, Distributed Systems, REST APIs, Microservices, PostgreSQL, Kafka, AWS AI/ML Services
+OS & TOOLS: Linux/Unix, Multithreading, High Performance Systems, Agile/Scrum, Debugging, DevOps, Git
+CLOUD/INFRA: Azure, AWS (Lambda, API Gateway, SQS, RDS, ECS), Docker, Kubernetes, OpenShift, CI/CD, Terraform

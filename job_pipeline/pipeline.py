@@ -24,7 +24,7 @@ from job_pipeline.filters import (
 )
 from job_pipeline.scraper import scrape
 from job_pipeline.scoring import apply_scores
-from job_pipeline.storage import append_run_history, insert_run, insert_run_stats, update_daily_jobs
+from job_pipeline.storage import append_run_history, insert_run, insert_run_stats, save_descriptions, update_daily_jobs
 from job_pipeline.deploy import deploy_output
 
 logger = logging.getLogger(__name__)
@@ -124,6 +124,13 @@ def run_standard_pipeline(
 
     # Stamp batch_time so every view (This Hour, snapshots) shows when the job was found
     df["batch_time"] = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    # Save descriptions before dropping them — used by the ATS analyzer
+    if save:
+        try:
+            save_descriptions(df, output_csv.parent)
+        except Exception as exc:
+            logger.warning("save_descriptions failed (non-fatal): %s", exc)
 
     # Select and order output columns (drop any extras)
     df_out = df[[c for c in _OUTPUT_COLUMNS if c in df.columns]].copy()
