@@ -5,6 +5,7 @@ Orchestrates the individual modules in the correct order and owns the
 save-to-disk responsibility for the standard (non-important) pipeline.
 """
 import logging
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -38,6 +39,7 @@ _OUTPUT_COLUMNS: list[str] = [
     "max_exp",
     "job_url",
     "date_posted",
+    "batch_time",
     "score",
     "score_pct",
     "competition_score",
@@ -119,6 +121,9 @@ def run_standard_pipeline(
     # 8. Scoring
     df = apply_scores(df)
     df = _ensure_output_columns(df)
+
+    # Stamp batch_time so every view (This Hour, snapshots) shows when the job was found
+    df["batch_time"] = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     # Select and order output columns (drop any extras)
     df_out = df[[c for c in _OUTPUT_COLUMNS if c in df.columns]].copy()
