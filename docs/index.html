@@ -162,6 +162,51 @@
       white-space: nowrap;
     }
 
+    /* ── Level filter chips ───────────────────────────────────────── */
+    .level-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .level-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .level-chip:hover { border-color: var(--accent); color: var(--text); }
+
+    .level-chip.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .level-chip .chip-count {
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .level-chip:not(.active) .chip-count {
+      background: var(--border);
+      color: var(--text);
+    }
+
     /* ── Table ───────────────────────────────────────────────────── */
     .table-wrap {
       background: var(--surface);
@@ -340,6 +385,9 @@
     <span class="result-count" id="result-count"></span>
   </div>
 
+  <!-- Level filters -->
+  <div class="level-filters" id="level-filters"></div>
+
   <!-- Table -->
   <div class="table-wrap">
     <table id="jobs-table">
@@ -364,6 +412,7 @@
   let sortCol       = null;
   let sortDir       = "desc";
   let query         = "";
+  let activeLevel   = "All";
 
   // ── Fetch all data ─────────────────────────────────────────────────────────
   async function loadAll() {
@@ -401,10 +450,42 @@
     }
   }
 
+  // ── Level chips ────────────────────────────────────────────────────────────
+  function renderLevelChips(allJobs) {
+    const levels = ["All", "New Grad", "Entry", "Mid"];
+    const counts = {};
+    levels.forEach(l => {
+      counts[l] = l === "All"
+        ? allJobs.length
+        : allJobs.filter(j => (j.level || "") === l).length;
+    });
+
+    document.getElementById("level-filters").innerHTML = levels.map(l => `
+      <button class="level-chip ${activeLevel === l ? "active" : ""}" data-level="${l}">
+        ${l} <span class="chip-count">${counts[l]}</span>
+      </button>
+    `).join("");
+
+    document.querySelectorAll(".level-chip").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeLevel = btn.dataset.level;
+        render();
+      });
+    });
+  }
+
   // ── Render ─────────────────────────────────────────────────────────────────
   function render() {
     const isImportant = activeTab === "important";
     let jobs = isImportant ? importantJobs : standardJobs;
+
+    // Level filter chips
+    renderLevelChips(jobs);
+
+    // Level filter
+    if (activeLevel !== "All") {
+      jobs = jobs.filter(j => (j.level || "") === activeLevel);
+    }
 
     // Search
     if (query) {
@@ -537,9 +618,10 @@
     btn.addEventListener("click", () => {
       document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
       btn.classList.add("active");
-      activeTab = btn.dataset.tab;
-      sortCol   = null;
-      query     = document.getElementById("search").value;
+      activeTab   = btn.dataset.tab;
+      sortCol     = null;
+      activeLevel = "All";
+      query       = document.getElementById("search").value;
       render();
     });
   });
