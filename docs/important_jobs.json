@@ -1,7 +1,7 @@
 [
   {
-    "session_id": "2026-03-28T03:15:48Z",
     "job_url": "https://www.linkedin.com/jobs/view/4393149874",
+    "session_id": "2026-03-28T04:16:13Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -15,8 +15,38 @@
     "title": "Software Engineer, Workload Enablement"
   },
   {
-    "session_id": "2026-03-28T03:15:48Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4391235742",
+    "session_id": "2026-03-28T04:16:13Z",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Mountain View, CA",
+    "max_exp": 2.0,
+    "min_exp": 2.0,
+    "pipeline": "important",
+    "priority_score": 33,
+    "score_pct": 25,
+    "site": "linkedin",
+    "title": "Software Engineer III, Full Stack, Payments"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4391250246",
+    "session_id": "2026-03-28T04:16:13Z",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Sunnyvale, CA",
+    "max_exp": 2.0,
+    "min_exp": 2.0,
+    "pipeline": "important",
+    "priority_score": 32,
+    "score_pct": 25,
+    "site": "linkedin",
+    "title": "Software Engineer III, Performance, Google Cloud Platforms"
+  },
+  {
     "job_url": "https://www.linkedin.com/jobs/view/4391765641",
+    "session_id": "2026-03-28T04:16:13Z",
     "company": "Benchling",
     "date_posted": null,
     "level": "Entry",
