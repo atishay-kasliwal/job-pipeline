@@ -1,7 +1,7 @@
 [
   {
     "job_url": "https://www.linkedin.com/jobs/view/4372160813",
-    "session_id": "2026-03-28T19:18:18Z",
+    "session_id": "2026-03-28T20:16:11Z",
     "company": "Coinbase",
     "date_posted": null,
     "level": "Entry",
@@ -15,18 +15,18 @@
     "title": "Software Engineer - Full Stack (EAA - Compliance)"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4381062426",
-    "session_id": "2026-03-28T19:18:18Z",
-    "company": "Twitch",
+    "job_url": "https://www.linkedin.com/jobs/view/4392307367",
+    "session_id": "2026-03-28T20:16:11Z",
+    "company": "Microsoft",
     "date_posted": null,
-    "level": "Entry",
-    "location": "San Francisco, CA",
+    "level": "Mid",
+    "location": "Redmond, WA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 43,
-    "score_pct": 33,
+    "priority_score": 34,
+    "score_pct": 26,
     "site": "linkedin",
-    "title": "Software Engineer I, Twitch Chat"
+    "title": "Software Engineer II"
   }
 ]
