@@ -1,37 +1,22 @@
 [
   {
-    "session_id": "2026-03-27T23:20:39Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4391797061",
-    "company": "Box",
-    "date_posted": null,
-    "level": "Mid",
-    "location": "Redwood City, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 43,
-    "score_pct": 33,
-    "site": "linkedin",
-    "title": "Software Engineer III, Edge"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4391778491",
-    "session_id": "2026-03-27T23:20:39Z",
-    "company": "Lyft",
+    "session_id": "2026-03-28T03:15:48Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4393149874",
+    "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
-    "location": "Seattle, WA",
+    "location": "San Francisco, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 35,
-    "score_pct": 27,
+    "priority_score": 54,
+    "score_pct": 42,
     "site": "linkedin",
-    "title": "Software Engineer, Gov Tech"
+    "title": "Software Engineer, Workload Enablement"
   },
   {
+    "session_id": "2026-03-28T03:15:48Z",
     "job_url": "https://www.linkedin.com/jobs/view/4391765641",
-    "session_id": "2026-03-27T23:20:39Z",
     "company": "Benchling",
     "date_posted": null,
     "level": "Entry",
@@ -43,35 +28,5 @@
     "score_pct": 22,
     "site": "linkedin",
     "title": "Software Engineer, Developer Platform"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4392778057",
-    "session_id": "2026-03-27T23:20:39Z",
-    "company": "Oracle",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Developer 3"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4392758848",
-    "session_id": "2026-03-27T23:20:39Z",
-    "company": "Oracle",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Developer 4"
   }
 ]
