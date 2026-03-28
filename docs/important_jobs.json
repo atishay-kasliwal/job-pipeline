@@ -1,7 +1,22 @@
 [
   {
+    "job_url": "https://www.linkedin.com/jobs/view/4349426552",
+    "session_id": "2026-03-28T15:21:47Z",
+    "company": "OpenAI",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "San Francisco, CA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 65,
+    "score_pct": 50,
+    "site": "linkedin",
+    "title": "Software Engineer, Developer Productivity"
+  },
+  {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4355510250",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -15,8 +30,8 @@
     "title": "Software Engineer, Internal Applications - Enterprise"
   },
   {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4341895001",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -30,23 +45,8 @@
     "title": "Software Engineer, Integrity Foundations"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4392084666",
-    "session_id": "2026-03-28T14:21:43Z",
-    "company": "Microsoft",
-    "date_posted": null,
-    "level": "Mid",
-    "location": "Redmond, WA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 55,
-    "score_pct": 42,
-    "site": "linkedin",
-    "title": "Software Engineer II - HR Employee Experience"
-  },
-  {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4392092087",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "Microsoft",
     "date_posted": null,
     "level": "Mid",
@@ -60,8 +60,8 @@
     "title": "Software Engineer II"
   },
   {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4341950197",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -75,8 +75,23 @@
     "title": "Software Engineer, Fleet Management"
   },
   {
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4372016247",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Sunnyvale, CA",
+    "max_exp": 2.0,
+    "min_exp": 1.0,
+    "pipeline": "important",
+    "priority_score": 49,
+    "score_pct": 38,
+    "site": "linkedin",
+    "title": "Software Engineer, GDC Connected Cluster"
+  },
+  {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4392076810",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "Microsoft",
     "date_posted": null,
     "level": "Entry",
@@ -90,23 +105,8 @@
     "title": "Software Engineer"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4239984026",
-    "session_id": "2026-03-28T14:21:43Z",
-    "company": "Figma",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "San Francisco, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 43,
-    "score_pct": 33,
-    "site": "linkedin",
-    "title": "Software Engineer, Production Engineering"
-  },
-  {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4381012937",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "Google",
     "date_posted": null,
     "level": "Mid",
@@ -120,23 +120,38 @@
     "title": "Software Engineer III, Cloud SDK"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4380812141",
-    "session_id": "2026-03-28T14:21:43Z",
-    "company": "IBM",
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4372787292",
+    "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
-    "location": "Austin, TX",
+    "location": "San Francisco, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 41,
-    "score_pct": 32,
+    "priority_score": 43,
+    "score_pct": 33,
     "site": "linkedin",
-    "title": "Software Engineer Apprentice"
+    "title": "Software Engineer, Experimental Projects"
   },
   {
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4239984026",
+    "company": "Figma",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "San Francisco, CA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 43,
+    "score_pct": 33,
+    "site": "linkedin",
+    "title": "Software Engineer, Production Engineering"
+  },
+  {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4309292995",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -150,12 +165,27 @@
     "title": "Full-Stack Software Engineer, Frontier Exploration"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4381066629",
-    "session_id": "2026-03-28T14:21:43Z",
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4380812141",
+    "company": "IBM",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Austin, TX",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 41,
+    "score_pct": 32,
+    "site": "linkedin",
+    "title": "Software Engineer Apprentice"
+  },
+  {
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4381074462",
     "company": "Google",
     "date_posted": null,
     "level": "Entry",
-    "location": "San Francisco, CA",
+    "location": "Seattle, WA",
     "max_exp": 2.0,
     "min_exp": 2.0,
     "pipeline": "important",
@@ -165,8 +195,8 @@
     "title": "Software Engineer, Station Control, Google Beam"
   },
   {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4318088906",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "Robinhood",
     "date_posted": null,
     "level": "Entry",
@@ -180,8 +210,8 @@
     "title": "Software Backend Engineer, Credit Cards & Banking Platform"
   },
   {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4371263417",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "Uber",
     "date_posted": null,
     "level": "Mid",
@@ -195,42 +225,42 @@
     "title": "Software Engineer II - AI Platform"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4239984024",
-    "session_id": "2026-03-28T14:21:43Z",
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4239977998",
     "company": "Figma",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 27,
+    "score_pct": 21,
+    "site": "linkedin",
+    "title": "Software Engineer, Graphics & Media"
+  },
+  {
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4382127500",
+    "company": "Lyft",
     "date_posted": null,
     "level": "Entry",
     "location": "New York, NY",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 31,
-    "score_pct": 24,
+    "priority_score": 20,
+    "score_pct": 15,
     "site": "linkedin",
-    "title": "Software Engineer, C++"
+    "title": "Software Engineer, Rider"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4312023116",
-    "session_id": "2026-03-28T14:21:43Z",
-    "company": "Databricks",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "San Francisco, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 30,
-    "score_pct": 23,
-    "site": "linkedin",
-    "title": "Software Engineer - GenAI inference"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4381320447",
-    "session_id": "2026-03-28T14:21:43Z",
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4381305845",
     "company": "Waymo",
     "date_posted": null,
     "level": "Entry",
-    "location": "San Francisco, CA",
+    "location": "Mountain View, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
@@ -240,23 +270,8 @@
     "title": "Software Engineer, Perception Optimization"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4376065576",
-    "session_id": "2026-03-28T14:21:43Z",
-    "company": "Google",
-    "date_posted": null,
-    "level": "Mid",
-    "location": "New York, NY",
-    "max_exp": 2.0,
-    "min_exp": 2.0,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Engineer III, Google Ads"
-  },
-  {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4239979657",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "Figma",
     "date_posted": null,
     "level": "Entry",
@@ -270,8 +285,38 @@
     "title": "Software Engineer, AI Product"
   },
   {
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4296094481",
+    "company": "Wealthfront",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "New York, NY",
+    "max_exp": 6.0,
+    "min_exp": 6.0,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Backend Engineer"
+  },
+  {
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4376065576",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "New York, NY",
+    "max_exp": 2.0,
+    "min_exp": 2.0,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Software Engineer III, Google Ads"
+  },
+  {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4372790774",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "Notion",
     "date_posted": null,
     "level": "Entry",
@@ -285,8 +330,8 @@
     "title": "Software Engineer, Mobile Platform (Android)"
   },
   {
+    "session_id": "2026-03-28T15:21:47Z",
     "job_url": "https://www.linkedin.com/jobs/view/4381008591",
-    "session_id": "2026-03-28T14:21:43Z",
     "company": "Qualcomm",
     "date_posted": null,
     "level": "Entry",
@@ -300,18 +345,18 @@
     "title": "Sensors Software Engineer"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4381073013",
-    "session_id": "2026-03-28T14:21:43Z",
-    "company": "Anthropic",
+    "session_id": "2026-03-28T15:21:47Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4391604824",
+    "company": "Qualcomm",
     "date_posted": null,
     "level": "Entry",
-    "location": "San Francisco, CA",
+    "location": "San Diego, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
     "priority_score": -999,
     "score_pct": 0,
     "site": "linkedin",
-    "title": "Software Engineer, Enterprise AI Products"
+    "title": "#Software Engineer - Kernel Services"
   }
 ]
