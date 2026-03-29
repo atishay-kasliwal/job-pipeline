@@ -1,7 +1,7 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4372796885",
-    "session_id": "2026-03-29T16:17:41Z",
+    "session_id": "2026-03-29T17:17:14Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4372797944",
     "company": "Scale AI",
     "date_posted": null,
     "level": "Entry",
@@ -15,8 +15,8 @@
     "title": "Software Engineer, Platform"
   },
   {
+    "session_id": "2026-03-29T17:17:14Z",
     "job_url": "https://www.linkedin.com/jobs/view/4349617560",
-    "session_id": "2026-03-29T16:17:41Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -30,8 +30,8 @@
     "title": "Software Engineer, Compute - Storage"
   },
   {
+    "session_id": "2026-03-29T17:17:14Z",
     "job_url": "https://www.linkedin.com/jobs/view/4349701713",
-    "session_id": "2026-03-29T16:17:41Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -45,8 +45,8 @@
     "title": "Software Engineer, Agent Infrastructure"
   },
   {
+    "session_id": "2026-03-29T17:17:14Z",
     "job_url": "https://www.linkedin.com/jobs/view/4365588470",
-    "session_id": "2026-03-29T16:17:41Z",
     "company": "Notion",
     "date_posted": null,
     "level": "Entry",
@@ -60,8 +60,23 @@
     "title": "Software Engineer, Mail"
   },
   {
+    "session_id": "2026-03-29T17:17:14Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4016406224",
+    "company": "Palantir Technologies",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Seattle, WA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 55,
+    "score_pct": 42,
+    "site": "linkedin",
+    "title": "Software Engineer - Environment Platform"
+  },
+  {
+    "session_id": "2026-03-29T17:17:14Z",
     "job_url": "https://www.linkedin.com/jobs/view/4349578900",
-    "session_id": "2026-03-29T16:17:41Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -75,8 +90,8 @@
     "title": "Backend Software Engineer, B2B Applications"
   },
   {
+    "session_id": "2026-03-29T17:17:14Z",
     "job_url": "https://www.linkedin.com/jobs/view/4268919673",
-    "session_id": "2026-03-29T16:17:41Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -90,12 +105,12 @@
     "title": "Software Engineer, Full Stack (People Innovation)"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4239977995",
-    "session_id": "2026-03-29T16:17:41Z",
+    "session_id": "2026-03-29T17:17:14Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4239981544",
     "company": "Figma",
     "date_posted": null,
     "level": "Entry",
-    "location": "San Francisco, CA",
+    "location": "",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
@@ -105,8 +120,8 @@
     "title": "Software Engineer, Distributed Systems"
   },
   {
+    "session_id": "2026-03-29T17:17:14Z",
     "job_url": "https://www.linkedin.com/jobs/view/4349578269",
-    "session_id": "2026-03-29T16:17:41Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -120,23 +135,23 @@
     "title": "Software Engineer, Backend - Sora"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4372310221",
-    "session_id": "2026-03-29T16:17:41Z",
-    "company": "Waymo",
+    "session_id": "2026-03-29T17:17:14Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4239980531",
+    "company": "Figma",
     "date_posted": null,
     "level": "Entry",
-    "location": "Kirkland, WA",
+    "location": "San Francisco, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 27,
-    "score_pct": 21,
+    "priority_score": 26,
+    "score_pct": 20,
     "site": "linkedin",
-    "title": "Software Engineer, Model Lifecycle"
+    "title": "Software Engineer, Machine Learning"
   },
   {
+    "session_id": "2026-03-29T17:17:14Z",
     "job_url": "https://www.linkedin.com/jobs/view/4239979661",
-    "session_id": "2026-03-29T16:17:41Z",
     "company": "Figma",
     "date_posted": null,
     "level": "Entry",
@@ -150,23 +165,8 @@
     "title": "Software Engineer, Growth & Monetization"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4326873442",
-    "session_id": "2026-03-29T16:17:41Z",
-    "company": "Anthropic",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "New York, NY",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Engineer, Sandboxing (Systems)"
-  },
-  {
+    "session_id": "2026-03-29T17:17:14Z",
     "job_url": "https://www.linkedin.com/jobs/view/4239978845",
-    "session_id": "2026-03-29T16:17:41Z",
     "company": "Figma",
     "date_posted": null,
     "level": "Entry",
