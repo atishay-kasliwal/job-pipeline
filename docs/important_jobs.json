@@ -1,7 +1,7 @@
 [
   {
     "job_url": "https://www.linkedin.com/jobs/view/4372796885",
-    "session_id": "2026-03-29T13:14:04Z",
+    "session_id": "2026-03-29T14:18:13Z",
     "company": "Scale AI",
     "date_posted": null,
     "level": "Entry",
@@ -15,8 +15,23 @@
     "title": "Software Engineer, Platform"
   },
   {
+    "job_url": "https://www.linkedin.com/jobs/view/4349617560",
+    "session_id": "2026-03-29T14:18:13Z",
+    "company": "OpenAI",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 61,
+    "score_pct": 47,
+    "site": "linkedin",
+    "title": "Software Engineer, Compute - Storage"
+  },
+  {
     "job_url": "https://www.linkedin.com/jobs/view/4349701713",
-    "session_id": "2026-03-29T13:14:04Z",
+    "session_id": "2026-03-29T14:18:13Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -31,7 +46,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4365580693",
-    "session_id": "2026-03-29T13:14:04Z",
+    "session_id": "2026-03-29T14:18:13Z",
     "company": "Notion",
     "date_posted": null,
     "level": "Entry",
@@ -46,7 +61,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4349618734",
-    "session_id": "2026-03-29T13:14:04Z",
+    "session_id": "2026-03-29T14:18:13Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -61,7 +76,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4363435459",
-    "session_id": "2026-03-29T13:14:04Z",
+    "session_id": "2026-03-29T14:18:13Z",
     "company": "Klaviyo",
     "date_posted": null,
     "level": "Mid",
@@ -75,27 +90,27 @@
     "title": "Software Engineer II - Flows Platform"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4372794138",
-    "session_id": "2026-03-29T13:14:04Z",
-    "company": "Gusto",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 51,
-    "score_pct": 39,
-    "site": "linkedin",
-    "title": "Security Software Engineer, Product and AI"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4239977995",
-    "session_id": "2026-03-29T13:14:04Z",
-    "company": "Figma",
+    "job_url": "https://www.linkedin.com/jobs/view/4268919673",
+    "session_id": "2026-03-29T14:18:13Z",
+    "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
     "location": "San Francisco, CA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 50,
+    "score_pct": 38,
+    "site": "linkedin",
+    "title": "Software Engineer, Full Stack (People Innovation)"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4239981544",
+    "session_id": "2026-03-29T14:18:13Z",
+    "company": "Figma",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
@@ -106,7 +121,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4349578269",
-    "session_id": "2026-03-29T13:14:04Z",
+    "session_id": "2026-03-29T14:18:13Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -121,7 +136,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4349800695",
-    "session_id": "2026-03-29T13:14:04Z",
+    "session_id": "2026-03-29T14:18:13Z",
     "company": "Netflix",
     "date_posted": null,
     "level": "Entry",
@@ -135,53 +150,23 @@
     "title": "Software Engineer 5 - Ads Identity & Privacy"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4371402759",
-    "session_id": "2026-03-29T13:14:04Z",
-    "company": "Uber",
+    "job_url": "https://www.linkedin.com/jobs/view/4239979662",
+    "session_id": "2026-03-29T14:18:13Z",
+    "company": "Figma",
     "date_posted": null,
-    "level": "Mid",
+    "level": "Entry",
     "location": "San Francisco, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 34,
-    "score_pct": 26,
+    "priority_score": 31,
+    "score_pct": 24,
     "site": "linkedin",
-    "title": "Software Engineer II - AI Platform"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4309915049",
-    "session_id": "2026-03-29T13:14:04Z",
-    "company": "Netflix",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "Los Gatos, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 32,
-    "score_pct": 25,
-    "site": "linkedin",
-    "title": "Software Engineer L5, Ads Eventing"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4239979658",
-    "session_id": "2026-03-29T13:14:04Z",
-    "company": "Figma",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "New York, NY",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 27,
-    "score_pct": 21,
-    "site": "linkedin",
-    "title": "Software Engineer, Graphics & Media"
+    "title": "Software Engineer, C++"
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4372310221",
-    "session_id": "2026-03-29T13:14:04Z",
+    "session_id": "2026-03-29T14:18:13Z",
     "company": "Waymo",
     "date_posted": null,
     "level": "Entry",
@@ -196,7 +181,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4239980531",
-    "session_id": "2026-03-29T13:14:04Z",
+    "session_id": "2026-03-29T14:18:13Z",
     "company": "Figma",
     "date_posted": null,
     "level": "Entry",
@@ -210,18 +195,18 @@
     "title": "Software Engineer, Machine Learning"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4364164472",
-    "session_id": "2026-03-29T13:14:04Z",
-    "company": "Netflix",
+    "job_url": "https://www.linkedin.com/jobs/view/4239978845",
+    "session_id": "2026-03-29T14:18:13Z",
+    "company": "Figma",
     "date_posted": null,
     "level": "Entry",
-    "location": "New York, United States",
+    "location": "San Francisco, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 24,
-    "score_pct": 18,
+    "priority_score": -999,
+    "score_pct": 0,
     "site": "linkedin",
-    "title": "Software Engineer 5 - Ads Member Experience"
+    "title": "Software Engineer, AI Product"
   }
 ]
