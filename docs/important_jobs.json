@@ -1,17 +1,32 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4392307367",
-    "session_id": "2026-03-28T22:14:02Z",
-    "company": "Microsoft",
+    "job_url": "https://www.linkedin.com/jobs/view/4190706249",
+    "session_id": "2026-03-29T03:13:56Z",
+    "company": "Stripe",
     "date_posted": null,
-    "level": "Mid",
-    "location": "Redmond, WA",
+    "level": "Entry",
+    "location": "San Francisco, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 34,
-    "score_pct": 26,
+    "priority_score": 42,
+    "score_pct": 32,
     "site": "linkedin",
-    "title": "Software Engineer II"
+    "title": "Backend Engineer, Core Technology"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4343327745",
+    "session_id": "2026-03-29T03:13:56Z",
+    "company": "Stripe",
+    "date_posted": null,
+    "level": "New Grad",
+    "location": "Seattle, WA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Backend/API Engineer, Money as a Service"
   }
 ]
