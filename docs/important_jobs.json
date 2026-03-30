@@ -1,32 +1,32 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4190706249",
-    "session_id": "2026-03-30T05:10:36Z",
-    "company": "Stripe",
+    "job_url": "https://www.linkedin.com/jobs/view/4394882860",
+    "session_id": "2026-03-30T09:08:00Z",
+    "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
     "location": "San Francisco, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 42,
-    "score_pct": 32,
+    "priority_score": 53,
+    "score_pct": 41,
     "site": "linkedin",
-    "title": "Backend Engineer, Core Technology"
+    "title": "Backend Software Engineer, ChatGPT Enterprise"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4344917131",
-    "session_id": "2026-03-30T05:10:36Z",
-    "company": "Stripe",
+    "job_url": "https://www.linkedin.com/jobs/view/4395007280",
+    "session_id": "2026-03-30T09:08:00Z",
+    "company": "Netflix",
     "date_posted": null,
-    "level": "New Grad",
-    "location": "New York, United States",
+    "level": "Entry",
+    "location": "",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
+    "priority_score": 31,
+    "score_pct": 24,
     "site": "linkedin",
-    "title": "Backend/API Engineer, Money as a Service"
+    "title": "Software Engineer - Video Algorithm Systems (L4)"
   }
 ]
