@@ -1,32 +1,62 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4394882860",
-    "session_id": "2026-03-30T09:08:00Z",
+    "session_id": "2026-03-30T14:04:52Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4239977994",
+    "company": "Figma",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "New York, NY",
+    "pipeline": "important",
+    "priority_score": 13,
+    "site": "linkedin",
+    "title": "Software Engineer, Distributed Systems"
+  },
+  {
+    "session_id": "2026-03-30T14:04:52Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4333441113",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
     "location": "San Francisco, CA",
-    "max_exp": null,
-    "min_exp": null,
     "pipeline": "important",
-    "priority_score": 53,
-    "score_pct": 41,
+    "priority_score": 8,
     "site": "linkedin",
-    "title": "Backend Software Engineer, ChatGPT Enterprise"
+    "title": "Software Engineer, Hardware"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4395007280",
-    "session_id": "2026-03-30T09:08:00Z",
-    "company": "Netflix",
+    "session_id": "2026-03-30T14:04:52Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4391871236",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Sunnyvale, CA",
+    "pipeline": "important",
+    "priority_score": 8,
+    "site": "linkedin",
+    "title": "Software Engineer III, Google Cloud AI"
+  },
+  {
+    "session_id": "2026-03-30T14:04:52Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4351183157",
+    "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
-    "location": "",
-    "max_exp": null,
-    "min_exp": null,
+    "location": "San Francisco, CA",
     "pipeline": "important",
-    "priority_score": 31,
-    "score_pct": 24,
+    "priority_score": 5,
     "site": "linkedin",
-    "title": "Software Engineer - Video Algorithm Systems (L4)"
+    "title": "Software Engineer, Research - Human Data"
+  },
+  {
+    "session_id": "2026-03-30T14:04:52Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4239984019",
+    "company": "Figma",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "New York, NY",
+    "pipeline": "important",
+    "priority_score": 3,
+    "site": "linkedin",
+    "title": "Software Engineer, Machine Learning"
   }
 ]
