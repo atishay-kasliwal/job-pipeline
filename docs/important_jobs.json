@@ -1,17 +1,32 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4365588470",
-    "session_id": "2026-03-29T18:13:28Z",
-    "company": "Notion",
+    "job_url": "https://www.linkedin.com/jobs/view/4190706249",
+    "session_id": "2026-03-30T03:10:00Z",
+    "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
-    "location": "New York, NY",
+    "location": "San Francisco, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 56,
-    "score_pct": 43,
+    "priority_score": 42,
+    "score_pct": 32,
     "site": "linkedin",
-    "title": "Software Engineer, Mail"
+    "title": "Backend Engineer, Core Technology"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4344917131",
+    "session_id": "2026-03-30T03:10:00Z",
+    "company": "Stripe",
+    "date_posted": null,
+    "level": "New Grad",
+    "location": "New York, United States",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Backend/API Engineer, Money as a Service"
   }
 ]
