@@ -1,22 +1,52 @@
 [
   {
-    "session_id": "2026-03-30T20:22:45Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4391873919",
+    "job_url": "https://www.linkedin.com/jobs/view/4392112123",
+    "session_id": "2026-03-30T21:21:43Z",
     "company": "Google",
     "date_posted": null,
-    "level": "Entry",
+    "level": "Mid",
     "location": "Sunnyvale, CA",
     "max_exp": 2.0,
-    "min_exp": 1.0,
+    "min_exp": 2.0,
     "pipeline": "important",
-    "priority_score": 45,
-    "score_pct": 35,
+    "priority_score": 52,
+    "score_pct": 40,
     "site": "linkedin",
-    "title": "Software Engineer, Machine Health"
+    "title": "Software Engineer III, Infrastructure, Kubernetes Networking"
   },
   {
-    "session_id": "2026-03-30T20:22:45Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4395160326",
+    "session_id": "2026-03-30T21:21:43Z",
+    "company": "Chime",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "San Francisco, CA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 49,
+    "score_pct": 38,
+    "site": "linkedin",
+    "title": "Software Engineer, Growth - Paid Ads & Acquisition"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4395152807",
+    "session_id": "2026-03-30T21:21:43Z",
+    "company": "IBM",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Armonk, NY",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 42,
+    "score_pct": 32,
+    "site": "linkedin",
+    "title": "Software Engineer \u2013 HashiCorp Secure Products"
+  },
+  {
     "job_url": "https://www.linkedin.com/jobs/view/4391897313",
+    "session_id": "2026-03-30T21:21:43Z",
     "company": "LinkedIn",
     "date_posted": null,
     "level": "Entry",
@@ -30,8 +60,8 @@
     "title": "Software Engineer - Frontend (DPX)"
   },
   {
-    "session_id": "2026-03-30T20:22:45Z",
     "job_url": "https://www.linkedin.com/jobs/view/4391881641",
+    "session_id": "2026-03-30T21:21:43Z",
     "company": "LinkedIn",
     "date_posted": null,
     "level": "Entry",
@@ -45,8 +75,8 @@
     "title": "Software Engineer - Applications"
   },
   {
-    "session_id": "2026-03-30T20:22:45Z",
     "job_url": "https://www.linkedin.com/jobs/view/4391882671",
+    "session_id": "2026-03-30T21:21:43Z",
     "company": "LinkedIn",
     "date_posted": null,
     "level": "Entry",
@@ -60,38 +90,8 @@
     "title": "iOS Software Engineer"
   },
   {
-    "session_id": "2026-03-30T20:22:45Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4391887593",
-    "company": "LinkedIn",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "Mountain View, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 36,
-    "score_pct": 28,
-    "site": "linkedin",
-    "title": "Distinguished Software Engineer - AI Infrastructure"
-  },
-  {
-    "session_id": "2026-03-30T20:22:45Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4392935757",
-    "company": "Uber",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "San Francisco, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 35,
-    "score_pct": 27,
-    "site": "linkedin",
-    "title": "Software Engineer"
-  },
-  {
-    "session_id": "2026-03-30T20:22:45Z",
     "job_url": "https://www.linkedin.com/jobs/view/4392110168",
+    "session_id": "2026-03-30T21:21:43Z",
     "company": "Google",
     "date_posted": null,
     "level": "Entry",
@@ -103,20 +103,5 @@
     "score_pct": 26,
     "site": "linkedin",
     "title": "Software Engineer, Decoding, Quantum AI"
-  },
-  {
-    "session_id": "2026-03-30T20:22:45Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4391877263",
-    "company": "Google",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "Pittsburgh, PA",
-    "max_exp": 2.0,
-    "min_exp": 2.0,
-    "pipeline": "important",
-    "priority_score": 33,
-    "score_pct": 25,
-    "site": "linkedin",
-    "title": "Software Engineer, Full Stack, gUP Engineering"
   }
 ]
