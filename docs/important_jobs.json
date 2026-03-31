@@ -1,32 +1,32 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4393254398",
-    "session_id": "2026-03-31T05:20:21Z",
-    "company": "Tesla",
+    "job_url": "https://www.linkedin.com/jobs/view/4393287569",
+    "session_id": "2026-03-31T09:16:59Z",
+    "company": "Uber",
     "date_posted": null,
-    "level": "Entry",
-    "location": "Palo Alto, CA",
-    "max_exp": null,
-    "min_exp": null,
+    "level": "Mid",
+    "location": "San Francisco, CA",
+    "max_exp": 2.0,
+    "min_exp": 2.0,
     "pipeline": "important",
-    "priority_score": 55,
-    "score_pct": 42,
+    "priority_score": 58,
+    "score_pct": 45,
     "site": "linkedin",
-    "title": "Software Engineer, Vehicle Engineering"
+    "title": "Software Engineer II - Uber Eats"
   },
   {
-    "session_id": "2026-03-31T05:20:21Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4366978046",
-    "company": "Stripe",
+    "job_url": "https://www.linkedin.com/jobs/view/4393270867",
+    "session_id": "2026-03-31T09:16:59Z",
+    "company": "Salesforce",
     "date_posted": null,
-    "level": "Entry",
-    "location": "",
+    "level": "New Grad",
+    "location": "Bellevue, WA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
+    "priority_score": 31,
+    "score_pct": 24,
     "site": "linkedin",
-    "title": "Software Engineer, Bridge"
+    "title": "Software Engineering AMTS (College Grad)"
   }
 ]
