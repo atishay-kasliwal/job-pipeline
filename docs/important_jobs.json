@@ -1,7 +1,7 @@
 [
   {
+    "session_id": "2026-03-31T23:25:38Z",
     "job_url": "https://www.linkedin.com/jobs/view/4190706249",
-    "session_id": "2026-03-31T21:27:12Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
@@ -15,23 +15,8 @@
     "title": "Backend Engineer, Core Technology"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4396148998",
-    "session_id": "2026-03-31T21:27:12Z",
-    "company": "IBM",
-    "date_posted": null,
-    "level": "Mid",
-    "location": "Dallas, TX",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 36,
-    "score_pct": 28,
-    "site": "linkedin",
-    "title": "Software Engineer II - HashiCorp Vault, Radar, Boundary"
-  },
-  {
+    "session_id": "2026-03-31T23:25:38Z",
     "job_url": "https://www.linkedin.com/jobs/view/4391906537",
-    "session_id": "2026-03-31T21:27:12Z",
     "company": "ServiceNow",
     "date_posted": null,
     "level": "Entry",
@@ -45,8 +30,68 @@
     "title": "Software Engineer, Agentic AI Platform - Moveworks"
   },
   {
+    "session_id": "2026-03-31T23:25:38Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4393977354",
+    "company": "Uber",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Sunnyvale, CA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 27,
+    "score_pct": 21,
+    "site": "linkedin",
+    "title": "Software Engineer II - Earner Incentive"
+  },
+  {
+    "session_id": "2026-03-31T23:25:38Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4392466798",
+    "company": "Aurora",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Pittsburgh, PA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 27,
+    "score_pct": 21,
+    "site": "linkedin",
+    "title": "Software Engineer, Behavior Planning ML Platform"
+  },
+  {
+    "session_id": "2026-03-31T23:25:38Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4393985069",
+    "company": "Uber",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "San Francisco, CA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Software Engineer II"
+  },
+  {
+    "session_id": "2026-03-31T23:25:38Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4392490100",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Sunnyvale, CA",
+    "max_exp": 2.0,
+    "min_exp": 2.0,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Software Engineer III, Performance"
+  },
+  {
+    "session_id": "2026-03-31T23:25:38Z",
     "job_url": "https://www.linkedin.com/jobs/view/4343327745",
-    "session_id": "2026-03-31T21:27:12Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "New Grad",
@@ -58,5 +103,20 @@
     "score_pct": 0,
     "site": "linkedin",
     "title": "Backend/API Engineer, Money as a Service"
+  },
+  {
+    "session_id": "2026-03-31T23:25:38Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4393973939",
+    "company": "Salesforce",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "New York, NY",
+    "max_exp": 7.0,
+    "min_exp": 7.0,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Software Engineering MTS, Salesforce"
   }
 ]
