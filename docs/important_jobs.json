@@ -1,7 +1,7 @@
 [
   {
     "job_url": "https://www.linkedin.com/jobs/view/4394311834",
-    "session_id": "2026-04-01T03:21:31Z",
+    "session_id": "2026-04-01T05:17:33Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
@@ -15,23 +15,8 @@
     "title": "Software Engineer, Product Security Data Platforms"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4393997497",
-    "session_id": "2026-04-01T03:21:31Z",
-    "company": "Microsoft",
-    "date_posted": null,
-    "level": "Mid",
-    "location": "Redmond, WA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 48,
-    "score_pct": 37,
-    "site": "linkedin",
-    "title": "Software Engineer II"
-  },
-  {
     "job_url": "https://www.linkedin.com/jobs/view/4392487592",
-    "session_id": "2026-04-01T03:21:31Z",
+    "session_id": "2026-04-01T05:17:33Z",
     "company": "Roblox",
     "date_posted": null,
     "level": "Entry",
@@ -45,8 +30,38 @@
     "title": "Software Engineer, User Sharing"
   },
   {
+    "job_url": "https://www.linkedin.com/jobs/view/4396165230",
+    "session_id": "2026-04-01T05:17:33Z",
+    "company": "IBM",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Tucson, AZ",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 36,
+    "score_pct": 28,
+    "site": "linkedin",
+    "title": "Software Engineer II - HashiCorp Vault, Radar, Boundary"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4392800410",
+    "session_id": "2026-04-01T05:17:33Z",
+    "company": "Twitch",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "San Francisco, CA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 27,
+    "score_pct": 21,
+    "site": "linkedin",
+    "title": "Software Engineer II, Android"
+  },
+  {
     "job_url": "https://www.linkedin.com/jobs/view/4366978046",
-    "session_id": "2026-04-01T03:21:31Z",
+    "session_id": "2026-04-01T05:17:33Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
@@ -58,35 +73,5 @@
     "score_pct": 0,
     "site": "linkedin",
     "title": "Software Engineer, Bridge"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4372856572",
-    "session_id": "2026-04-01T03:21:31Z",
-    "company": "Broadcom",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "San Jose, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Engineer"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4392494952",
-    "session_id": "2026-04-01T03:21:31Z",
-    "company": "Google",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "Mountain View, CA",
-    "max_exp": 2.0,
-    "min_exp": 1.0,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Engineer, Ads, Conversational and Agentic AI"
   }
 ]
