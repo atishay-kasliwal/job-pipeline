@@ -1,22 +1,7 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4394920612",
-    "session_id": "2026-04-01T22:22:27Z",
-    "company": "Microsoft",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "Redmond, WA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 65,
-    "score_pct": 50,
-    "site": "linkedin",
-    "title": "Software Engineer 2 - AI"
-  },
-  {
     "job_url": "https://www.linkedin.com/jobs/view/4393044035",
-    "session_id": "2026-04-01T22:22:27Z",
+    "session_id": "2026-04-01T23:22:48Z",
     "company": "Google",
     "date_posted": null,
     "level": "Mid",
@@ -31,7 +16,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4190706249",
-    "session_id": "2026-04-01T22:22:27Z",
+    "session_id": "2026-04-01T23:22:48Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
@@ -45,12 +30,27 @@
     "title": "Backend Engineer, Core Technology"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4393025895",
-    "session_id": "2026-04-01T22:22:27Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4393048707",
+    "session_id": "2026-04-01T23:22:48Z",
     "company": "Google",
     "date_posted": null,
     "level": "Mid",
-    "location": "New York, NY",
+    "location": "Mountain View, CA",
+    "max_exp": 2.0,
+    "min_exp": 2.0,
+    "pipeline": "important",
+    "priority_score": 40,
+    "score_pct": 31,
+    "site": "linkedin",
+    "title": "Software Engineer III, Infrastructure, Geo"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4393026878",
+    "session_id": "2026-04-01T23:22:48Z",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Kirkland, WA",
     "max_exp": 2.0,
     "min_exp": 2.0,
     "pipeline": "important",
@@ -60,12 +60,12 @@
     "title": "Software Engineer III"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4393037575",
-    "session_id": "2026-04-01T22:22:27Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4393035631",
+    "session_id": "2026-04-01T23:22:48Z",
     "company": "Google",
     "date_posted": null,
     "level": "Mid",
-    "location": "Seattle, WA",
+    "location": "Fremont, CA",
     "max_exp": 2.0,
     "min_exp": 2.0,
     "pipeline": "important",
@@ -76,7 +76,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4344917131",
-    "session_id": "2026-04-01T22:22:27Z",
+    "session_id": "2026-04-01T23:22:48Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "New Grad",
@@ -90,18 +90,18 @@
     "title": "Backend/API Engineer, Money as a Service"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4372856572",
-    "session_id": "2026-04-01T22:22:27Z",
-    "company": "Broadcom",
+    "job_url": "https://www.linkedin.com/jobs/view/4396766034",
+    "session_id": "2026-04-01T23:22:48Z",
+    "company": "IBM",
     "date_posted": null,
-    "level": "Entry",
-    "location": "San Jose, CA",
+    "level": "Mid",
+    "location": "Durham, NC",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
     "priority_score": -999,
     "score_pct": 0,
     "site": "linkedin",
-    "title": "Software Engineer"
+    "title": "zOS Software Developer"
   }
 ]
