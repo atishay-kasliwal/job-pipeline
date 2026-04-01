@@ -250,10 +250,21 @@ def update_daily_jobs(df: pd.DataFrame, output_dir: Path) -> None:
         except Exception:
             existing = []
 
-    # Merge new jobs (deduplicate by job_url, fall back to title+company)
-    seen: set[str] = set()
+    # Deduplicate by job_url AND title+company independently.
+    # This catches the same job posted in multiple cities (different URLs,
+    # same title + company) as well as exact URL duplicates.
+    seen_urls: set[str] = set()
+    seen_title_co: set[str] = set()
+
+    def _title_co(j: dict) -> str:
+        t = (j.get("title") or "").strip().lower()
+        c = (j.get("company") or "").strip().lower()
+        return f"{t}||{c}"
+
     for j in existing:
-        seen.add(j.get("job_url") or f"{j.get('title')}-{j.get('company')}")
+        if j.get("job_url"):
+            seen_urls.add(j["job_url"])
+        seen_title_co.add(_title_co(j))
 
     new_records = json.loads(
         df.to_json(orient="records", date_format="iso", default_handler=str)
@@ -261,12 +272,16 @@ def update_daily_jobs(df: pd.DataFrame, output_dir: Path) -> None:
     batch_ts = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     added = 0
     for job in new_records:
-        key = job.get("job_url") or f"{job.get('title')}-{job.get('company')}"
-        if key not in seen:
-            job["batch_time"] = batch_ts
-            existing.append(job)
-            seen.add(key)
-            added += 1
+        url = job.get("job_url")
+        tc  = _title_co(job)
+        if url in seen_urls or tc in seen_title_co:
+            continue
+        job["batch_time"] = batch_ts
+        existing.append(job)
+        if url:
+            seen_urls.add(url)
+        seen_title_co.add(tc)
+        added += 1
 
     # Sort by score descending
     existing.sort(

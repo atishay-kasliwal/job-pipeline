@@ -109,10 +109,15 @@ def scrape(overrides: dict[str, Any] | None = None) -> pd.DataFrame:
 
     combined = pd.concat(frames, ignore_index=True)
 
-    # Deduplicate by job_url (primary) then title+company (fallback)
+    # Deduplicate by job_url first, then also by title+company
+    # to eliminate same job posted in multiple cities
     before = len(combined)
     if "job_url" in combined.columns:
         combined = combined.drop_duplicates(subset=["job_url"])
+    if "title" in combined.columns and "company" in combined.columns:
+        combined["_tc"] = combined["title"].str.strip().str.lower() + "||" + combined["company"].str.strip().str.lower()
+        combined = combined.drop_duplicates(subset=["_tc"])
+        combined = combined.drop(columns=["_tc"])
     combined = combined.reset_index(drop=True)
 
     logger.info(
