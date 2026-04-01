@@ -1,11 +1,26 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4393032737",
-    "session_id": "2026-04-01T21:22:19Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4394920612",
+    "session_id": "2026-04-01T22:22:27Z",
+    "company": "Microsoft",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Redmond, WA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 65,
+    "score_pct": 50,
+    "site": "linkedin",
+    "title": "Software Engineer 2 - AI"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4393044035",
+    "session_id": "2026-04-01T22:22:27Z",
     "company": "Google",
     "date_posted": null,
     "level": "Mid",
-    "location": "Kirkland, WA",
+    "location": "New York, NY",
     "max_exp": 2.0,
     "min_exp": 2.0,
     "pipeline": "important",
@@ -16,7 +31,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4190706249",
-    "session_id": "2026-04-01T21:22:19Z",
+    "session_id": "2026-04-01T22:22:27Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
@@ -31,7 +46,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4393025895",
-    "session_id": "2026-04-01T21:22:19Z",
+    "session_id": "2026-04-01T22:22:27Z",
     "company": "Google",
     "date_posted": null,
     "level": "Mid",
@@ -45,12 +60,12 @@
     "title": "Software Engineer III"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4393039493",
-    "session_id": "2026-04-01T21:22:19Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4393037575",
+    "session_id": "2026-04-01T22:22:27Z",
     "company": "Google",
     "date_posted": null,
     "level": "Mid",
-    "location": "Mountain View, CA",
+    "location": "Seattle, WA",
     "max_exp": 2.0,
     "min_exp": 2.0,
     "pipeline": "important",
@@ -61,7 +76,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4344917131",
-    "session_id": "2026-04-01T21:22:19Z",
+    "session_id": "2026-04-01T22:22:27Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "New Grad",
@@ -75,18 +90,18 @@
     "title": "Backend/API Engineer, Money as a Service"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4396660991",
-    "session_id": "2026-04-01T21:22:19Z",
-    "company": "Netflix",
+    "job_url": "https://www.linkedin.com/jobs/view/4372856572",
+    "session_id": "2026-04-01T22:22:27Z",
+    "company": "Broadcom",
     "date_posted": null,
     "level": "Entry",
-    "location": "",
+    "location": "San Jose, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
     "priority_score": -999,
     "score_pct": 0,
     "site": "linkedin",
-    "title": "Software Engineer (L6) - Technical Catalog"
+    "title": "Software Engineer"
   }
 ]
