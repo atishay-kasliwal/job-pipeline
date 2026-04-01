@@ -1,22 +1,7 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4394311834",
-    "session_id": "2026-04-01T05:17:33Z",
-    "company": "Stripe",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "Seattle, WA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 66,
-    "score_pct": 51,
-    "site": "linkedin",
-    "title": "Software Engineer, Product Security Data Platforms"
-  },
-  {
     "job_url": "https://www.linkedin.com/jobs/view/4392487592",
-    "session_id": "2026-04-01T05:17:33Z",
+    "session_id": "2026-04-01T09:13:26Z",
     "company": "Roblox",
     "date_posted": null,
     "level": "Entry",
@@ -30,24 +15,24 @@
     "title": "Software Engineer, User Sharing"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4396165230",
-    "session_id": "2026-04-01T05:17:33Z",
-    "company": "IBM",
+    "job_url": "https://www.linkedin.com/jobs/view/4396267330",
+    "session_id": "2026-04-01T09:13:26Z",
+    "company": "Netflix",
     "date_posted": null,
-    "level": "Mid",
-    "location": "Tucson, AZ",
+    "level": "Entry",
+    "location": "",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 36,
-    "score_pct": 28,
+    "priority_score": 34,
+    "score_pct": 26,
     "site": "linkedin",
-    "title": "Software Engineer II - HashiCorp Vault, Radar, Boundary"
+    "title": "Software Engineer 5 - Research Data Products"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4392800410",
-    "session_id": "2026-04-01T05:17:33Z",
-    "company": "Twitch",
+    "job_url": "https://www.linkedin.com/jobs/view/4394359539",
+    "session_id": "2026-04-01T09:13:26Z",
+    "company": "Uber",
     "date_posted": null,
     "level": "Mid",
     "location": "San Francisco, CA",
@@ -57,11 +42,11 @@
     "priority_score": 27,
     "score_pct": 21,
     "site": "linkedin",
-    "title": "Software Engineer II, Android"
+    "title": "Software Engineer II - Earner Incentive"
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4366978046",
-    "session_id": "2026-04-01T05:17:33Z",
+    "session_id": "2026-04-01T09:13:26Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
