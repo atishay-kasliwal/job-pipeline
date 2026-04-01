@@ -1,7 +1,7 @@
 [
   {
+    "session_id": "2026-04-01T20:22:24Z",
     "job_url": "https://www.linkedin.com/jobs/view/4394920612",
-    "session_id": "2026-04-01T19:21:25Z",
     "company": "Microsoft",
     "date_posted": null,
     "level": "Entry",
@@ -15,8 +15,38 @@
     "title": "Software Engineer 2 - AI"
   },
   {
+    "session_id": "2026-04-01T20:22:24Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4393043162",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "San Bruno, CA",
+    "max_exp": 2.0,
+    "min_exp": 2.0,
+    "pipeline": "important",
+    "priority_score": 49,
+    "score_pct": 38,
+    "site": "linkedin",
+    "title": "Software Engineer III, Full Stack"
+  },
+  {
+    "session_id": "2026-04-01T20:22:24Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4393042270",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Mountain View, CA",
+    "max_exp": 2.0,
+    "min_exp": 2.0,
+    "pipeline": "important",
+    "priority_score": 43,
+    "score_pct": 33,
+    "site": "linkedin",
+    "title": "Software Engineer III"
+  },
+  {
+    "session_id": "2026-04-01T20:22:24Z",
     "job_url": "https://www.linkedin.com/jobs/view/4372940686",
-    "session_id": "2026-04-01T19:21:25Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
@@ -30,8 +60,23 @@
     "title": "Backend Engineer, Core Technology"
   },
   {
+    "session_id": "2026-04-01T20:22:24Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4366273330",
+    "company": "MongoDB",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "New York, NY",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 36,
+    "score_pct": 28,
+    "site": "linkedin",
+    "title": "Software Engineer 3, Atlas Data Federation Customer Experience"
+  },
+  {
+    "session_id": "2026-04-01T20:22:24Z",
     "job_url": "https://www.linkedin.com/jobs/view/4372856572",
-    "session_id": "2026-04-01T19:21:25Z",
     "company": "Broadcom",
     "date_posted": null,
     "level": "Entry",
@@ -45,8 +90,8 @@
     "title": "Software Engineer"
   },
   {
+    "session_id": "2026-04-01T20:22:24Z",
     "job_url": "https://www.linkedin.com/jobs/view/4396660991",
-    "session_id": "2026-04-01T19:21:25Z",
     "company": "Netflix",
     "date_posted": null,
     "level": "Entry",
@@ -58,20 +103,5 @@
     "score_pct": 0,
     "site": "linkedin",
     "title": "Software Engineer (L6) - Technical Catalog"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4330542800",
-    "session_id": "2026-04-01T19:21:25Z",
-    "company": "Anthropic",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "New York, NY",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Engineer, Safeguards"
   }
 ]
