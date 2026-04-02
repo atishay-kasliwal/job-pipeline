@@ -43,6 +43,8 @@ SEARCH_TERMS: list[str] = [
     "backend engineer",
     "sde",
     "software developer",
+    "python developer",
+    "python engineer",
 ]
 
 # ── Role filter ───────────────────────────────────────────────────────────────
@@ -51,6 +53,8 @@ ROLE_INCLUDE_KEYWORDS: list[str] = [
     "backend",
     "sde",
     "software developer",
+    "python developer",
+    "python engineer",
 ]
 
 ROLE_EXCLUDE_KEYWORDS: list[str] = [
