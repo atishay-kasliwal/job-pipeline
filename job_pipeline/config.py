@@ -199,30 +199,46 @@ REMOTE_ONLY: bool = False  # Set True to keep only remote positions
 # Each keyword earns points when found in title + description (binary, not frequency).
 PERSONAL_STACK: dict[str, dict[str, int]] = {
     "core": {
-        "java": 5, "spring": 6, "spring boot": 8, "python": 4, "fastapi": 6,
+        # Java
+        "java": 5, "spring": 6, "spring boot": 8,
+        # Python
+        "python": 7, "fastapi": 7, "django": 6, "flask": 5,
+        "pydantic": 5, "asyncio": 5, "celery": 4, "sqlalchemy": 4,
     },
     "cloud": {
         "aws": 7, "lambda": 5, "ecs": 5, "sqs": 4, "sns": 4, "api gateway": 5,
+        "gcp": 4, "google cloud": 4,
     },
     "backend": {
         "microservices": 7, "rest": 6, "api": 6, "distributed systems": 8,
+        "grpc": 5, "graphql": 4,
     },
     "devops": {
         "docker": 6, "kubernetes": 7, "ci/cd": 6, "jenkins": 4, "terraform": 5,
+    },
+    "data": {
+        "postgresql": 4, "postgres": 4, "kafka": 5,
+        "redis": 4, "airflow": 4, "pandas": 3,
     },
 }
 
 # Bonus points when a full tech combo appears together (order-independent).
 SYNERGY_COMBOS: list[tuple[list[str], int]] = [
-    (["java", "spring", "aws"],               10),
-    (["python", "fastapi", "aws"],             8),
-    (["microservices", "docker", "kubernetes"],10),
-    (["rest", "api", "backend"],               6),
+    # Java
+    (["java", "spring", "aws"],                10),
+    (["microservices", "docker", "kubernetes"], 10),
+    # Python
+    (["python", "fastapi", "aws"],             10),
+    (["python", "django", "aws"],               8),
+    (["python", "fastapi", "postgresql"],       8),
+    (["python", "celery", "kafka"],             7),
+    # General
+    (["rest", "api", "backend"],               10),
 ]
 
 # Level keywords matched against the job title.
 LEVEL_SCORES: dict[str, int] = {
-    "new grad":  2,
+    "new grad":  100,
     "entry":     6,
     "associate": 8,
     "mid":       10,
