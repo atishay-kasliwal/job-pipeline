@@ -1,37 +1,7 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/3840767804",
-    "session_id": "2026-04-03T18:31:18Z",
-    "company": "Palantir Technologies",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "New York, NY",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 70,
-    "score_pct": 54,
-    "site": "linkedin",
-    "title": "Backend Software Engineer - Infrastructure, Foundations"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4054555980",
-    "session_id": "2026-04-03T18:31:18Z",
-    "company": "Palantir Technologies",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "New York, NY",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 53,
-    "score_pct": 41,
-    "site": "linkedin",
-    "title": "Full Stack Software Engineer - Application Development"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4365590067",
-    "session_id": "2026-04-03T18:31:18Z",
+    "session_id": "2026-04-03T20:31:00Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4394201462",
     "company": "Google",
     "date_posted": null,
     "level": "Mid",
@@ -42,15 +12,15 @@
     "priority_score": 40,
     "score_pct": 31,
     "site": "linkedin",
-    "title": "Software Engineer III, Payments"
+    "title": "Software Engineer III, Full Stack, Search"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4365594012",
-    "session_id": "2026-04-03T18:31:18Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4365573964",
+    "session_id": "2026-04-03T20:31:00Z",
     "company": "Google",
     "date_posted": null,
     "level": "Mid",
-    "location": "New York, NY",
+    "location": "Sunnyvale, CA",
     "max_exp": 2.0,
     "min_exp": 1.0,
     "pipeline": "important",
@@ -61,7 +31,7 @@
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4397581182",
-    "session_id": "2026-04-03T18:31:18Z",
+    "session_id": "2026-04-03T20:31:00Z",
     "company": "Netflix",
     "date_posted": null,
     "level": "Entry",
@@ -75,23 +45,38 @@
     "title": "Software Engineer (L5) - Experimentation Platform"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4374794513",
-    "session_id": "2026-04-03T18:31:18Z",
-    "company": "Microsoft",
+    "job_url": "https://www.linkedin.com/jobs/view/4393873688",
+    "session_id": "2026-04-03T20:31:00Z",
+    "company": "Google",
     "date_posted": null,
     "level": "Mid",
-    "location": "Redmond, WA",
-    "max_exp": null,
-    "min_exp": null,
+    "location": "San Jose, CA",
+    "max_exp": 2.0,
+    "min_exp": 2.0,
     "pipeline": "important",
-    "priority_score": 37,
-    "score_pct": 28,
+    "priority_score": 33,
+    "score_pct": 25,
     "site": "linkedin",
-    "title": "Software Engineer II - CoreAI"
+    "title": "Software Engineer III, Mobile, Android"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4393863664",
+    "session_id": "2026-04-03T20:31:00Z",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Mountain View, CA",
+    "max_exp": 2.0,
+    "min_exp": 1.0,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Software Engineer, Edge TPU Compilers, Silicon"
   },
   {
     "job_url": "https://www.linkedin.com/jobs/view/4354659420",
-    "session_id": "2026-04-03T18:31:18Z",
+    "session_id": "2026-04-03T20:31:00Z",
     "company": "Snap Inc.",
     "date_posted": null,
     "level": "Entry",
@@ -105,23 +90,8 @@
     "title": "Software Engineer, iOS, Level 4"
   },
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4344926636",
-    "session_id": "2026-04-03T18:31:18Z",
-    "company": "Anthropic",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "San Francisco, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Engineer, Growth"
-  },
-  {
     "job_url": "https://www.linkedin.com/jobs/view/4393872653",
-    "session_id": "2026-04-03T18:31:18Z",
+    "session_id": "2026-04-03T20:31:00Z",
     "company": "Google",
     "date_posted": null,
     "level": "Entry",
@@ -133,5 +103,20 @@
     "score_pct": 0,
     "site": "linkedin",
     "title": "Software Engineer, Computer Vision, Geo"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4397366151",
+    "session_id": "2026-04-03T20:31:00Z",
+    "company": "Stripe",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "New York, United States",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Software Engineer, Machine Learning Infrastructure"
   }
 ]
