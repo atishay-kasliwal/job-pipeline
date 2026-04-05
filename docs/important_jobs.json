@@ -1,22 +1,7 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4350331711",
-    "session_id": "2026-04-05T14:21:42Z",
-    "company": "Cloudflare",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "Austin, TX",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 65,
-    "score_pct": 50,
-    "site": "linkedin",
-    "title": "Software Engineer - Traffic Management"
-  },
-  {
-    "session_id": "2026-04-05T14:21:42Z",
     "job_url": "https://www.linkedin.com/jobs/view/4367645139",
+    "session_id": "2026-04-05T15:21:13Z",
     "company": "Zoom",
     "date_posted": null,
     "level": "Entry",
@@ -30,7 +15,7 @@
     "title": "AI Software Engineer"
   },
   {
-    "session_id": "2026-04-05T14:21:42Z",
+    "session_id": "2026-04-05T15:21:13Z",
     "job_url": "https://www.linkedin.com/jobs/view/4373725973",
     "company": "OpenAI",
     "date_posted": null,
@@ -45,22 +30,37 @@
     "title": "Backend Engineer, Consumer Devices"
   },
   {
-    "session_id": "2026-04-05T14:21:42Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4229440861",
-    "company": "Netflix",
+    "session_id": "2026-04-05T15:21:13Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4374613975",
+    "company": "Google",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Kirkland, WA",
+    "max_exp": 2.0,
+    "min_exp": 1.0,
+    "pipeline": "important",
+    "priority_score": 51,
+    "score_pct": 39,
+    "site": "linkedin",
+    "title": "Software Engineer III, Infrastructure, AI/ML Storage"
+  },
+  {
+    "session_id": "2026-04-05T15:21:13Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4367631160",
+    "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
-    "location": "",
+    "location": "San Francisco, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 58,
-    "score_pct": 45,
+    "priority_score": 43,
+    "score_pct": 33,
     "site": "linkedin",
-    "title": "Software Engineer 5, Broadcast Systems"
+    "title": "Backend / API Engineer, Privacy Products"
   },
   {
-    "session_id": "2026-04-05T14:21:42Z",
+    "session_id": "2026-04-05T15:21:13Z",
     "job_url": "https://www.linkedin.com/jobs/view/4337884276",
     "company": "Chime",
     "date_posted": null,
@@ -75,37 +75,7 @@
     "title": "Software Engineer, Financial Platform"
   },
   {
-    "session_id": "2026-04-05T14:21:42Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4352000107",
-    "company": "Netflix",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "Los Gatos, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 24,
-    "score_pct": 18,
-    "site": "linkedin",
-    "title": "Software Engineer L4, Ads Engineering"
-  },
-  {
-    "session_id": "2026-04-05T14:21:42Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4323338353",
-    "company": "Rivian",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "Palo Alto, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Engineering - Summer 2026 Internships"
-  },
-  {
-    "session_id": "2026-04-05T14:21:42Z",
+    "session_id": "2026-04-05T15:21:13Z",
     "job_url": "https://www.linkedin.com/jobs/view/4384671263",
     "company": "Qualcomm",
     "date_posted": null,
@@ -118,5 +88,35 @@
     "score_pct": 0,
     "site": "linkedin",
     "title": "Software Engineer - Qualcomm Advanced Robotics Team - Multiple levels"
+  },
+  {
+    "session_id": "2026-04-05T15:21:13Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4331598330",
+    "company": "Anthropic",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "New York, NY",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Software Engineer, Cybersecurity Products"
+  },
+  {
+    "session_id": "2026-04-05T15:21:13Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4368842196",
+    "company": "Stripe",
+    "date_posted": null,
+    "level": "New Grad",
+    "location": "San Francisco, CA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Backend Engineer, Payments and Risk"
   }
 ]
