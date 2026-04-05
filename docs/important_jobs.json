@@ -1,17 +1,47 @@
 [
   {
-    "session_id": "2026-04-04T20:26:24Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4359699083",
-    "company": "SoFi",
+    "session_id": "2026-04-05T03:12:49Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4397489534",
+    "company": "Microsoft",
     "date_posted": null,
     "level": "Entry",
+    "location": "Redmond, WA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 63,
+    "score_pct": 48,
+    "site": "linkedin",
+    "title": "Software Engineer"
+  },
+  {
+    "session_id": "2026-04-05T03:12:49Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4397487474",
+    "company": "Microsoft",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Redmond, WA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 43,
+    "score_pct": 33,
+    "site": "linkedin",
+    "title": "Software Engineer II"
+  },
+  {
+    "session_id": "2026-04-05T03:12:49Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4368842196",
+    "company": "Stripe",
+    "date_posted": null,
+    "level": "New Grad",
     "location": "San Francisco, CA",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 107,
-    "score_pct": 82,
+    "priority_score": -999,
+    "score_pct": 0,
     "site": "linkedin",
-    "title": "Full-Stack Software Engineer, Benefits and Rewards"
+    "title": "Backend Engineer, Payments and Risk"
   }
 ]
