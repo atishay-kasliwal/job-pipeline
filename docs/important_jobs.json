@@ -1,7 +1,7 @@
 [
   {
     "job_url": "https://www.linkedin.com/jobs/view/4374694494",
-    "session_id": "2026-04-05T18:19:43Z",
+    "session_id": "2026-04-05T20:17:20Z",
     "company": "GitHub",
     "date_posted": null,
     "level": "Mid",
@@ -13,50 +13,5 @@
     "score_pct": 43,
     "site": "linkedin",
     "title": "Software Engineer II, Identity Core"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4367631160",
-    "session_id": "2026-04-05T18:19:43Z",
-    "company": "Stripe",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "San Francisco, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": 43,
-    "score_pct": 33,
-    "site": "linkedin",
-    "title": "Backend / API Engineer, Privacy Products"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4331598330",
-    "session_id": "2026-04-05T18:19:43Z",
-    "company": "Anthropic",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "New York, NY",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Engineer, Cybersecurity Products"
-  },
-  {
-    "job_url": "https://www.linkedin.com/jobs/view/4368842196",
-    "session_id": "2026-04-05T18:19:43Z",
-    "company": "Stripe",
-    "date_posted": null,
-    "level": "New Grad",
-    "location": "San Francisco, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Backend Engineer, Payments and Risk"
   }
 ]
