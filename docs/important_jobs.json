@@ -1,7 +1,7 @@
 [
   {
     "job_url": "https://www.linkedin.com/jobs/view/4367645139",
-    "session_id": "2026-04-05T15:21:13Z",
+    "session_id": "2026-04-05T16:20:07Z",
     "company": "Zoom",
     "date_posted": null,
     "level": "Entry",
@@ -15,8 +15,8 @@
     "title": "AI Software Engineer"
   },
   {
-    "session_id": "2026-04-05T15:21:13Z",
     "job_url": "https://www.linkedin.com/jobs/view/4373725973",
+    "session_id": "2026-04-05T16:20:07Z",
     "company": "OpenAI",
     "date_posted": null,
     "level": "Entry",
@@ -30,23 +30,8 @@
     "title": "Backend Engineer, Consumer Devices"
   },
   {
-    "session_id": "2026-04-05T15:21:13Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4374613975",
-    "company": "Google",
-    "date_posted": null,
-    "level": "Mid",
-    "location": "Kirkland, WA",
-    "max_exp": 2.0,
-    "min_exp": 1.0,
-    "pipeline": "important",
-    "priority_score": 51,
-    "score_pct": 39,
-    "site": "linkedin",
-    "title": "Software Engineer III, Infrastructure, AI/ML Storage"
-  },
-  {
-    "session_id": "2026-04-05T15:21:13Z",
     "job_url": "https://www.linkedin.com/jobs/view/4367631160",
+    "session_id": "2026-04-05T16:20:07Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
@@ -60,53 +45,23 @@
     "title": "Backend / API Engineer, Privacy Products"
   },
   {
-    "session_id": "2026-04-05T15:21:13Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4337884276",
-    "company": "Chime",
+    "job_url": "https://www.linkedin.com/jobs/view/4369001494",
+    "session_id": "2026-04-05T16:20:07Z",
+    "company": "Stripe",
     "date_posted": null,
     "level": "Entry",
-    "location": "San Francisco, CA",
+    "location": "New York, United States",
     "max_exp": null,
     "min_exp": null,
     "pipeline": "important",
-    "priority_score": 41,
-    "score_pct": 32,
+    "priority_score": 27,
+    "score_pct": 21,
     "site": "linkedin",
-    "title": "Software Engineer, Financial Platform"
+    "title": "Software Engineer, Intern (Summer)"
   },
   {
-    "session_id": "2026-04-05T15:21:13Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4384671263",
-    "company": "Qualcomm",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "Santa Clara, CA",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Engineer - Qualcomm Advanced Robotics Team - Multiple levels"
-  },
-  {
-    "session_id": "2026-04-05T15:21:13Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4331598330",
-    "company": "Anthropic",
-    "date_posted": null,
-    "level": "Entry",
-    "location": "New York, NY",
-    "max_exp": null,
-    "min_exp": null,
-    "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
-    "site": "linkedin",
-    "title": "Software Engineer, Cybersecurity Products"
-  },
-  {
-    "session_id": "2026-04-05T15:21:13Z",
     "job_url": "https://www.linkedin.com/jobs/view/4368842196",
+    "session_id": "2026-04-05T16:20:07Z",
     "company": "Stripe",
     "date_posted": null,
     "level": "New Grad",
