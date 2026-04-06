@@ -1,17 +1,17 @@
 [
   {
-    "session_id": "2026-04-05T21:15:25Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4374694494",
-    "company": "GitHub",
+    "session_id": "2026-04-06T09:11:23Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4394450221",
+    "company": "Google",
     "date_posted": null,
-    "level": "Mid",
-    "location": "",
-    "max_exp": null,
-    "min_exp": null,
+    "level": "Entry",
+    "location": "Pittsburgh, PA",
+    "max_exp": 2,
+    "min_exp": 2,
     "pipeline": "important",
-    "priority_score": 56,
-    "score_pct": 43,
+    "priority_score": 47,
+    "score_pct": 36,
     "site": "linkedin",
-    "title": "Software Engineer II, Identity Core"
+    "title": "Software Engineer, Site Reliability Engineering"
   }
 ]
