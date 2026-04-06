@@ -1,8 +1,8 @@
 [
   {
-    "session_id": "2026-04-06T03:05:10Z",
+    "session_id": "2026-04-06T05:05:14Z",
     "job_url": "https://www.linkedin.com/jobs/view/4394437396",
-    "batch_time": "2026-04-06T03:05:10Z",
+    "batch_time": "2026-04-06T05:05:14Z",
     "company": "EasyPost",
     "competition_score": 0,
     "date_posted": null,
@@ -17,9 +17,43 @@
     "title": "Software Engineer III"
   },
   {
+    "session_id": "2026-04-06T05:05:14Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4394449154",
+    "batch_time": "2026-04-06T05:05:14Z",
+    "company": "Piper Companies",
+    "competition_score": 0,
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Morrisville, NC",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "standard",
+    "score": 50,
+    "score_pct": 38,
+    "site": "linkedin",
+    "title": "CI/CD Software Engineer"
+  },
+  {
+    "session_id": "2026-04-06T05:05:14Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4394445202",
+    "batch_time": "2026-04-06T05:05:14Z",
+    "company": "Eliassen Group",
+    "competition_score": 0,
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Prairie du Sac, WI",
+    "max_exp": 4.0,
+    "min_exp": 4.0,
+    "pipeline": "standard",
+    "score": 40,
+    "score_pct": 31,
+    "site": "linkedin",
+    "title": "Software Engineer"
+  },
+  {
     "job_url": "https://www.linkedin.com/jobs/view/4394447188",
-    "session_id": "2026-04-06T03:05:10Z",
-    "batch_time": "2026-04-06T03:05:10Z",
+    "session_id": "2026-04-06T05:05:14Z",
+    "batch_time": "2026-04-06T05:05:14Z",
     "company": "Jobs via Dice",
     "competition_score": 0,
     "date_posted": null,
@@ -32,5 +66,22 @@
     "score_pct": 31,
     "site": "linkedin",
     "title": "Software Engineer II - Front End"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4394435281",
+    "session_id": "2026-04-06T05:05:14Z",
+    "batch_time": "2026-04-06T05:05:14Z",
+    "company": "Piper Companies",
+    "competition_score": 0,
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Greensboro, NC",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "standard",
+    "score": 28,
+    "score_pct": 22,
+    "site": "linkedin",
+    "title": "Software Engineer - (C# .NET)"
   }
 ]
