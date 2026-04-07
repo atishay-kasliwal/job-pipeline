@@ -1,47 +1,50 @@
 [
   {
-    "session_id": "2026-04-07T16:10:14Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4303760033",
-    "company": "Twitch",
+    "job_url": "https://www.linkedin.com/jobs/view/4368367959",
+    "session_id": "2026-04-07T19:04:34Z",
+    "company": "MongoDB",
     "date_posted": null,
     "level": "Entry",
-    "location": "San Francisco, CA",
-    "max_exp": null,
-    "min_exp": null,
+    "location": "Seattle, WA",
     "pipeline": "important",
-    "priority_score": 61,
-    "score_pct": 47,
+    "priority_score": 13,
     "site": "linkedin",
-    "title": "Software Engineer, ML Products"
+    "title": "Software Engineer 3"
   },
   {
-    "session_id": "2026-04-07T16:10:14Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4398275138",
-    "company": "Meta",
+    "job_url": "https://www.linkedin.com/jobs/view/4395485014",
+    "session_id": "2026-04-07T19:04:34Z",
+    "company": "Nuro",
     "date_posted": null,
     "level": "Entry",
-    "location": "Sunnyvale, CA",
-    "max_exp": null,
-    "min_exp": null,
+    "location": "Mountain View, CA",
     "pipeline": "important",
-    "priority_score": 25,
-    "score_pct": 19,
+    "priority_score": 10,
     "site": "linkedin",
-    "title": "Software Engineer, Silicon Infrastructure"
+    "title": "Software Engineer, ML Platform Infrastructure"
   },
   {
-    "session_id": "2026-04-07T16:10:14Z",
-    "job_url": "https://www.linkedin.com/jobs/view/4384087574",
-    "company": "IBM",
+    "job_url": "https://www.linkedin.com/jobs/view/4395469388",
+    "session_id": "2026-04-07T19:04:34Z",
+    "company": "Nuro",
     "date_posted": null,
-    "level": "Mid",
-    "location": "Lowell, MA",
-    "max_exp": null,
-    "min_exp": null,
+    "level": "Entry",
+    "location": "Mountain View, CA",
     "pipeline": "important",
-    "priority_score": -999,
-    "score_pct": 0,
+    "priority_score": 6,
     "site": "linkedin",
-    "title": "Software Engineer II - HCP Terraform"
+    "title": "Software Engineer, Performance Tooling and Infrastructure"
+  },
+  {
+    "job_url": "https://www.linkedin.com/jobs/view/4386584455",
+    "session_id": "2026-04-07T19:04:34Z",
+    "company": "Twilio",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "",
+    "pipeline": "important",
+    "priority_score": 0,
+    "site": "linkedin",
+    "title": "Software Engineer"
   }
 ]
