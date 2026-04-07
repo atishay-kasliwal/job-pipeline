@@ -1,14 +1,47 @@
 [
   {
-    "job_url": "https://www.linkedin.com/jobs/view/4395442640",
-    "session_id": "2026-04-07T15:34:48Z",
-    "company": "Qualcomm",
+    "session_id": "2026-04-07T16:10:14Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4303760033",
+    "company": "Twitch",
     "date_posted": null,
     "level": "Entry",
-    "location": "Santa Clara, CA",
+    "location": "San Francisco, CA",
+    "max_exp": null,
+    "min_exp": null,
     "pipeline": "important",
-    "priority_score": 6,
+    "priority_score": 61,
+    "score_pct": 47,
     "site": "linkedin",
-    "title": "#GNSS Measurement Engine Software Engineer"
+    "title": "Software Engineer, ML Products"
+  },
+  {
+    "session_id": "2026-04-07T16:10:14Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4398275138",
+    "company": "Meta",
+    "date_posted": null,
+    "level": "Entry",
+    "location": "Sunnyvale, CA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": 25,
+    "score_pct": 19,
+    "site": "linkedin",
+    "title": "Software Engineer, Silicon Infrastructure"
+  },
+  {
+    "session_id": "2026-04-07T16:10:14Z",
+    "job_url": "https://www.linkedin.com/jobs/view/4384087574",
+    "company": "IBM",
+    "date_posted": null,
+    "level": "Mid",
+    "location": "Lowell, MA",
+    "max_exp": null,
+    "min_exp": null,
+    "pipeline": "important",
+    "priority_score": -999,
+    "score_pct": 0,
+    "site": "linkedin",
+    "title": "Software Engineer II - HCP Terraform"
   }
 ]
