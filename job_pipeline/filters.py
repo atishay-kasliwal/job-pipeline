@@ -11,6 +11,7 @@ from typing import Optional
 
 import pandas as pd
 
+from job_pipeline.identity import canonical_job_url, job_identity_key
 from job_pipeline.config import (
     ALLOWED_STATES,
     COMPANY_EXCLUDE,
@@ -206,22 +207,66 @@ def deduplicate(df: pd.DataFrame) -> pd.DataFrame:
     Drop duplicate job postings.
 
     Strategy:
-    1. Deduplicate on ``job_url`` (most precise).
-    2. Exact ``(title, company)`` duplicates.
-    3. Normalized ``(title, company)`` — catches reposts with minor variants
-       like differing punctuation, appended years, or bracket suffixes.
+    1. Deduplicate on canonical identity key (URL-normalized, LinkedIn ID aware).
+    2. Fuzzy fallback on normalized ``(title, company, location, site)``.
+
+    Including location keeps distinct city-specific openings for the same
+    company/title while still removing exact repost duplicates.
     """
     before = len(df)
-    if "job_url" in df.columns:
-        df = df.drop_duplicates(subset=["job_url"])
-    df = df.drop_duplicates(subset=["title", "company"])
+    if df.empty:
+        return df
 
-    # Fuzzy pass: normalize titles then dedup again
     df = df.copy()
-    df["_norm_title"]   = df["title"].apply(_normalize_title)
-    df["_norm_company"] = df["company"].str.lower().str.strip() if "company" in df.columns else ""
-    df = df.drop_duplicates(subset=["_norm_title", "_norm_company"])
-    df = df.drop(columns=["_norm_title", "_norm_company"])
+    df["_canonical_url"] = (
+        df["job_url"].apply(canonical_job_url)
+        if "job_url" in df.columns else ""
+    )
+    df["_job_key"] = df.apply(job_identity_key, axis=1)
+    df = df.drop_duplicates(subset=["_job_key"])
+
+    # Fuzzy pass only for rows without canonical URLs.
+    with_url = df[df["_canonical_url"] != ""].copy()
+    no_url = df[df["_canonical_url"] == ""].copy()
+    if not no_url.empty:
+        no_url["_norm_title"] = (
+            no_url["title"].apply(_normalize_title)
+            if "title" in no_url.columns else ""
+        )
+        no_url["_norm_company"] = (
+            no_url["company"].fillna("").astype(str).str.lower().str.strip()
+            if "company" in no_url.columns else ""
+        )
+        no_url["_norm_location"] = (
+            no_url["location"]
+            .fillna("")
+            .astype(str)
+            .str.lower()
+            .str.replace(r"[^\w\s]", " ", regex=True)
+            .str.replace(r"\s+", " ", regex=True)
+            .str.strip()
+            if "location" in no_url.columns else ""
+        )
+        no_url["_norm_site"] = (
+            no_url["site"].fillna("").astype(str).str.lower().str.strip()
+            if "site" in no_url.columns else ""
+        )
+        no_url = no_url.drop_duplicates(
+            subset=["_norm_title", "_norm_company", "_norm_location", "_norm_site"]
+        )
+
+    df = pd.concat([with_url, no_url], ignore_index=True)
+    df = df.drop(
+        columns=[
+            "_job_key",
+            "_canonical_url",
+            "_norm_title",
+            "_norm_company",
+            "_norm_location",
+            "_norm_site",
+        ],
+        errors="ignore",
+    )
 
     logger.info("Deduplication      : %4d → %4d rows", before, len(df))
     return df.copy()

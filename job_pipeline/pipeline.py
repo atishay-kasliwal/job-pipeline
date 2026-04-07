@@ -23,6 +23,7 @@ from job_pipeline.filters import (
     filter_by_sponsorship,
     tag_level,
 )
+from job_pipeline.identity import job_identity_key
 from job_pipeline.scraper import scrape
 from job_pipeline.scoring import apply_scores
 from job_pipeline.storage import append_run_history, insert_run, insert_run_stats, save_descriptions, update_daily_jobs
@@ -56,8 +57,56 @@ def _ensure_output_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def _persist_standard_results(
+    df_out: pd.DataFrame,
+    output_csv: Path,
+    output_json: Path,
+    save: bool,
+    store: bool,
+    deploy: bool,
+) -> None:
+    """
+    Persist standard-pipeline outputs for this run.
+
+    Important: this is called even when ``df_out`` is empty so downstream views
+    never keep showing stale data from a previous hour.
+    """
+    if save:
+        output_csv.parent.mkdir(parents=True, exist_ok=True)
+        df_out.to_csv(output_csv, index=False)
+        df_out.to_json(output_json, orient="records", indent=2)
+        logger.info("Saved %d jobs → %s", len(df_out), output_csv)
+        logger.info("Saved %d jobs → %s", len(df_out), output_json)
+
+    if store:
+        try:
+            sid = insert_run(df_out, pipeline="standard")
+            if sid:
+                insert_run_stats(df_out, pipeline="standard", session_id=sid)
+        except Exception as exc:
+            logger.error("MongoDB insert failed (non-fatal): %s", exc)
+
+    if save:
+        history_path = output_csv.parent / "run_history.json"
+        try:
+            append_run_history(df_out, pipeline="standard", history_path=history_path)
+        except Exception as exc:
+            logger.error("run_history.json update failed (non-fatal): %s", exc)
+        try:
+            update_daily_jobs(df_out, output_csv.parent)
+        except Exception as exc:
+            logger.error("today_jobs.json update failed (non-fatal): %s", exc)
+
+    if deploy:
+        try:
+            deploy_output()
+        except Exception as exc:
+            logger.error("Dashboard deploy failed (non-fatal): %s", exc)
+
+
 def run_standard_pipeline(
     scraper_overrides: dict[str, Any] | None = None,
+    raw_jobs: pd.DataFrame | None = None,
     remote_only: bool = config.REMOTE_ONLY,
     output_csv: Path = config.OUTPUT_CSV,
     output_json: Path = config.OUTPUT_JSON,
@@ -81,6 +130,9 @@ def run_standard_pipeline(
     Args:
         scraper_overrides: Dict passed to :func:`scraper.scrape` to override
                            config defaults (e.g. ``{"hours_old": 6}``).
+        raw_jobs:          Optional pre-scraped raw DataFrame. When provided,
+                           the pipeline reuses this dataset instead of calling
+                           the scraper again (used by ``--pipeline all``).
         remote_only:       When True, drop non-remote rows.
         output_csv:        Destination path for the CSV output.
         output_json:       Destination path for the JSON output.
@@ -95,11 +147,24 @@ def run_standard_pipeline(
     logger.info("  Standard Pipeline — START")
     logger.info("=" * 55)
 
-    # 1. Scrape
-    df = scrape(scraper_overrides)
+    # 1. Scrape (or reuse pre-scraped raw jobs)
+    if raw_jobs is not None:
+        df = raw_jobs.copy()
+        logger.info("Using shared pre-scraped dataset (%d raw rows).", len(df))
+    else:
+        df = scrape(scraper_overrides)
     if df.empty:
-        logger.warning("No jobs returned by scraper — aborting pipeline.")
-        return df
+        logger.warning("No jobs returned by scraper.")
+        empty_out = pd.DataFrame(columns=_OUTPUT_COLUMNS)
+        _persist_standard_results(
+            df_out=empty_out,
+            output_csv=output_csv,
+            output_json=output_json,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     # 2. Deduplicate
     df = deduplicate(df)
@@ -114,7 +179,16 @@ def run_standard_pipeline(
 
     if df.empty:
         logger.warning("All jobs filtered out — nothing to score.")
-        return df
+        empty_out = pd.DataFrame(columns=_OUTPUT_COLUMNS)
+        _persist_standard_results(
+            df_out=empty_out,
+            output_csv=output_csv,
+            output_json=output_json,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     # 7. Level tagging + experience extraction
     df = tag_level(df)
@@ -142,51 +216,24 @@ def run_standard_pipeline(
     if today_path.exists():
         try:
             import json as _json
-            seen = {
-                j.get("job_url")
-                for j in _json.loads(today_path.read_text())
-                if j.get("job_url")
-            }
+            seen = {job_identity_key(j) for j in _json.loads(today_path.read_text())}
             before = len(df_out)
-            df_out = df_out[~df_out["job_url"].isin(seen)].copy()
+            keys = df_out.apply(job_identity_key, axis=1)
+            df_out = df_out[~keys.isin(seen)].copy()
             logger.info("Already-seen filter: %4d → %4d rows", before, len(df_out))
         except Exception as exc:
             logger.warning("Could not load today_jobs.json for dedup (non-fatal): %s", exc)
 
     if df_out.empty:
         logger.info("No new jobs this run — all already seen today.")
-        return df_out
-
-    if save:
-        output_csv.parent.mkdir(parents=True, exist_ok=True)
-        df_out.to_csv(output_csv, index=False)
-        df_out.to_json(output_json, orient="records", indent=2)
-        logger.info("Saved %d jobs → %s", len(df_out), output_csv)
-        logger.info("Saved %d jobs → %s", len(df_out), output_json)
-
-    if store:
-        try:
-            insert_run(df_out, pipeline="standard")
-            insert_run_stats(df_out, pipeline="standard")
-        except Exception as exc:
-            logger.error("MongoDB insert failed (non-fatal): %s", exc)
-
-    if save:
-        try:
-            history_path = output_csv.parent / "run_history.json"
-            append_run_history(df_out, pipeline="standard", history_path=history_path)
-        except Exception as exc:
-            logger.error("run_history.json update failed (non-fatal): %s", exc)
-        try:
-            update_daily_jobs(df_out, output_csv.parent)
-        except Exception as exc:
-            logger.error("today_jobs.json update failed (non-fatal): %s", exc)
-
-    if deploy:
-        try:
-            deploy_output()
-        except Exception as exc:
-            logger.error("Dashboard deploy failed (non-fatal): %s", exc)
+    _persist_standard_results(
+        df_out=df_out,
+        output_csv=output_csv,
+        output_json=output_json,
+        save=save,
+        store=store,
+        deploy=deploy,
+    )
 
     logger.info("=" * 55)
     logger.info("  Standard Pipeline — DONE  (%d jobs)", len(df_out))

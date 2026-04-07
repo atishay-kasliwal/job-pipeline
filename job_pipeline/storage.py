@@ -29,6 +29,7 @@ from pymongo.database import Database
 from pymongo.errors import BulkWriteError
 
 from job_pipeline.config import MONGO_DB_NAME, MONGO_URI
+from job_pipeline.identity import job_identity_key
 
 logger = logging.getLogger(__name__)
 
@@ -217,9 +218,6 @@ def update_daily_jobs(df: pd.DataFrame, output_dir: Path) -> None:
 
     Only call this from the standard pipeline to avoid duplicates.
     """
-    if df.empty:
-        return
-
     today_str   = datetime.now().strftime("%Y-%m-%d")
     today_path  = output_dir / "today_jobs.json"
     yest_path   = output_dir / "yesterday_jobs.json"
@@ -250,18 +248,20 @@ def update_daily_jobs(df: pd.DataFrame, output_dir: Path) -> None:
         except Exception:
             existing = []
 
-    # Merge new jobs (deduplicate by job_url, fall back to title+company)
+    # Merge new jobs (deduplicate by canonical identity key)
     seen: set[str] = set()
     for j in existing:
-        seen.add(j.get("job_url") or f"{j.get('title')}-{j.get('company')}")
+        seen.add(job_identity_key(j))
 
-    new_records = json.loads(
-        df.to_json(orient="records", date_format="iso", default_handler=str)
-    )
+    new_records: list[dict] = []
+    if not df.empty:
+        new_records = json.loads(
+            df.to_json(orient="records", date_format="iso", default_handler=str)
+        )
     batch_ts = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     added = 0
     for job in new_records:
-        key = job.get("job_url") or f"{job.get('title')}-{job.get('company')}"
+        key = job_identity_key(job)
         if key not in seen:
             job["batch_time"] = batch_ts
             existing.append(job)

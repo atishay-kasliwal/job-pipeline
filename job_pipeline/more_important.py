@@ -46,12 +46,54 @@ _OUTPUT_COLUMNS: list[str] = [
 ]
 
 
+def _persist_pipeline_results(
+    df_out: pd.DataFrame,
+    pipeline_name: str,
+    output_csv: Path,
+    output_json: Path,
+    save: bool,
+    store: bool,
+    deploy: bool,
+) -> None:
+    """
+    Persist outputs for one non-standard pipeline run.
+
+    Called for both non-empty and empty runs so dashboard files always reflect
+    the latest execution (instead of showing stale data from an older hour).
+    """
+    if save:
+        output_csv.parent.mkdir(parents=True, exist_ok=True)
+        df_out.to_csv(output_csv, index=False)
+        df_out.to_json(output_json, orient="records", indent=2)
+        logger.info("Saved %d jobs → %s", len(df_out), output_json)
+        try:
+            history_path = output_csv.parent / "run_history.json"
+            append_run_history(df_out, pipeline=pipeline_name, history_path=history_path)
+        except Exception as exc:
+            logger.error("run_history.json update failed (non-fatal): %s", exc)
+
+    if store:
+        try:
+            sid = insert_run(df_out, pipeline=pipeline_name)
+            if sid:
+                insert_run_stats(df_out, pipeline=pipeline_name, session_id=sid)
+        except Exception as exc:
+            logger.error("MongoDB insert failed (non-fatal): %s", exc)
+
+    if deploy:
+        try:
+            deploy_output()
+        except Exception as exc:
+            logger.error("Dashboard deploy failed (non-fatal): %s", exc)
+
+
 
 
 # ── Pipeline ──────────────────────────────────────────────────────────────────
 
 def run_important_pipeline(
     scraper_overrides: dict[str, Any] | None = None,
+    raw_jobs: pd.DataFrame | None = None,
     output_csv: Path = config.IMPORTANT_OUTPUT_CSV,
     output_json: Path = config.IMPORTANT_OUTPUT_JSON,
     save: bool = True,
@@ -75,6 +117,8 @@ def run_important_pipeline(
 
     Args:
         scraper_overrides: Passed to :func:`scraper.scrape`.
+        raw_jobs:          Optional pre-scraped raw DataFrame. When provided,
+                           this pipeline reuses it instead of scraping again.
         output_csv:        Destination path for important_jobs.csv.
         output_json:       Destination path for important_jobs.json.
         save:              When False, skip writing files.
@@ -86,11 +130,25 @@ def run_important_pipeline(
     logger.info("  Important Pipeline — START")
     logger.info("=" * 55)
 
-    # 1. Scrape
-    df = scrape(scraper_overrides)
+    # 1. Scrape (or reuse pre-scraped raw jobs)
+    if raw_jobs is not None:
+        df = raw_jobs.copy()
+        logger.info("Using shared pre-scraped dataset (%d raw rows).", len(df))
+    else:
+        df = scrape(scraper_overrides)
     if df.empty:
-        logger.warning("No jobs returned by scraper — aborting pipeline.")
-        return df
+        logger.warning("No jobs returned by scraper.")
+        empty_out = pd.DataFrame(columns=_OUTPUT_COLUMNS)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name="important",
+            output_csv=output_csv,
+            output_json=output_json,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     # 2. Deduplicate
     df = deduplicate(df)
@@ -100,21 +158,51 @@ def run_important_pipeline(
     df = filter_by_role(df)
     if df.empty:
         logger.warning("No jobs passed the role filter.")
-        return df
+        empty_out = pd.DataFrame(columns=_OUTPUT_COLUMNS)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name="important",
+            output_csv=output_csv,
+            output_json=output_json,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     # 4. Clearance / experience filters
     df = filter_by_sponsorship(df)
     df = filter_by_experience(df)
     if df.empty:
         logger.warning("All jobs filtered by clearance/experience.")
-        return df
+        empty_out = pd.DataFrame(columns=_OUTPUT_COLUMNS)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name="important",
+            output_csv=output_csv,
+            output_json=output_json,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     # 5. Important filter
     top_companies = load_top_companies()
     df = apply_important_filter(df, top_companies)
     if df.empty:
         logger.warning("No jobs passed the important filter.")
-        return df
+        empty_out = pd.DataFrame(columns=_OUTPUT_COLUMNS)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name="important",
+            output_csv=output_csv,
+            output_json=output_json,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     # 5. Level tagging + experience extraction + scoring
     df = tag_level(df)
@@ -124,33 +212,15 @@ def run_important_pipeline(
     df = df.sort_values("priority_score", ascending=False).reset_index(drop=True)
 
     df_out = df[[c for c in _OUTPUT_COLUMNS if c in df.columns]].copy()
-
-    if save:
-        output_csv.parent.mkdir(parents=True, exist_ok=True)
-        df_out.to_csv(output_csv, index=False)
-        df_out.to_json(output_json, orient="records", indent=2)
-        logger.info("Saved %d important jobs → %s", len(df_out), output_csv)
-        logger.info("Saved %d important jobs → %s", len(df_out), output_json)
-
-    if store:
-        try:
-            insert_run(df_out, pipeline="important")
-            insert_run_stats(df_out, pipeline="important")
-        except Exception as exc:
-            logger.error("MongoDB insert failed (non-fatal): %s", exc)
-
-    if save:
-        try:
-            history_path = output_csv.parent / "run_history.json"
-            append_run_history(df_out, pipeline="important", history_path=history_path)
-        except Exception as exc:
-            logger.error("run_history.json update failed (non-fatal): %s", exc)
-
-    if deploy:
-        try:
-            deploy_output()
-        except Exception as exc:
-            logger.error("Dashboard deploy failed (non-fatal): %s", exc)
+    _persist_pipeline_results(
+        df_out=df_out,
+        pipeline_name="important",
+        output_csv=output_csv,
+        output_json=output_json,
+        save=save,
+        store=store,
+        deploy=deploy,
+    )
 
     logger.info("=" * 55)
     logger.info("  Important Pipeline — DONE  (%d jobs)", len(df_out))
@@ -166,6 +236,7 @@ def _run_company_list_pipeline(
     output_csv: Path,
     output_json: Path,
     scraper_overrides: dict | None = None,
+    raw_jobs: pd.DataFrame | None = None,
     save: bool = True,
     store: bool = True,
     deploy: bool = False,
@@ -184,26 +255,70 @@ def _run_company_list_pipeline(
     companies = load_companies(company_csv)
     if not companies:
         logger.error("No companies loaded from '%s' — aborting.", company_csv)
-        return pd.DataFrame()
+        empty_out = pd.DataFrame(columns=_OUTPUT_COLUMNS)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name=pipeline_name,
+            output_csv=output_csv,
+            output_json=output_json,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
-    df = scrape(scraper_overrides)
+    if raw_jobs is not None:
+        df = raw_jobs.copy()
+        logger.info("Using shared pre-scraped dataset (%d raw rows).", len(df))
+    else:
+        df = scrape(scraper_overrides)
     if df.empty:
         logger.warning("No jobs returned by scraper.")
-        return df
+        empty_out = pd.DataFrame(columns=_OUTPUT_COLUMNS)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name=pipeline_name,
+            output_csv=output_csv,
+            output_json=output_json,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     df = deduplicate(df)
     df = filter_by_company(df)
     df = filter_by_role(df)
     if df.empty:
         logger.warning("No jobs passed role filter.")
-        return df
+        empty_out = pd.DataFrame(columns=_OUTPUT_COLUMNS)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name=pipeline_name,
+            output_csv=output_csv,
+            output_json=output_json,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     df = filter_by_sponsorship(df)
     df = filter_by_experience(df)
     df = filter_by_companies(df, companies, label=pipeline_name)
     if df.empty:
         logger.warning("No jobs matched the company list.")
-        return df
+        empty_out = pd.DataFrame(columns=_OUTPUT_COLUMNS)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name=pipeline_name,
+            output_csv=output_csv,
+            output_json=output_json,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     df = tag_level(df)
     df = extract_exp_range(df)
@@ -213,30 +328,15 @@ def _run_company_list_pipeline(
 
     cols = [c for c in _OUTPUT_COLUMNS if c in df.columns]
     df_out = df[cols].copy()
-
-    if save:
-        output_csv.parent.mkdir(parents=True, exist_ok=True)
-        df_out.to_csv(output_csv, index=False)
-        df_out.to_json(output_json, orient="records", indent=2)
-        logger.info("Saved %d jobs → %s", len(df_out), output_json)
-        try:
-            history_path = output_csv.parent / "run_history.json"
-            append_run_history(df_out, pipeline=pipeline_name, history_path=history_path)
-        except Exception as exc:
-            logger.error("run_history.json update failed (non-fatal): %s", exc)
-
-    if store:
-        try:
-            insert_run(df_out, pipeline=pipeline_name)
-            insert_run_stats(df_out, pipeline=pipeline_name)
-        except Exception as exc:
-            logger.error("MongoDB insert failed (non-fatal): %s", exc)
-
-    if deploy:
-        try:
-            deploy_output()
-        except Exception as exc:
-            logger.error("Dashboard deploy failed (non-fatal): %s", exc)
+    _persist_pipeline_results(
+        df_out=df_out,
+        pipeline_name=pipeline_name,
+        output_csv=output_csv,
+        output_json=output_json,
+        save=save,
+        store=store,
+        deploy=deploy,
+    )
 
     logger.info("=" * 55)
     logger.info("  %s Pipeline — DONE  (%d jobs)", pipeline_name, len(df_out))
@@ -246,6 +346,7 @@ def _run_company_list_pipeline(
 
 def run_top500_pipeline(
     scraper_overrides: dict | None = None,
+    raw_jobs: pd.DataFrame | None = None,
     save: bool = True,
     store: bool = True,
     deploy: bool = False,
@@ -257,6 +358,7 @@ def run_top500_pipeline(
         output_csv=config.TOP500_OUTPUT_CSV,
         output_json=config.TOP500_OUTPUT_JSON,
         scraper_overrides=scraper_overrides,
+        raw_jobs=raw_jobs,
         save=save,
         store=store,
         deploy=deploy,
@@ -265,6 +367,7 @@ def run_top500_pipeline(
 
 def run_h1b2026_pipeline(
     scraper_overrides: dict | None = None,
+    raw_jobs: pd.DataFrame | None = None,
     save: bool = True,
     store: bool = True,
     deploy: bool = False,
@@ -288,6 +391,7 @@ def run_h1b2026_pipeline(
         output_csv=config.H1B2026_OUTPUT_CSV,
         output_json=config.H1B2026_OUTPUT_JSON,
         scraper_overrides=scraper_overrides,
+        raw_jobs=raw_jobs,
         save=save,
         store=store,
         deploy=deploy,
@@ -296,6 +400,7 @@ def run_h1b2026_pipeline(
 
 def run_keywords_pipeline(
     scraper_overrides: dict | None = None,
+    raw_jobs: pd.DataFrame | None = None,
     save: bool = True,
     store: bool = True,
     deploy: bool = False,
@@ -314,21 +419,69 @@ def run_keywords_pipeline(
     logger.info("  Keywords Pipeline — START")
     logger.info("=" * 55)
 
-    df = scrape(scraper_overrides)
+    out_cols = [
+        "title",
+        "company",
+        "location",
+        "level",
+        "min_exp",
+        "job_url",
+        "date_posted",
+        "keyword_score",
+        "site",
+    ]
+
+    if raw_jobs is not None:
+        df = raw_jobs.copy()
+        logger.info("Using shared pre-scraped dataset (%d raw rows).", len(df))
+    else:
+        df = scrape(scraper_overrides)
     if df.empty:
         logger.warning("No jobs returned by scraper.")
-        return df
+        empty_out = pd.DataFrame(columns=out_cols)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name="keywords",
+            output_csv=config.KEYWORDS_OUTPUT_CSV,
+            output_json=config.KEYWORDS_OUTPUT_JSON,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     df = deduplicate(df)
     df = filter_by_company(df)
     df = filter_by_role(df)
     if df.empty:
-        return df
+        logger.warning("No jobs passed role filter.")
+        empty_out = pd.DataFrame(columns=out_cols)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name="keywords",
+            output_csv=config.KEYWORDS_OUTPUT_CSV,
+            output_json=config.KEYWORDS_OUTPUT_JSON,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     df = filter_by_sponsorship(df)
     df = filter_by_experience(df)
     if df.empty:
-        return df
+        logger.warning("All jobs filtered by sponsorship/experience.")
+        empty_out = pd.DataFrame(columns=out_cols)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name="keywords",
+            output_csv=config.KEYWORDS_OUTPUT_CSV,
+            output_json=config.KEYWORDS_OUTPUT_JSON,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     df = tag_level(df)
     df = extract_exp_range(df)
@@ -351,38 +504,30 @@ def run_keywords_pipeline(
 
     if df.empty:
         logger.warning("No jobs met the keyword threshold.")
-        return df
+        empty_out = pd.DataFrame(columns=out_cols)
+        _persist_pipeline_results(
+            df_out=empty_out,
+            pipeline_name="keywords",
+            output_csv=config.KEYWORDS_OUTPUT_CSV,
+            output_json=config.KEYWORDS_OUTPUT_JSON,
+            save=save,
+            store=store,
+            deploy=deploy,
+        )
+        return empty_out
 
     df = df.sort_values("keyword_score", ascending=False).reset_index(drop=True)
 
-    out_cols = ["title", "company", "location", "level", "min_exp", "job_url",
-                "date_posted", "keyword_score", "site"]
     df_out = df[[c for c in out_cols if c in df.columns]].copy()
-
-    if save:
-        config.KEYWORDS_OUTPUT_CSV.parent.mkdir(parents=True, exist_ok=True)
-        df_out.to_csv(config.KEYWORDS_OUTPUT_CSV, index=False)
-        df_out.to_json(config.KEYWORDS_OUTPUT_JSON, orient="records", indent=2)
-        logger.info("Saved %d keyword-matched jobs → %s",
-                    len(df_out), config.KEYWORDS_OUTPUT_JSON)
-        try:
-            history_path = config.KEYWORDS_OUTPUT_CSV.parent / "run_history.json"
-            append_run_history(df_out, pipeline="keywords", history_path=history_path)
-        except Exception as exc:
-            logger.error("run_history.json update failed (non-fatal): %s", exc)
-
-    if store:
-        try:
-            insert_run(df_out, pipeline="keywords")
-            insert_run_stats(df_out, pipeline="keywords")
-        except Exception as exc:
-            logger.error("MongoDB insert failed (non-fatal): %s", exc)
-
-    if deploy:
-        try:
-            deploy_output()
-        except Exception as exc:
-            logger.error("Dashboard deploy failed (non-fatal): %s", exc)
+    _persist_pipeline_results(
+        df_out=df_out,
+        pipeline_name="keywords",
+        output_csv=config.KEYWORDS_OUTPUT_CSV,
+        output_json=config.KEYWORDS_OUTPUT_JSON,
+        save=save,
+        store=store,
+        deploy=deploy,
+    )
 
     logger.info("=" * 55)
     logger.info("  Keywords Pipeline — DONE  (%d jobs)", len(df_out))
