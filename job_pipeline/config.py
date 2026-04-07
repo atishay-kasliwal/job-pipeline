@@ -66,6 +66,7 @@ COMPANY_EXCLUDE: list[str] = [
     "jobot",
     "cybercoders",
     "lancesoft",
+    "haystack",
 ]
 
 ROLE_EXCLUDE_KEYWORDS: list[str] = [
