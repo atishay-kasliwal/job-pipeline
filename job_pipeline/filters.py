@@ -13,6 +13,7 @@ import pandas as pd
 
 from job_pipeline.config import (
     ALLOWED_STATES,
+    COMPANY_EXCLUDE,
     REMOTE_ONLY,
     ROLE_EXCLUDE_KEYWORDS,
     ROLE_INCLUDE_KEYWORDS,
@@ -42,6 +43,19 @@ def _phrase_match(text: str, phrases: list[str]) -> bool:
 
 
 # ── Public filters ────────────────────────────────────────────────────────────
+
+def filter_by_company(df: pd.DataFrame) -> pd.DataFrame:
+    """Drop jobs from aggregator/spam companies in COMPANY_EXCLUDE."""
+    if df.empty or "company" not in df.columns:
+        return df
+    before = len(df)
+    mask = df["company"].fillna("").str.lower().apply(
+        lambda c: not any(ex in c for ex in COMPANY_EXCLUDE)
+    )
+    out = df[mask].copy()
+    logger.info("Company filter     : %3d → %3d rows", before, len(out))
+    return out
+
 
 def filter_by_role(df: pd.DataFrame) -> pd.DataFrame:
     """

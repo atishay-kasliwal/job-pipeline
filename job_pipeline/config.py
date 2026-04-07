@@ -57,6 +57,17 @@ ROLE_INCLUDE_KEYWORDS: list[str] = [
     "python engineer",
 ]
 
+# Companies to exclude — job aggregators, spam boards, low-quality sources.
+# Matched case-insensitively as substring of the company field.
+COMPANY_EXCLUDE: list[str] = [
+    "dice",
+    "remotehunter",
+    "jobs via dice",
+    "jobot",
+    "cybercoders",
+    "lancesoft",
+]
+
 ROLE_EXCLUDE_KEYWORDS: list[str] = [
     # Seniority
     "senior",

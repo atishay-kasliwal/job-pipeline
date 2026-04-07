@@ -15,6 +15,7 @@ from job_pipeline import config
 from job_pipeline.filters import (
     deduplicate,
     extract_exp_range,
+    filter_by_company,
     filter_by_experience,
     filter_by_location,
     filter_by_remote,
@@ -104,6 +105,7 @@ def run_standard_pipeline(
     df = deduplicate(df)
 
     # 3–7. Filtering chain
+    df = filter_by_company(df)
     df = filter_by_role(df)
     df = filter_by_location(df)
     df = filter_by_sponsorship(df)

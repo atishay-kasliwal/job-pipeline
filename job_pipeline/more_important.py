@@ -16,7 +16,7 @@ from typing import Any
 import pandas as pd
 
 from job_pipeline import config
-from job_pipeline.filters import deduplicate, extract_exp_range, filter_by_experience, filter_by_role, filter_by_sponsorship, tag_level
+from job_pipeline.filters import deduplicate, extract_exp_range, filter_by_company, filter_by_experience, filter_by_role, filter_by_sponsorship, tag_level
 from job_pipeline.scoring import apply_scores
 from job_pipeline.important_filter import (
     apply_important_filter,
@@ -96,6 +96,7 @@ def run_important_pipeline(
     df = deduplicate(df)
 
     # 3. Role filter
+    df = filter_by_company(df)
     df = filter_by_role(df)
     if df.empty:
         logger.warning("No jobs passed the role filter.")
@@ -191,6 +192,7 @@ def _run_company_list_pipeline(
         return df
 
     df = deduplicate(df)
+    df = filter_by_company(df)
     df = filter_by_role(df)
     if df.empty:
         logger.warning("No jobs passed role filter.")
@@ -318,6 +320,7 @@ def run_keywords_pipeline(
         return df
 
     df = deduplicate(df)
+    df = filter_by_company(df)
     df = filter_by_role(df)
     if df.empty:
         return df
