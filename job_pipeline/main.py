@@ -34,8 +34,13 @@ Usage examples
     python -m job_pipeline.main --log-level DEBUG
 """
 import argparse
+import fcntl
 import logging
+import os
 import sys
+from contextlib import contextmanager
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 from job_pipeline import config
@@ -46,6 +51,39 @@ from job_pipeline.more_important import (
     run_top500_pipeline,
 )
 from job_pipeline.pipeline import run_standard_pipeline
+from job_pipeline.scraper import scrape
+
+
+@contextmanager
+def _single_run_lock(lock_path: Path):
+    """
+    Acquire a non-blocking file lock for the process lifetime of one run.
+
+    Prevents overlapping cron/manual invocations from writing mixed output
+    files and run history at the same time.
+    """
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    fh = lock_path.open("a+")
+    try:
+        try:
+            fcntl.flock(fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            yield False
+            return
+
+        fh.seek(0)
+        fh.truncate()
+        fh.write(
+            f"pid={os.getpid()} started_at={datetime.now(tz=timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}\n"
+        )
+        fh.flush()
+        yield True
+    finally:
+        try:
+            fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
+        except Exception:
+            pass
+        fh.close()
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -118,7 +156,10 @@ def _build_parser() -> argparse.ArgumentParser:
         "--deploy",
         action="store_true",
         default=False,
-        help="Push results to the GitHub Pages dashboard after each run.",
+        help=(
+            "Push results to the GitHub Pages dashboard. "
+            "For '--pipeline all', deploy happens once at the end."
+        ),
     )
     output_group.add_argument(
         "--top",
@@ -177,78 +218,120 @@ def main() -> None:
         handlers=[logging.StreamHandler(sys.stdout)],
     )
 
-    overrides: dict[str, Any] = {
-        "hours_old": args.hours_old,
-        "results_wanted": args.results,
-        "search_term": args.search,
-        "location": args.location,
-    }
+    lock_path = config.OUTPUT_DIR / ".pipeline.lock"
+    with _single_run_lock(lock_path) as got_lock:
+        if not got_lock:
+            logging.warning(
+                "Another pipeline run is already active (lock: %s). Skipping this invocation.",
+                lock_path,
+            )
+            return
 
-    import pandas as pd
-    pd.set_option("display.max_colwidth", 55)
-    pd.set_option("display.width", 200)
+        overrides: dict[str, Any] = {
+            "hours_old": args.hours_old,
+            "results_wanted": args.results,
+            "search_term": args.search,
+            "location": args.location,
+        }
 
-    def _print(label: str, df: "pd.DataFrame") -> None:
-        if not df.empty:
-            print(f"\n{'─'*60}")
-            print(f"  {label} — top {args.top} results")
-            print(f"{'─'*60}")
-            print(df.head(args.top).to_string(index=False))
-        else:
-            print(f"\n{label}: no results.")
+        import pandas as pd
+        pd.set_option("display.max_colwidth", 55)
+        pd.set_option("display.width", 200)
 
-    # ATS analysis mode — runs independently, no scraping
-    if args.ats:
-        from job_pipeline.resume.analyzer import run_ats_analysis
-        run_ats_analysis(top=args.ats_top, threshold=args.ats_threshold)
-        return
+        def _print(label: str, df: "pd.DataFrame") -> None:
+            if not df.empty:
+                print(f"\n{'─'*60}")
+                print(f"  {label} — top {args.top} results")
+                print(f"{'─'*60}")
+                print(df.head(args.top).to_string(index=False))
+            else:
+                print(f"\n{label}: no results.")
 
-    run_standard  = args.pipeline in ("standard",  "all")
-    run_important = args.pipeline in ("important", "all")
-    run_top500    = args.pipeline in ("top500",    "all")
-    run_h1b2026   = args.pipeline in ("h1b2026",   "all")
-    run_keywords  = args.pipeline in ("keywords",  "all")
+        # ATS analysis mode — runs independently, no scraping
+        if args.ats:
+            from job_pipeline.resume.analyzer import run_ats_analysis
+            run_ats_analysis(top=args.ats_top, threshold=args.ats_threshold)
+            return
 
-    if run_standard:
-        df = run_standard_pipeline(
-            scraper_overrides=overrides,
-            remote_only=args.remote,
-            save=not args.no_save,
-            deploy=args.deploy,
-        )
-        _print("Standard Pipeline", df)
+        run_standard  = args.pipeline in ("standard",  "all")
+        run_important = args.pipeline in ("important", "all")
+        run_top500    = args.pipeline in ("top500",    "all")
+        run_h1b2026   = args.pipeline in ("h1b2026",   "all")
+        run_keywords  = args.pipeline in ("keywords",  "all")
 
-    if run_important:
-        df = run_important_pipeline(
-            scraper_overrides=overrides,
-            save=not args.no_save,
-            deploy=args.deploy,
-        )
-        _print("Important Pipeline", df)
+        # For "all", deploy once at the end to avoid partial dashboard states.
+        deploy_each_pipeline = args.deploy and args.pipeline != "all"
+        deploy_once_at_end = args.deploy and args.pipeline == "all"
+        shared_raw_jobs = None
+        if args.pipeline == "all":
+            logger = logging.getLogger(__name__)
+            logger.info("=" * 55)
+            logger.info("  Shared Scrape For --pipeline all — START")
+            logger.info("=" * 55)
+            try:
+                shared_raw_jobs = scrape(overrides)
+            except Exception as exc:
+                logger.error("Shared scrape failed (continuing with empty data): %s", exc)
+                shared_raw_jobs = pd.DataFrame()
+            logger.info("=" * 55)
+            logger.info(
+                "  Shared Scrape For --pipeline all — DONE  (%d raw rows)",
+                len(shared_raw_jobs),
+            )
+            logger.info("=" * 55)
 
-    if run_top500:
-        df = run_top500_pipeline(
-            scraper_overrides=overrides,
-            save=not args.no_save,
-            deploy=args.deploy,
-        )
-        _print("Top-500 Pipeline", df)
+        if run_standard:
+            df = run_standard_pipeline(
+                scraper_overrides=overrides,
+                raw_jobs=shared_raw_jobs,
+                remote_only=args.remote,
+                save=not args.no_save,
+                deploy=deploy_each_pipeline,
+            )
+            _print("Standard Pipeline", df)
 
-    if run_h1b2026:
-        df = run_h1b2026_pipeline(
-            scraper_overrides=overrides,
-            save=not args.no_save,
-            deploy=args.deploy,
-        )
-        _print("H1B-2026 Pipeline", df)
+        if run_important:
+            df = run_important_pipeline(
+                scraper_overrides=overrides,
+                raw_jobs=shared_raw_jobs,
+                save=not args.no_save,
+                deploy=deploy_each_pipeline,
+            )
+            _print("Important Pipeline", df)
 
-    if run_keywords:
-        df = run_keywords_pipeline(
-            scraper_overrides=overrides,
-            save=not args.no_save,
-            deploy=args.deploy,
-        )
-        _print("Keywords Pipeline", df)
+        if run_top500:
+            df = run_top500_pipeline(
+                scraper_overrides=overrides,
+                raw_jobs=shared_raw_jobs,
+                save=not args.no_save,
+                deploy=deploy_each_pipeline,
+            )
+            _print("Top-500 Pipeline", df)
+
+        if run_h1b2026:
+            df = run_h1b2026_pipeline(
+                scraper_overrides=overrides,
+                raw_jobs=shared_raw_jobs,
+                save=not args.no_save,
+                deploy=deploy_each_pipeline,
+            )
+            _print("H1B-2026 Pipeline", df)
+
+        if run_keywords:
+            df = run_keywords_pipeline(
+                scraper_overrides=overrides,
+                raw_jobs=shared_raw_jobs,
+                save=not args.no_save,
+                deploy=deploy_each_pipeline,
+            )
+            _print("Keywords Pipeline", df)
+
+        if deploy_once_at_end:
+            from job_pipeline.deploy import deploy_output
+            try:
+                deploy_output()
+            except Exception as exc:
+                logging.error("Final dashboard deploy failed (non-fatal): %s", exc)
 
 
 if __name__ == "__main__":

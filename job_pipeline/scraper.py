@@ -18,6 +18,7 @@ import pandas as pd
 from jobspy import scrape_jobs
 
 from job_pipeline.config import SCRAPER, SEARCH_TERMS
+from job_pipeline.identity import job_identity_key
 
 logger = logging.getLogger(__name__)
 
@@ -109,10 +110,11 @@ def scrape(overrides: dict[str, Any] | None = None) -> pd.DataFrame:
 
     combined = pd.concat(frames, ignore_index=True)
 
-    # Deduplicate by job_url (primary) then title+company (fallback)
+    # Deduplicate using canonical identity key so URL variants collapse.
     before = len(combined)
-    if "job_url" in combined.columns:
-        combined = combined.drop_duplicates(subset=["job_url"])
+    combined = combined.copy()
+    combined["_job_key"] = combined.apply(job_identity_key, axis=1)
+    combined = combined.drop_duplicates(subset=["_job_key"]).drop(columns=["_job_key"])
     combined = combined.reset_index(drop=True)
 
     logger.info(

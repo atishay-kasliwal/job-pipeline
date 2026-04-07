@@ -45,7 +45,7 @@ spec:
                 - -m
                 - job_pipeline.main
                 - --pipeline
-                - both
+                - all
                 - --log-level
                 - $(LOG_LEVEL)
               env:
