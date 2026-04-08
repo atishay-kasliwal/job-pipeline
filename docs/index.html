@@ -314,6 +314,35 @@
       flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .term-filter {
+      margin-left: auto;
+      appearance: none;
+      border: 1px solid var(--line-soft);
+      background: rgba(6, 13, 21, 0.55);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-family: "IBM Plex Mono", monospace;
+      padding: 6px 28px 6px 10px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238fa4be' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+    }
+
+    .term-filter:focus {
+      border-color: rgba(52, 211, 196, 0.65);
+      box-shadow: 0 0 0 3px rgba(52, 211, 196, 0.16);
+    }
+
+    .term-filter option {
+      background: #0c1624;
+      color: var(--text);
     }
 
     .level-chip {
@@ -759,7 +788,12 @@
     </div>
   </section>
 
-  <div class="level-filters" id="level-filters"></div>
+  <div class="level-filters" id="level-filters">
+    <div id="level-chips" style="display:contents"></div>
+    <select class="term-filter" id="term-filter">
+      <option value="All">All search terms</option>
+    </select>
+  </div>
 
   <section class="panel table-panel">
     <div class="table-wrap">
@@ -783,6 +817,7 @@
   let sortDir = "desc";
   let query = "";
   let activeLevel = "All";
+  let activeSearchTerm = "All";
 
   const ESCAPE_MAP = {
     "&": "&amp;",
@@ -917,6 +952,20 @@
     }
   }
 
+  function renderTermFilter(allJobs) {
+    const select = document.getElementById("term-filter");
+    const terms = ["All", ...new Set(allJobs.map(j => j.search_term).filter(Boolean))].sort((a, b) =>
+      a === "All" ? -1 : b === "All" ? 1 : a.localeCompare(b)
+    );
+    select.innerHTML = terms.map(t =>
+      `<option value="${escapeHtml(t)}" ${activeSearchTerm === t ? "selected" : ""}>${escapeHtml(t === "All" ? "All search terms" : t)}</option>`
+    ).join("");
+    select.onchange = () => {
+      activeSearchTerm = select.value;
+      render();
+    };
+  }
+
   function renderLevelChips(allJobs) {
     const levels = ["All", "New Grad", "Entry", "Mid"];
     const counts = {};
@@ -927,7 +976,7 @@
         : allJobs.filter(job => (job.level || "") === level).length;
     });
 
-    document.getElementById("level-filters").innerHTML = levels.map(level => `
+    document.getElementById("level-chips").innerHTML = levels.map(level => `
       <button class="level-chip ${activeLevel === level ? "active" : ""}" data-level="${escapeHtml(level)}">
         ${escapeHtml(level)} <span class="chip-count">${counts[level]}</span>
       </button>
@@ -947,9 +996,14 @@
     let jobs = isImportant ? importantJobs : standardJobs;
 
     renderLevelChips(jobs);
+    renderTermFilter(jobs);
 
     if (activeLevel !== "All") {
       jobs = jobs.filter(job => (job.level || "") === activeLevel);
+    }
+
+    if (activeSearchTerm !== "All") {
+      jobs = jobs.filter(job => (job.search_term || "") === activeSearchTerm);
     }
 
     if (query) {
@@ -1090,6 +1144,7 @@
       button.classList.add("active");
       activeTab = button.dataset.tab;
       activeLevel = "All";
+      activeSearchTerm = "All";
       sortCol = null;
       query = document.getElementById("search").value;
       render();

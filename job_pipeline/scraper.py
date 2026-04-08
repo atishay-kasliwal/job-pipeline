@@ -102,6 +102,7 @@ def scrape(overrides: dict[str, Any] | None = None) -> pd.DataFrame:
         params = {**base_params, "search_term": term}
         df = _scrape_one(params)
         if not df.empty:
+            df["search_term"] = term
             frames.append(df)
 
     if not frames:

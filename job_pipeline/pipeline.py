@@ -46,6 +46,7 @@ _OUTPUT_COLUMNS: list[str] = [
     "score_pct",
     "competition_score",
     "site",
+    "search_term",
 ]
 
 
