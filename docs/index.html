@@ -3,418 +3,875 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Job Pipeline Dashboard</title>
+  <title>Atriveo Radar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    /* ── Reset & base ────────────────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
-      --bg:        #0f1117;
-      --surface:   #1a1d27;
-      --border:    #2a2d3a;
-      --text:      #e2e8f0;
-      --muted:     #8892a4;
-      --accent:    #6366f1;
-      --accent-2:  #a855f7;
-      --green:     #22c55e;
-      --yellow:    #eab308;
-      --red:       #ef4444;
-      --radius:    10px;
+      --bg: #08101a;
+      --bg-2: #0c1624;
+      --surface: rgba(15, 27, 42, 0.88);
+      --surface-strong: rgba(17, 31, 47, 0.96);
+      --line: #24374f;
+      --line-soft: rgba(70, 96, 125, 0.35);
+      --text: #e9f1fb;
+      --muted: #8fa4be;
+      --accent: #34d3c4;
+      --accent-soft: rgba(52, 211, 196, 0.2);
+      --accent-2: #ffab5e;
+      --good: #39d98a;
+      --warn: #ffcf6d;
+      --bad: #ff7d7d;
+      --radius-xl: 16px;
+      --radius-lg: 12px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
+      --shadow: 0 22px 44px rgba(2, 8, 15, 0.35);
     }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 14px;
-      line-height: 1.6;
       min-height: 100vh;
+      font-family: "Sora", "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 16% -8%, rgba(52, 211, 196, 0.2) 0, transparent 38%),
+        radial-gradient(circle at 84% -16%, rgba(255, 171, 94, 0.2) 0, transparent 42%),
+        linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 66%, #07101a 100%);
+      overflow-x: hidden;
     }
 
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.26;
+      background-image:
+        linear-gradient(to right, rgba(143, 164, 190, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(143, 164, 190, 0.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
 
-    /* ── Layout ──────────────────────────────────────────────────── */
-    .wrapper { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-    /* ── Header ──────────────────────────────────────────────────── */
-    header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 20px 0;
+    .wrapper {
+      width: min(1480px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 30;
+      border-bottom: 1px solid var(--line-soft);
+      backdrop-filter: blur(12px);
+      background: rgba(8, 16, 26, 0.78);
     }
 
-    .header-inner {
+    .topbar-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
+      min-height: 68px;
+      padding: 10px 0;
     }
 
-    header h1 {
-      font-size: 20px;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: #04231f;
+      background: linear-gradient(145deg, #5bf0e2 0%, #32c8bc 100%);
+      box-shadow: 0 8px 20px rgba(34, 189, 174, 0.28);
+    }
+
+    .brand-copy {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-copy h1 {
+      font-size: 16px;
       font-weight: 700;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.01em;
+    }
+
+    .brand-copy p {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(57, 217, 138, 0.35);
+      background: rgba(57, 217, 138, 0.12);
+      color: #9df0c3;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #72f0b0;
+      box-shadow: 0 0 0 0 rgba(114, 240, 176, 0.65);
+      animation: pulse 1.9s infinite;
     }
 
     .last-updated {
-      font-size: 12px;
       color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      font-family: "IBM Plex Mono", monospace;
     }
 
-    /* ── Stats row ───────────────────────────────────────────────── */
+    main {
+      position: relative;
+      padding: 16px 0 24px;
+      animation: mainIn 420ms ease-out both;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: stretch;
+      margin-bottom: 12px;
+    }
+
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 14px;
-      padding: 24px 0 20px;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 10px;
     }
 
     .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 20px;
-      text-align: center;
+      position: relative;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(150deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+      box-shadow: var(--shadow);
+      padding: 11px 12px 12px;
+      overflow: hidden;
+      animation: cardIn 420ms ease both;
+      animation-delay: calc(var(--idx, 0) * 55ms);
     }
 
-    .stat-card .value {
-      font-size: 32px;
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 6px;
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 2px;
+      background: var(--tone, var(--accent));
     }
 
-    .stat-card .label {
-      font-size: 12px;
-      color: var(--muted);
+    .stat-label {
+      font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
     }
 
-    .stat-card.accent  .value { color: var(--accent); }
-    .stat-card.accent2 .value { color: var(--accent-2); }
-    .stat-card.green   .value { color: var(--green); }
-    .stat-card.yellow  .value { color: var(--yellow); }
+    .stat-value {
+      margin-top: 8px;
+      line-height: 1;
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--tone, var(--text));
+      font-variant-numeric: tabular-nums;
+      font-family: "IBM Plex Mono", monospace;
+    }
 
-    /* ── Controls ────────────────────────────────────────────────── */
+    .panel {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
     .controls {
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 8px;
+      padding: 8px;
+      min-width: 500px;
     }
 
     .tabs {
-      display: flex;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm);
       overflow: hidden;
+      background: rgba(8, 16, 26, 0.45);
+      flex-shrink: 0;
     }
 
     .tab {
-      padding: 8px 18px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
+      appearance: none;
+      border: 0;
       background: transparent;
       color: var(--muted);
-      transition: background 0.15s, color 0.15s;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
     }
 
     .tab.active {
-      background: var(--accent);
-      color: #fff;
+      color: #001a17;
+      background: linear-gradient(145deg, #62eee1 0%, #35c9bb 100%);
     }
-
-    .tab:not(.active):hover { background: var(--border); color: var(--text); }
 
     .search-box {
       flex: 1;
-      min-width: 200px;
-      max-width: 360px;
-      padding: 8px 14px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      min-width: 160px;
+      border: 1px solid var(--line-soft);
+      background: rgba(6, 13, 21, 0.55);
       color: var(--text);
+      border-radius: var(--radius-sm);
       font-size: 13px;
+      padding: 9px 12px;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
     }
 
-    .search-box:focus { border-color: var(--accent); }
-    .search-box::placeholder { color: var(--muted); }
+    .search-box::placeholder {
+      color: var(--muted);
+    }
+
+    .search-box:focus {
+      border-color: rgba(52, 211, 196, 0.65);
+      box-shadow: 0 0 0 3px rgba(52, 211, 196, 0.16);
+    }
 
     .result-count {
-      margin-left: auto;
-      font-size: 12px;
-      color: var(--muted);
       white-space: nowrap;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 0 4px;
+      font-family: "IBM Plex Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 500;
     }
 
-    /* ── Level filter chips ───────────────────────────────────────── */
     .level-filters {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .level-chip {
+      border: 1px solid var(--line-soft);
+      background: rgba(11, 20, 32, 0.62);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      font-family: "IBM Plex Mono", monospace;
+      border-radius: 999px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
+      gap: 8px;
+      padding: 5px 10px;
       cursor: pointer;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--muted);
-      transition: all 0.15s;
-      white-space: nowrap;
+      transition: all 150ms ease;
     }
 
-    .level-chip:hover { border-color: var(--accent); color: var(--text); }
+    .level-chip:hover {
+      color: var(--text);
+      border-color: rgba(52, 211, 196, 0.5);
+      transform: translateY(-1px);
+    }
 
     .level-chip.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
+      color: #02211d;
+      border-color: rgba(52, 211, 196, 0.8);
+      background: linear-gradient(145deg, #62eee1 0%, #35c9bb 100%);
     }
 
-    .level-chip .chip-count {
-      background: rgba(255,255,255,0.15);
-      border-radius: 10px;
-      padding: 1px 7px;
-      font-size: 11px;
+    .chip-count {
+      border-radius: 999px;
+      min-width: 22px;
+      text-align: center;
+      font-size: 10px;
+      padding: 2px 7px;
+      background: rgba(255, 255, 255, 0.16);
+      color: inherit;
+      font-family: "IBM Plex Mono", monospace;
       font-weight: 600;
     }
 
-    .level-chip:not(.active) .chip-count {
-      background: var(--border);
-      color: var(--text);
+    .table-panel {
+      overflow: hidden;
     }
 
-    /* ── Table ───────────────────────────────────────────────────── */
     .table-wrap {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
       overflow-x: auto;
+      max-height: calc(100vh - 225px);
+      min-height: 380px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 960px;
     }
 
     thead th {
-      padding: 12px 16px;
-      text-align: left;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface-strong);
       color: var(--muted);
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      user-select: none;
+      text-align: left;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 600;
+      padding: 9px 12px;
       white-space: nowrap;
+      user-select: none;
+      cursor: pointer;
     }
 
-    thead th:hover { color: var(--text); }
+    thead th:hover {
+      color: var(--text);
+    }
 
-    thead th .sort-icon { margin-left: 4px; opacity: 0.4; }
-    thead th.asc  .sort-icon::after { content: " ▲"; opacity: 1; }
-    thead th.desc .sort-icon::after { content: " ▼"; opacity: 1; }
+    thead th .sort-icon {
+      margin-left: 3px;
+      opacity: 0.35;
+    }
+
+    thead th.asc .sort-icon::after {
+      content: "▲";
+      opacity: 1;
+    }
+
+    thead th.desc .sort-icon::after {
+      content: "▼";
+      opacity: 1;
+    }
 
     tbody tr {
-      border-bottom: 1px solid var(--border);
-      transition: background 0.1s;
+      border-bottom: 1px solid rgba(58, 84, 110, 0.28);
+      animation: rowIn 340ms ease both;
+      animation-delay: var(--row-delay, 0ms);
     }
 
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: rgba(99, 102, 241, 0.06); }
+    tbody tr:hover {
+      background: linear-gradient(90deg, rgba(52, 211, 196, 0.12) 0%, rgba(52, 211, 196, 0.03) 52%, transparent 100%);
+    }
 
     td {
-      padding: 12px 16px;
+      padding: 8px 12px;
+      font-size: 12px;
       vertical-align: middle;
-    }
-
-    .td-title { font-weight: 500; max-width: 260px; }
-    .td-company { color: var(--muted); white-space: nowrap; }
-    .td-location { color: var(--muted); font-size: 12px; white-space: nowrap; }
-    .td-date { color: var(--muted); font-size: 12px; white-space: nowrap; }
-
-    /* Score badge */
-    .score {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 24px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .score.high   { background: rgba(34, 197, 94,  0.15); color: var(--green);  }
-    .score.medium { background: rgba(234, 179, 8,  0.15); color: var(--yellow); }
-    .score.low    { background: rgba(139, 148, 164, 0.1); color: var(--muted);  }
-
-    /* Competition badge */
-    .comp {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 24px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .comp.low    { background: rgba(34, 197, 94,  0.1); color: var(--green);  }
-    .comp.medium { background: rgba(234, 179, 8,  0.1); color: var(--yellow); }
-    .comp.high   { background: rgba(239, 68, 68,  0.1); color: var(--red);    }
-
-    .exp-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 8px;
-      height: 24px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      background: rgba(99, 102, 241, 0.12);
-      color: #818cf8;
       white-space: nowrap;
     }
-    .exp-badge.none { background: transparent; color: var(--muted); font-weight: 400; }
+
+    .td-title {
+      min-width: 320px;
+      max-width: 520px;
+      white-space: normal;
+    }
+
+    .title-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .title-cell strong {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.32;
+      color: var(--text);
+    }
+
+    .title-cell span {
+      color: var(--muted);
+      font-size: 11px;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .td-company {
+      color: #d8e4f3;
+      font-weight: 500;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .td-location,
+    .td-date {
+      color: var(--muted);
+      font-size: 11px;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .level-pill,
+    .score-pill,
+    .comp-pill,
+    .exp-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 22px;
+      border-radius: 999px;
+      font-size: 11px;
+      padding: 0 9px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .level-pill.newgrad {
+      color: #9be9be;
+      background: rgba(57, 217, 138, 0.14);
+      border-color: rgba(57, 217, 138, 0.35);
+    }
+
+    .level-pill.entry {
+      color: #87e6ff;
+      background: rgba(94, 201, 255, 0.16);
+      border-color: rgba(94, 201, 255, 0.35);
+    }
+
+    .level-pill.mid {
+      color: #ffd38f;
+      background: rgba(255, 171, 94, 0.16);
+      border-color: rgba(255, 171, 94, 0.35);
+    }
+
+    .level-pill.unknown {
+      color: #95a7bf;
+      background: rgba(122, 147, 176, 0.12);
+      border-color: rgba(122, 147, 176, 0.28);
+    }
+
+    .score-pill.high,
+    .comp-pill.low {
+      color: #9bf0c3;
+      background: rgba(57, 217, 138, 0.14);
+      border-color: rgba(57, 217, 138, 0.35);
+    }
+
+    .score-pill.medium,
+    .comp-pill.medium {
+      color: #ffd689;
+      background: rgba(255, 204, 102, 0.14);
+      border-color: rgba(255, 204, 102, 0.35);
+    }
+
+    .score-pill.low,
+    .comp-pill.high {
+      color: #ffb1b1;
+      background: rgba(255, 125, 125, 0.14);
+      border-color: rgba(255, 125, 125, 0.35);
+    }
+
+    .exp-pill {
+      color: #b5d8ff;
+      background: rgba(96, 166, 255, 0.15);
+      border-color: rgba(96, 166, 255, 0.35);
+    }
+
+    .exp-pill.none {
+      color: var(--muted);
+      background: rgba(143, 164, 190, 0.08);
+      border-color: rgba(143, 164, 190, 0.18);
+    }
 
     .apply-btn {
-      display: inline-block;
-      padding: 4px 12px;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      white-space: nowrap;
-      transition: opacity 0.15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 68px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(52, 211, 196, 0.4);
+      background: linear-gradient(145deg, rgba(97, 237, 224, 0.25), rgba(52, 201, 188, 0.22));
+      color: #b8fff7;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 10px;
+      transition: transform 150ms ease, filter 150ms ease;
+      font-family: "IBM Plex Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
-    .apply-btn:hover { opacity: 0.85; text-decoration: none; }
+    .apply-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
 
-    /* ── Empty / loading state ───────────────────────────────────── */
+    .na {
+      color: var(--muted);
+      font-size: 11px;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
     .empty {
-      padding: 60px 20px;
       text-align: center;
       color: var(--muted);
+      font-size: 13px;
+      padding: 42px 18px;
+      line-height: 1.6;
+      font-family: "IBM Plex Mono", monospace;
     }
 
-    .empty .icon { font-size: 40px; margin-bottom: 12px; }
-
-    /* ── Footer ──────────────────────────────────────────────────── */
     footer {
-      padding: 28px 0;
-      text-align: center;
-      font-size: 12px;
       color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+      padding: 16px 0 24px;
+      font-family: "IBM Plex Mono", monospace;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(114, 240, 176, 0.65);
+      }
+      100% {
+        box-shadow: 0 0 0 8px rgba(114, 240, 176, 0);
+      }
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes rowIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes mainIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1260px) {
+      .stats {
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
+      }
+
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .wrapper {
+        width: min(1480px, calc(100% - 18px));
+      }
+
+      .topbar-inner {
+        min-height: 58px;
+      }
+
+      .brand-copy h1 {
+        font-size: 14px;
+      }
+
+      .brand-copy p {
+        font-size: 10px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+      }
+
+      .controls {
+        flex-wrap: wrap;
+      }
+
+      .tabs {
+        width: 100%;
+      }
+
+      .tab {
+        flex: 1;
+      }
+
+      .search-box {
+        width: 100%;
+        flex: 1 1 100%;
+      }
+
+      .result-count {
+        width: 100%;
+        padding: 2px 0 0;
+      }
+
+      .table-wrap {
+        max-height: calc(100vh - 265px);
+      }
+
+      footer {
+        text-transform: none;
+      }
     }
   </style>
 </head>
 <body>
+<header class="topbar">
+  <div class="wrapper topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div class="brand-copy">
+        <h1>Atriveo Radar</h1>
+        <p>Hourly Job Intelligence</p>
+      </div>
+    </div>
 
-<header>
-  <div class="wrapper header-inner">
-    <h1>Job Pipeline Dashboard</h1>
-    <span class="last-updated" id="last-updated">Loading…</span>
+    <div class="header-meta">
+      <span class="live-pill"><span class="live-dot"></span>Live Feed</span>
+      <span class="last-updated" id="last-updated">Last updated: --</span>
+    </div>
   </div>
 </header>
 
 <main class="wrapper">
+  <section class="overview-grid">
+    <div class="stats">
+      <div class="stat-card" style="--idx:0;--tone:#68ece0;">
+        <div class="stat-label">Standard</div>
+        <div class="stat-value" id="stat-standard">--</div>
+      </div>
+      <div class="stat-card" style="--idx:1;--tone:#7bb9ff;">
+        <div class="stat-label">Priority</div>
+        <div class="stat-value" id="stat-important">--</div>
+      </div>
+      <div class="stat-card" style="--idx:2;--tone:#ffc57d;">
+        <div class="stat-label">Top Score</div>
+        <div class="stat-value" id="stat-top-score">--</div>
+      </div>
+      <div class="stat-card" style="--idx:3;--tone:#b6ef9f;">
+        <div class="stat-label">New Grad</div>
+        <div class="stat-value" id="stat-new-grad">--</div>
+      </div>
+      <div class="stat-card" style="--idx:4;--tone:#8ee4ff;">
+        <div class="stat-label">Remote Mix</div>
+        <div class="stat-value" id="stat-remote">--</div>
+      </div>
+      <div class="stat-card" style="--idx:5;--tone:#ffd2a2;">
+        <div class="stat-label">Fresh (24h)</div>
+        <div class="stat-value" id="stat-fresh">--</div>
+      </div>
+    </div>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat-card accent">
-      <div class="value" id="stat-standard">—</div>
-      <div class="label">Standard Jobs</div>
+    <div class="controls panel">
+      <div class="tabs">
+        <button class="tab active" data-tab="standard">Standard</button>
+        <button class="tab" data-tab="important">Priority</button>
+      </div>
+      <input
+        class="search-box"
+        id="search"
+        type="search"
+        placeholder="Search title, company, location..."
+      />
+      <span class="result-count" id="result-count"></span>
     </div>
-    <div class="stat-card accent2">
-      <div class="value" id="stat-important">—</div>
-      <div class="label">Priority Jobs</div>
-    </div>
-    <div class="stat-card green">
-      <div class="value" id="stat-top-score">—</div>
-      <div class="label">Top Score</div>
-    </div>
-    <div class="stat-card yellow">
-      <div class="value" id="stat-new-grad">—</div>
-      <div class="label">New Grad Roles</div>
-    </div>
-  </div>
+  </section>
 
-  <!-- Controls -->
-  <div class="controls">
-    <div class="tabs">
-      <button class="tab active" data-tab="standard">Standard Pipeline</button>
-      <button class="tab"        data-tab="important">High Priority</button>
-    </div>
-    <input
-      class="search-box"
-      id="search"
-      type="search"
-      placeholder="Search title, company, location…"
-    />
-    <span class="result-count" id="result-count"></span>
-  </div>
-
-  <!-- Level filters -->
   <div class="level-filters" id="level-filters"></div>
 
-  <!-- Table -->
-  <div class="table-wrap">
-    <table id="jobs-table">
-      <thead id="thead"></thead>
-      <tbody id="tbody"></tbody>
-    </table>
-  </div>
-
+  <section class="panel table-panel">
+    <div class="table-wrap">
+      <table id="jobs-table">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
 </main>
 
 <footer>
-  <div class="wrapper">
-    Powered by <strong>JobSpy</strong> · Data refreshed hourly via GitHub Actions · Read-only view
-  </div>
+  Data refreshed hourly via GitHub Actions · Read-only dashboard
 </footer>
 
 <script>
-  // ── State ──────────────────────────────────────────────────────────────────
-  let standardJobs  = [];
+  let standardJobs = [];
   let importantJobs = [];
-  let activeTab     = "standard";
-  let sortCol       = null;
-  let sortDir       = "desc";
-  let query         = "";
-  let activeLevel   = "All";
+  let activeTab = "standard";
+  let sortCol = null;
+  let sortDir = "desc";
+  let query = "";
+  let activeLevel = "All";
 
-  // ── Fetch all data ─────────────────────────────────────────────────────────
+  const ESCAPE_MAP = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  };
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ESCAPE_MAP[char]);
+  }
+
+  function parseDate(value) {
+    if (!value) return null;
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  function numberOr(value, fallback = 0) {
+    const num = Number(value);
+    return Number.isFinite(num) ? num : fallback;
+  }
+
+  function isRemote(job) {
+    const location = String(job.location || "").toLowerCase();
+    return location.includes("remote") || location.includes("anywhere");
+  }
+
+  function isFresh(job) {
+    const d = parseDate(job.date_posted);
+    if (!d) return false;
+    return Date.now() - d.getTime() <= 24 * 60 * 60 * 1000;
+  }
+
+  function formatPosted(value) {
+    const d = parseDate(value);
+    if (!d) return "--";
+
+    const diffMs = Date.now() - d.getTime();
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+    if (diffHours >= 0 && diffHours < 24) {
+      return diffHours === 0 ? "now" : `${diffHours}h ago`;
+    }
+
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  }
+
+  function safeUrl(value) {
+    if (!value) return null;
+    try {
+      const parsed = new URL(value);
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return null;
+      return parsed.toString();
+    } catch {
+      return null;
+    }
+  }
+
+  function levelClass(level) {
+    if (level === "New Grad") return "newgrad";
+    if (level === "Entry") return "entry";
+    if (level === "Mid") return "mid";
+    return "unknown";
+  }
+
+  function scoreClass(score) {
+    if (score >= 5) return "high";
+    if (score >= 2) return "medium";
+    return "low";
+  }
+
+  function competitionClass(score) {
+    if (score <= 2) return "low";
+    if (score <= 4) return "medium";
+    return "high";
+  }
+
+  function sortValue(job, key) {
+    if (key === "date_posted") return parseDate(job.date_posted)?.getTime() || 0;
+
+    if (["score", "priority_score", "score_pct", "competition_score", "min_exp", "max_exp"].includes(key)) {
+      return numberOr(job[key], 0);
+    }
+
+    return String(job[key] ?? "").toLowerCase();
+  }
+
   async function loadAll() {
     try {
       const [meta, std, imp] = await Promise.all([
@@ -423,132 +880,137 @@
         fetch("important_jobs.json").then(r => r.json()),
       ]);
 
-      standardJobs  = std  || [];
-      importantJobs = imp  || [];
+      standardJobs = Array.isArray(std) ? std : [];
+      importantJobs = Array.isArray(imp) ? imp : [];
 
-      // Stats
-      const ts = new Date(meta.last_updated);
+      const ts = parseDate(meta?.last_updated);
       document.getElementById("last-updated").textContent =
-        "Last updated: " + ts.toLocaleString();
+        ts ? `Last updated: ${ts.toLocaleString()}` : "Last updated: --";
 
-      document.getElementById("stat-standard").textContent  = meta.standard_count  ?? standardJobs.length;
-      document.getElementById("stat-important").textContent = meta.important_count ?? importantJobs.length;
+      document.getElementById("stat-standard").textContent = meta?.standard_count ?? standardJobs.length;
+      document.getElementById("stat-important").textContent = meta?.important_count ?? importantJobs.length;
 
-      const allJobs   = [...standardJobs, ...importantJobs];
-      const topScore  = allJobs.reduce((m, j) => Math.max(m, j.score ?? j.priority_score ?? 0), 0);
-      const newGrads  = allJobs.filter(j =>
-        (j.title + " " + (j.description || "")).toLowerCase().includes("new grad")
-      ).length;
+      const allJobs = [...standardJobs, ...importantJobs];
+      const topScore = allJobs.reduce((max, job) => {
+        const score = numberOr(job.score, numberOr(job.priority_score, 0));
+        return Math.max(max, score);
+      }, 0);
+
+      const newGradCount = allJobs.filter(job => {
+        const text = `${job.title || ""} ${job.description || ""}`.toLowerCase();
+        return text.includes("new grad");
+      }).length;
+
+      const remoteCount = allJobs.filter(isRemote).length;
+      const remotePct = allJobs.length ? Math.round((remoteCount / allJobs.length) * 100) : 0;
+      const freshCount = allJobs.filter(isFresh).length;
 
       document.getElementById("stat-top-score").textContent = topScore;
-      document.getElementById("stat-new-grad").textContent  = newGrads;
+      document.getElementById("stat-new-grad").textContent = newGradCount;
+      document.getElementById("stat-remote").textContent = `${remotePct}%`;
+      document.getElementById("stat-fresh").textContent = freshCount;
 
       render();
     } catch (err) {
       document.getElementById("tbody").innerHTML =
-        `<tr><td colspan="7"><div class="empty"><div class="icon">⚠️</div>Could not load job data.<br/>${err.message}</div></td></tr>`;
+        `<tr><td colspan="10"><div class="empty">Could not load job data.<br>${escapeHtml(err.message)}</div></td></tr>`;
     }
   }
 
-  // ── Level chips ────────────────────────────────────────────────────────────
   function renderLevelChips(allJobs) {
     const levels = ["All", "New Grad", "Entry", "Mid"];
     const counts = {};
-    levels.forEach(l => {
-      counts[l] = l === "All"
+
+    levels.forEach(level => {
+      counts[level] = level === "All"
         ? allJobs.length
-        : allJobs.filter(j => (j.level || "") === l).length;
+        : allJobs.filter(job => (job.level || "") === level).length;
     });
 
-    document.getElementById("level-filters").innerHTML = levels.map(l => `
-      <button class="level-chip ${activeLevel === l ? "active" : ""}" data-level="${l}">
-        ${l} <span class="chip-count">${counts[l]}</span>
+    document.getElementById("level-filters").innerHTML = levels.map(level => `
+      <button class="level-chip ${activeLevel === level ? "active" : ""}" data-level="${escapeHtml(level)}">
+        ${escapeHtml(level)} <span class="chip-count">${counts[level]}</span>
       </button>
     `).join("");
 
-    document.querySelectorAll(".level-chip").forEach(btn => {
-      btn.addEventListener("click", () => {
-        activeLevel = btn.dataset.level;
+    document.querySelectorAll(".level-chip").forEach(button => {
+      button.addEventListener("click", () => {
+        activeLevel = button.dataset.level;
         render();
       });
     });
   }
 
-  // ── Render ─────────────────────────────────────────────────────────────────
   function render() {
     const isImportant = activeTab === "important";
+    const scoreCol = isImportant ? "priority_score" : "score";
     let jobs = isImportant ? importantJobs : standardJobs;
 
-    // Level filter chips
     renderLevelChips(jobs);
 
-    // Level filter
     if (activeLevel !== "All") {
-      jobs = jobs.filter(j => (j.level || "") === activeLevel);
+      jobs = jobs.filter(job => (job.level || "") === activeLevel);
     }
 
-    // Search
     if (query) {
       const q = query.toLowerCase();
-      jobs = jobs.filter(j =>
-        (j.title    || "").toLowerCase().includes(q) ||
-        (j.company  || "").toLowerCase().includes(q) ||
-        (j.location || "").toLowerCase().includes(q)
-      );
+      jobs = jobs.filter(job => {
+        return [job.title, job.company, job.location].some(value =>
+          String(value || "").toLowerCase().includes(q)
+        );
+      });
     }
 
-    // Sort
     if (sortCol) {
       jobs = [...jobs].sort((a, b) => {
-        let va = a[sortCol] ?? "";
-        let vb = b[sortCol] ?? "";
+        const va = sortValue(a, sortCol);
+        const vb = sortValue(b, sortCol);
+
         if (typeof va === "number" && typeof vb === "number") {
           return sortDir === "asc" ? va - vb : vb - va;
         }
-        va = String(va).toLowerCase();
-        vb = String(vb).toLowerCase();
-        return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
+
+        return sortDir === "asc"
+          ? String(va).localeCompare(String(vb))
+          : String(vb).localeCompare(String(va));
       });
     }
 
     document.getElementById("result-count").textContent =
-      jobs.length + " job" + (jobs.length !== 1 ? "s" : "");
+      `${jobs.length} ${jobs.length === 1 ? "job" : "jobs"} · ${isImportant ? "Priority" : "Standard"}`;
 
-    // Build header
-    const scoreCol = isImportant ? "priority_score" : "score";
     const cols = isImportant
       ? [
-          { key: "title",          label: "Title" },
-          { key: "company",        label: "Company" },
-          { key: "location",       label: "Location" },
-          { key: scoreCol,         label: "Priority" },
-          { key: "score_pct",      label: "Match %" },
-          { key: "min_exp",        label: "Exp" },
-          { key: "date_posted",    label: "Posted" },
-          { key: "_apply",         label: "Apply", nosort: true },
+          { key: "title", label: "Role" },
+          { key: "company", label: "Company" },
+          { key: "location", label: "Location" },
+          { key: "level", label: "Level" },
+          { key: "priority_score", label: "Priority" },
+          { key: "score_pct", label: "Match" },
+          { key: "min_exp", label: "Exp" },
+          { key: "date_posted", label: "Posted" },
+          { key: "_apply", label: "Apply", nosort: true },
         ]
       : [
-          { key: "title",          label: "Title" },
-          { key: "company",        label: "Company" },
-          { key: "location",       label: "Location" },
-          { key: scoreCol,         label: "Score" },
-          { key: "score_pct",      label: "Match %" },
+          { key: "title", label: "Role" },
+          { key: "company", label: "Company" },
+          { key: "location", label: "Location" },
+          { key: "level", label: "Level" },
+          { key: "score", label: "Score" },
+          { key: "score_pct", label: "Match" },
           { key: "competition_score", label: "Competition" },
-          { key: "min_exp",        label: "Exp" },
-          { key: "date_posted",    label: "Posted" },
-          { key: "_apply",         label: "Apply", nosort: true },
+          { key: "min_exp", label: "Exp" },
+          { key: "date_posted", label: "Posted" },
+          { key: "_apply", label: "Apply", nosort: true },
         ];
 
-    document.getElementById("thead").innerHTML = `<tr>${
-      cols.map(c => {
-        const cls = c.nosort ? "" :
-          (sortCol === c.key ? (sortDir === "asc" ? " asc" : " desc") : "");
-        const sortAttr = c.nosort ? "" : `data-col="${c.key}"`;
-        return `<th class="${cls}" ${sortAttr}>${c.label}<span class="sort-icon"></span></th>`;
-      }).join("")
-    }</tr>`;
+    document.getElementById("thead").innerHTML = `<tr>${cols.map(col => {
+      const classes = [];
+      if (!col.nosort && sortCol === col.key) classes.push(sortDir === "asc" ? "asc" : "desc");
+      const sortAttr = col.nosort ? "" : `data-col="${col.key}"`;
+      return `<th class="${classes.join(" ")}" ${sortAttr}>${col.label}<span class="sort-icon"></span></th>`;
+    }).join("")}</tr>`;
 
-    // Attach sort listeners
     document.querySelectorAll("thead th[data-col]").forEach(th => {
       th.addEventListener("click", () => {
         const col = th.dataset.col;
@@ -562,78 +1024,84 @@
       });
     });
 
-    // Build rows
     if (!jobs.length) {
       document.getElementById("tbody").innerHTML =
-        `<tr><td colspan="${cols.length}"><div class="empty">
-           <div class="icon">🔍</div>No jobs match your search.
-         </div></td></tr>`;
+        `<tr><td colspan="${cols.length}"><div class="empty">No jobs match this view.</div></td></tr>`;
       return;
     }
 
-    document.getElementById("tbody").innerHTML = jobs.map(j => {
-      const score  = j[scoreCol] ?? 0;
-      const scoreClass = score >= 5 ? "high" : score >= 2 ? "medium" : "low";
-      const scoreBadge = `<span class="score ${scoreClass}">${score}</span>`;
+    document.getElementById("tbody").innerHTML = jobs.map((job, idx) => {
+      const scoreValue = numberOr(job[scoreCol], 0);
+      const scoreBadge = `<span class="score-pill ${scoreClass(scoreValue)}">${scoreValue}</span>`;
 
-      let compBadge = "";
-      if (!isImportant) {
-        const comp = j.competition_score ?? 0;
-        const compClass = comp <= 2 ? "low" : comp <= 4 ? "medium" : "high";
-        compBadge = `<td><span class="comp ${compClass}">${comp}</span></td>`;
+      const matchValue = Math.max(0, Math.round(numberOr(job.score_pct, 0)));
+      const matchBadge = `<span class="score-pill ${scoreClass(matchValue >= 70 ? 5 : matchValue >= 40 ? 2 : 1)}">${matchValue}%</span>`;
+
+      const level = job.level || "Unlabeled";
+      const levelBadge = `<span class="level-pill ${levelClass(level)}">${escapeHtml(level)}</span>`;
+
+      const minExp = job.min_exp;
+      const maxExp = job.max_exp;
+      let expBadge = `<span class="exp-pill none">--</span>`;
+
+      if (minExp != null || maxExp != null) {
+        const min = numberOr(minExp, 0);
+        const max = maxExp == null ? min : numberOr(maxExp, min);
+        const expText = max > min ? `${min}-${max}y` : `${min}y`;
+        expBadge = `<span class="exp-pill">${expText}</span>`;
       }
 
-      const posted = j.date_posted
-        ? new Date(j.date_posted).toLocaleDateString("en-US", { month: "short", day: "numeric" })
-        : "—";
+      let competitionCell = "";
+      if (!isImportant) {
+        const competition = numberOr(job.competition_score, 0);
+        competitionCell = `<td><span class="comp-pill ${competitionClass(competition)}">${competition}</span></td>`;
+      }
 
-      const expBadge = j.min_exp != null
-        ? `<span class="exp-badge">${j.min_exp}${j.max_exp != null && j.max_exp !== j.min_exp ? `–${j.max_exp}` : ""} yr${j.max_exp !== 1 ? "s" : ""}</span>`
-        : `<span class="exp-badge none">—</span>`;
+      const roleMeta = [job.site, job.job_type].filter(Boolean).join(" · ") || "Role listing";
+      const posted = formatPosted(job.date_posted);
+      const url = safeUrl(job.job_url);
+      const apply = url
+        ? `<a class="apply-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Apply</a>`
+        : `<span class="na">--</span>`;
 
-      const matchPct = j.score_pct != null ? j.score_pct : 0;
-      const matchClass = matchPct >= 70 ? "high" : matchPct >= 40 ? "medium" : "low";
-      const matchBadge = `<span class="score ${matchClass}">${matchPct}%</span>`;
-
-      const applyBtn = j.job_url
-        ? `<a class="apply-btn" href="${j.job_url}" target="_blank" rel="noopener">Apply ↗</a>`
-        : "—";
-
-      return `<tr>
-        <td class="td-title">${j.title || "—"}</td>
-        <td class="td-company">${j.company || "—"}</td>
-        <td class="td-location">${j.location || "Remote"}</td>
+      return `<tr style="--row-delay:${Math.min(idx * 16, 320)}ms">
+        <td class="td-title">
+          <div class="title-cell">
+            <strong>${escapeHtml(job.title || "Untitled role")}</strong>
+            <span>${escapeHtml(roleMeta)}</span>
+          </div>
+        </td>
+        <td class="td-company">${escapeHtml(job.company || "--")}</td>
+        <td class="td-location">${escapeHtml(job.location || "Remote")}</td>
+        <td>${levelBadge}</td>
         <td>${scoreBadge}</td>
         <td>${matchBadge}</td>
-        ${compBadge}
+        ${competitionCell}
         <td>${expBadge}</td>
-        <td class="td-date">${posted}</td>
-        <td>${applyBtn}</td>
+        <td class="td-date">${escapeHtml(posted)}</td>
+        <td>${apply}</td>
       </tr>`;
     }).join("");
   }
 
-  // ── Events ─────────────────────────────────────────────────────────────────
-  document.querySelectorAll(".tab").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-      btn.classList.add("active");
-      activeTab   = btn.dataset.tab;
-      sortCol     = null;
+  document.querySelectorAll(".tab").forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+      button.classList.add("active");
+      activeTab = button.dataset.tab;
       activeLevel = "All";
-      query       = document.getElementById("search").value;
+      sortCol = null;
+      query = document.getElementById("search").value;
       render();
     });
   });
 
-  document.getElementById("search").addEventListener("input", e => {
-    query = e.target.value;
+  document.getElementById("search").addEventListener("input", event => {
+    query = event.target.value;
     render();
   });
 
-  // ── Boot ───────────────────────────────────────────────────────────────────
   loadAll();
 </script>
-
 </body>
 </html>

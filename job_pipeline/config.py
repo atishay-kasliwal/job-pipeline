@@ -51,10 +51,13 @@ SEARCH_TERMS: list[str] = [
 ROLE_INCLUDE_KEYWORDS: list[str] = [
     "software engineer",
     "backend",
-    "sde",
+    "AI",
+    "Data Scientist",
+    "Machine Learning",
     "software developer",
     "python developer",
     "python engineer",
+    "Software Development Engineer",
 ]
 
 # Companies to exclude — job aggregators, spam boards, low-quality sources.
@@ -67,6 +70,8 @@ COMPANY_EXCLUDE: list[str] = [
     "cybercoders",
     "lancesoft",
     "haystack",
+    "Supermicro",
+    "Turing"
 ]
 
 ROLE_EXCLUDE_KEYWORDS: list[str] = [
