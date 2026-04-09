@@ -27,6 +27,7 @@ from job_pipeline.important_filter import (
 from job_pipeline.scraper import scrape
 from job_pipeline.storage import append_run_history, insert_run, insert_run_stats
 from job_pipeline.deploy import deploy_output
+from job_pipeline.pipeline import _make_summary
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +44,7 @@ _OUTPUT_COLUMNS: list[str] = [
     "priority_score",
     "score_pct",
     "site",
+    "summary",
 ]
 
 
@@ -209,6 +211,7 @@ def run_important_pipeline(
     df = extract_exp_range(df)
     df = apply_scores(df)
     df["priority_score"] = df["score"]
+    df["summary"] = df["description"].apply(_make_summary) if "description" in df.columns else ""
     df = df.sort_values("priority_score", ascending=False).reset_index(drop=True)
 
     df_out = df[[c for c in _OUTPUT_COLUMNS if c in df.columns]].copy()
@@ -324,6 +327,7 @@ def _run_company_list_pipeline(
     df = extract_exp_range(df)
     df = apply_scores(df)
     df["priority_score"] = df["score"]
+    df["summary"] = df["description"].apply(_make_summary) if "description" in df.columns else ""
     df = df.sort_values("priority_score", ascending=False).reset_index(drop=True)
 
     cols = [c for c in _OUTPUT_COLUMNS if c in df.columns]

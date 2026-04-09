@@ -47,7 +47,29 @@ _OUTPUT_COLUMNS: list[str] = [
     "competition_score",
     "site",
     "search_term",
+    "summary",
 ]
+
+
+def _make_summary(text: str | None, max_chars: int = 200) -> str:
+    """Extract a clean 1-2 sentence summary from a job description."""
+    if not text:
+        return ""
+    import re
+    # Strip HTML tags
+    clean = re.sub(r"<[^>]+>", " ", str(text))
+    # Collapse whitespace
+    clean = re.sub(r"\s+", " ", clean).strip()
+    if len(clean) <= max_chars:
+        return clean
+    # Try to cut at a sentence boundary
+    cut = clean[:max_chars]
+    last_period = max(cut.rfind(". "), cut.rfind("! "), cut.rfind("? "))
+    if last_period > 80:
+        return cut[:last_period + 1]
+    # Fall back to word boundary
+    last_space = cut.rfind(" ")
+    return (cut[:last_space] if last_space > 80 else cut) + "…"
 
 
 def _ensure_output_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -201,6 +223,12 @@ def run_standard_pipeline(
 
     # Stamp batch_time so every view (This Hour, snapshots) shows when the job was found
     df["batch_time"] = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    # Generate short summary from description before it's dropped
+    if "description" in df.columns:
+        df["summary"] = df["description"].apply(_make_summary)
+    else:
+        df["summary"] = ""
 
     # Save descriptions before dropping them — used by the ATS analyzer
     if save:
