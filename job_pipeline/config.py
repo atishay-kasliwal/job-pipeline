@@ -71,8 +71,9 @@ COMPANY_EXCLUDE: list[str] = [
     "cybercoders",
     "lancesoft",
     "haystack",
-    "Supermicro",
-    "Turing"
+    "supermicro",
+    "turing",
+    "micro1",
 ]
 
 ROLE_EXCLUDE_KEYWORDS: list[str] = [
