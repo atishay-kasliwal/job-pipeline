@@ -387,6 +387,8 @@
 
     .table-panel {
       overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
     }
 
     .table-wrap {
@@ -406,15 +408,15 @@
       top: 0;
       z-index: 2;
       border-bottom: 1px solid var(--line);
-      background: var(--surface-strong);
+      background: rgba(10, 20, 33, 0.97);
       color: var(--muted);
       text-align: left;
-      font-size: 10px;
-      letter-spacing: 0.1em;
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       font-family: "IBM Plex Mono", monospace;
       font-weight: 600;
-      padding: 9px 12px;
+      padding: 11px 16px;
       white-space: nowrap;
       user-select: none;
       cursor: pointer;
@@ -425,176 +427,203 @@
     }
 
     thead th .sort-icon {
-      margin-left: 3px;
-      opacity: 0.35;
+      margin-left: 4px;
+      opacity: 0.3;
+      font-size: 9px;
     }
 
-    thead th.asc .sort-icon::after {
-      content: "▲";
-      opacity: 1;
-    }
-
-    thead th.desc .sort-icon::after {
-      content: "▼";
-      opacity: 1;
-    }
+    thead th.asc .sort-icon::after  { content: "▲"; opacity: 1; }
+    thead th.desc .sort-icon::after { content: "▼"; opacity: 1; }
 
     tbody tr {
-      border-bottom: 1px solid rgba(58, 84, 110, 0.28);
-      animation: rowIn 340ms ease both;
+      border-bottom: 1px solid rgba(36, 55, 79, 0.6);
+      animation: rowIn 280ms ease both;
       animation-delay: var(--row-delay, 0ms);
+      transition: background 120ms ease;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
     }
 
     tbody tr:hover {
-      background: linear-gradient(90deg, rgba(52, 211, 196, 0.12) 0%, rgba(52, 211, 196, 0.03) 52%, transparent 100%);
+      background: rgba(255, 255, 255, 0.03);
     }
 
     td {
-      padding: 8px 12px;
-      font-size: 12px;
+      padding: 13px 16px;
+      font-size: 13px;
       vertical-align: middle;
       white-space: nowrap;
     }
 
+    .td-num {
+      color: var(--muted);
+      font-size: 11px;
+      font-family: "IBM Plex Mono", monospace;
+      width: 36px;
+      text-align: right;
+      padding-right: 8px;
+    }
+
     .td-title {
-      min-width: 320px;
-      max-width: 520px;
+      min-width: 280px;
+      max-width: 480px;
       white-space: normal;
     }
 
     .title-cell {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
     }
 
     .title-cell strong {
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 600;
-      line-height: 1.32;
+      line-height: 1.3;
       color: var(--text);
     }
 
-    .title-cell span {
+    .title-cell .title-meta {
       color: var(--muted);
       font-size: 11px;
       font-family: "IBM Plex Mono", monospace;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .td-company {
+      min-width: 140px;
+      max-width: 200px;
+    }
+
+    .company-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .company-cell strong {
+      font-size: 13px;
+      font-weight: 600;
       color: #d8e4f3;
-      font-weight: 500;
-      max-width: 220px;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 190px;
+      display: block;
+    }
+
+    .company-cell span {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
     }
 
     .td-location,
     .td-date {
       color: var(--muted);
-      font-size: 11px;
+      font-size: 11.5px;
       font-family: "IBM Plex Mono", monospace;
     }
 
-    .level-pill,
-    .score-pill,
-    .comp-pill,
-    .exp-pill {
+    /* Score — large prominent number */
+    .score-num {
+      font-size: 15px;
+      font-weight: 700;
+      font-family: "IBM Plex Mono", monospace;
+      line-height: 1;
+    }
+
+    .score-num.high   { color: #5ee8a8; }
+    .score-num.medium { color: #ffd066; }
+    .score-num.low    { color: #ff9494; }
+
+    /* Status-style badges (level, match%, exp, competition) */
+    .badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 22px;
-      border-radius: 999px;
-      font-size: 11px;
-      padding: 0 9px;
-      border: 1px solid transparent;
+      height: 24px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      padding: 0 10px;
       font-weight: 600;
       font-family: "IBM Plex Mono", monospace;
+      white-space: nowrap;
     }
 
-    .level-pill.newgrad {
-      color: #9be9be;
-      background: rgba(57, 217, 138, 0.14);
-      border-color: rgba(57, 217, 138, 0.35);
+    .badge-newgrad {
+      color: #52d98a;
+      background: rgba(57, 217, 138, 0.12);
     }
 
-    .level-pill.entry {
-      color: #87e6ff;
-      background: rgba(94, 201, 255, 0.16);
-      border-color: rgba(94, 201, 255, 0.35);
+    .badge-entry {
+      color: #5bc8f5;
+      background: rgba(94, 201, 255, 0.12);
     }
 
-    .level-pill.mid {
-      color: #ffd38f;
-      background: rgba(255, 171, 94, 0.16);
-      border-color: rgba(255, 171, 94, 0.35);
+    .badge-mid {
+      color: #f5b85a;
+      background: rgba(255, 171, 94, 0.14);
     }
 
-    .level-pill.unknown {
-      color: #95a7bf;
-      background: rgba(122, 147, 176, 0.12);
-      border-color: rgba(122, 147, 176, 0.28);
+    .badge-unknown {
+      color: #7a93b0;
+      background: rgba(122, 147, 176, 0.1);
     }
 
-    .score-pill.high,
-    .comp-pill.low {
-      color: #9bf0c3;
-      background: rgba(57, 217, 138, 0.14);
-      border-color: rgba(57, 217, 138, 0.35);
+    .badge-match-high   { color: #52d98a; background: rgba(57, 217, 138, 0.12); }
+    .badge-match-medium { color: #f5c842; background: rgba(245, 200, 66, 0.12); }
+    .badge-match-low    { color: #f5806a; background: rgba(245, 128, 106, 0.12); }
+
+    .badge-exp {
+      color: #7ab8f5;
+      background: rgba(96, 166, 255, 0.12);
     }
 
-    .score-pill.medium,
-    .comp-pill.medium {
-      color: #ffd689;
-      background: rgba(255, 204, 102, 0.14);
-      border-color: rgba(255, 204, 102, 0.35);
+    .badge-exp-none {
+      color: #4a607a;
+      background: rgba(143, 164, 190, 0.07);
     }
 
-    .score-pill.low,
-    .comp-pill.high {
-      color: #ffb1b1;
-      background: rgba(255, 125, 125, 0.14);
-      border-color: rgba(255, 125, 125, 0.35);
-    }
-
-    .exp-pill {
-      color: #b5d8ff;
-      background: rgba(96, 166, 255, 0.15);
-      border-color: rgba(96, 166, 255, 0.35);
-    }
-
-    .exp-pill.none {
-      color: var(--muted);
-      background: rgba(143, 164, 190, 0.08);
-      border-color: rgba(143, 164, 190, 0.18);
-    }
+    .badge-comp-low    { color: #52d98a; background: rgba(57, 217, 138, 0.12); }
+    .badge-comp-medium { color: #f5c842; background: rgba(245, 200, 66, 0.12); }
+    .badge-comp-high   { color: #f5806a; background: rgba(245, 128, 106, 0.12); }
 
     .apply-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 68px;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(52, 211, 196, 0.4);
-      background: linear-gradient(145deg, rgba(97, 237, 224, 0.25), rgba(52, 201, 188, 0.22));
-      color: #b8fff7;
-      font-size: 11px;
+      gap: 5px;
+      min-width: 76px;
+      border-radius: 7px;
+      border: none;
+      background: rgba(52, 211, 196, 0.15);
+      color: #34d3c4;
+      font-size: 12px;
       font-weight: 700;
-      padding: 6px 10px;
-      transition: transform 150ms ease, filter 150ms ease;
+      padding: 7px 14px;
+      transition: background 140ms ease, color 140ms ease;
       font-family: "IBM Plex Mono", monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.03em;
     }
 
     .apply-btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.08);
+      background: rgba(52, 211, 196, 0.26);
+      color: #7ef5ea;
+    }
+
+    .apply-btn::after {
+      content: "↗";
+      font-size: 11px;
     }
 
     .na {
-      color: var(--muted);
-      font-size: 11px;
+      color: #2e4560;
+      font-size: 12px;
       font-family: "IBM Plex Mono", monospace;
     }
 
@@ -602,8 +631,8 @@
       text-align: center;
       color: var(--muted);
       font-size: 13px;
-      padding: 42px 18px;
-      line-height: 1.6;
+      padding: 52px 18px;
+      line-height: 1.7;
       font-family: "IBM Plex Mono", monospace;
     }
 
@@ -1035,27 +1064,27 @@
 
     const cols = isImportant
       ? [
-          { key: "title", label: "Role" },
-          { key: "company", label: "Company" },
-          { key: "location", label: "Location" },
-          { key: "level", label: "Level" },
-          { key: "priority_score", label: "Priority" },
-          { key: "score_pct", label: "Match" },
-          { key: "min_exp", label: "Exp" },
-          { key: "date_posted", label: "Posted" },
-          { key: "_apply", label: "Apply", nosort: true },
+          { key: "_num",          label: "#",        nosort: true },
+          { key: "title",         label: "Role" },
+          { key: "company",       label: "Company / Location" },
+          { key: "level",         label: "Level" },
+          { key: "priority_score",label: "Score" },
+          { key: "score_pct",     label: "Match" },
+          { key: "min_exp",       label: "Exp" },
+          { key: "date_posted",   label: "Posted" },
+          { key: "_apply",        label: "",         nosort: true },
         ]
       : [
-          { key: "title", label: "Role" },
-          { key: "company", label: "Company" },
-          { key: "location", label: "Location" },
-          { key: "level", label: "Level" },
-          { key: "score", label: "Score" },
-          { key: "score_pct", label: "Match" },
+          { key: "_num",          label: "#",        nosort: true },
+          { key: "title",         label: "Role" },
+          { key: "company",       label: "Company / Location" },
+          { key: "level",         label: "Level" },
+          { key: "score",         label: "Score" },
+          { key: "score_pct",     label: "Match" },
           { key: "competition_score", label: "Competition" },
-          { key: "min_exp", label: "Exp" },
-          { key: "date_posted", label: "Posted" },
-          { key: "_apply", label: "Apply", nosort: true },
+          { key: "min_exp",       label: "Exp" },
+          { key: "date_posted",   label: "Posted" },
+          { key: "_apply",        label: "",         nosort: true },
         ];
 
     document.getElementById("thead").innerHTML = `<tr>${cols.map(col => {
@@ -1086,49 +1115,58 @@
 
     document.getElementById("tbody").innerHTML = jobs.map((job, idx) => {
       const scoreValue = numberOr(job[scoreCol], 0);
-      const scoreBadge = `<span class="score-pill ${scoreClass(scoreValue)}">${scoreValue}</span>`;
+      const scoreCls = scoreClass(scoreValue);
+      const scoreNum = `<span class="score-num ${scoreCls}">${scoreValue}</span>`;
 
       const matchValue = Math.max(0, Math.round(numberOr(job.score_pct, 0)));
-      const matchBadge = `<span class="score-pill ${scoreClass(matchValue >= 70 ? 5 : matchValue >= 40 ? 2 : 1)}">${matchValue}%</span>`;
+      const matchCls = matchValue >= 70 ? "badge-match-high" : matchValue >= 40 ? "badge-match-medium" : "badge-match-low";
+      const matchBadge = `<span class="badge ${matchCls}">${matchValue}%</span>`;
 
       const level = job.level || "Unlabeled";
-      const levelBadge = `<span class="level-pill ${levelClass(level)}">${escapeHtml(level)}</span>`;
+      const lvlCls = { "New Grad": "badge-newgrad", "Entry": "badge-entry", "Mid": "badge-mid" }[level] || "badge-unknown";
+      const levelBadge = `<span class="badge ${lvlCls}">${escapeHtml(level)}</span>`;
 
       const minExp = job.min_exp;
       const maxExp = job.max_exp;
-      let expBadge = `<span class="exp-pill none">--</span>`;
-
+      let expBadge = `<span class="badge badge-exp-none">--</span>`;
       if (minExp != null || maxExp != null) {
         const min = numberOr(minExp, 0);
         const max = maxExp == null ? min : numberOr(maxExp, min);
-        const expText = max > min ? `${min}-${max}y` : `${min}y`;
-        expBadge = `<span class="exp-pill">${expText}</span>`;
+        expBadge = `<span class="badge badge-exp">${max > min ? `${min}–${max}y` : `${min}y`}</span>`;
       }
 
       let competitionCell = "";
       if (!isImportant) {
-        const competition = numberOr(job.competition_score, 0);
-        competitionCell = `<td><span class="comp-pill ${competitionClass(competition)}">${competition}</span></td>`;
+        const comp = numberOr(job.competition_score, 0);
+        const compCls = comp >= 7 ? "badge-comp-high" : comp >= 4 ? "badge-comp-medium" : "badge-comp-low";
+        competitionCell = `<td><span class="badge ${compCls}">${comp}</span></td>`;
       }
 
-      const roleMeta = [job.site, job.job_type].filter(Boolean).join(" · ") || "Role listing";
+      const site = job.site ? escapeHtml(job.site) : "";
+      const jobType = job.job_type ? escapeHtml(job.job_type) : "";
+      const metaParts = [site, jobType].filter(Boolean).join(" · ");
       const posted = formatPosted(job.date_posted);
       const url = safeUrl(job.job_url);
       const apply = url
         ? `<a class="apply-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Apply</a>`
-        : `<span class="na">--</span>`;
+        : `<span class="na">—</span>`;
 
-      return `<tr style="--row-delay:${Math.min(idx * 16, 320)}ms">
+      return `<tr style="--row-delay:${Math.min(idx * 14, 280)}ms">
+        <td class="td-num">${idx + 1}</td>
         <td class="td-title">
           <div class="title-cell">
             <strong>${escapeHtml(job.title || "Untitled role")}</strong>
-            <span>${escapeHtml(roleMeta)}</span>
+            <div class="title-meta">${metaParts || "Role listing"}</div>
           </div>
         </td>
-        <td class="td-company">${escapeHtml(job.company || "--")}</td>
-        <td class="td-location">${escapeHtml(job.location || "Remote")}</td>
+        <td class="td-company">
+          <div class="company-cell">
+            <strong>${escapeHtml(job.company || "—")}</strong>
+            <span>${escapeHtml(job.location || "Remote")}</span>
+          </div>
+        </td>
         <td>${levelBadge}</td>
-        <td>${scoreBadge}</td>
+        <td>${scoreNum}</td>
         <td>${matchBadge}</td>
         ${competitionCell}
         <td>${expBadge}</td>
