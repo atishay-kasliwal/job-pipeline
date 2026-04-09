@@ -56,4 +56,4 @@ jobs:
           git add public/
           git diff --staged --quiet \
             && echo "No changes to commit." \
-            || (git commit -m "chore: update job data $(date -u +'%Y-%m-%dT%H:%M:%SZ') [skip ci]" && git push)
+            || (git commit -m "chore: update job data $(date -u +'%Y-%m-%dT%H:%M:%SZ')" && git push)
