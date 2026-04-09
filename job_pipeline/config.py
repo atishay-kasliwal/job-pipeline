@@ -53,6 +53,7 @@ ROLE_INCLUDE_KEYWORDS: list[str] = [
     "software",
     "python",
     "backend",
+    "new grad",
     "machine learning",
     "data scientist",
     "data engineer",
