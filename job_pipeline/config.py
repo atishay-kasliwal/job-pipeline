@@ -40,7 +40,7 @@ SCRAPER: dict = {
 # Multiple search terms — scraper runs once per term and merges results.
 SEARCH_TERMS: list[str] = [
     "software engineer",
-    "new grad engineer",
+    "new grad",
     "backend engineer",
     "machine learning engineer",
     "data scientist",
