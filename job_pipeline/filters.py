@@ -276,11 +276,15 @@ def deduplicate(df: pd.DataFrame) -> pd.DataFrame:
 
 _EXP_RANGE_RE = re.compile(
     # "2 years experience", "2-4 years of experience", "2+ years experience"
-    r'\b(\d+)\s*(?:[-–—]\s*(\d+))?\+?\s*years?\s+(?:of\s+)?(?:relevant\s+|professional\s+|work\s+)?experience\b'
-    # "minimum 2 years", "at least 3-5 years of experience"
-    r'|(?:minimum|at\s+least)\s+(?:of\s+)?(\d+)\s*(?:[-–—]\s*(\d+))?\+?\s*years?\s+(?:of\s+)?(?:work\s+)?experience\b'
-    # "experience of 2-4 years", "experience: 2 years"
-    r'|experience\s*(?:of|:)\s*(\d+)\s*(?:[-–—]\s*(\d+))?\+?\s*years?\b',
+    r'\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*years?\s+(?:of\s+)?(?:relevant\s+|professional\s+|work\s+|related\s+)?experience\b'
+    # "2+ years", "3-5 years" (standalone, without "experience" word after)
+    r'|\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+\s*years?\b'
+    # "minimum 2 years", "at least 3-5 years", "requires 2 years"
+    r'|(?:minimum|at\s+least|requires?|minimum\s+of)\s+(?:of\s+)?(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*(?:years?|yrs?)\b'
+    # "experience of 2-4 years", "experience: 2 years", "experience (3+ years)"
+    r'|experience\s*(?:of|:|\()\s*(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*(?:years?|yrs?)\b'
+    # "2 yrs experience", "3-5 yrs of experience"
+    r'|\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*yrs?\s+(?:of\s+)?experience\b',
     re.IGNORECASE,
 )
 
@@ -300,8 +304,8 @@ def extract_exp_range(df: pd.DataFrame) -> pd.DataFrame:
         mins, maxs = [], []
         for m in _EXP_RANGE_RE.finditer(text):
             g = m.groups()
-            # 3 patterns × 2 groups each = 6 groups: (mn0,mx0, mn1,mx1, mn2,mx2)
-            for i in range(0, 6, 2):
+            # 5 patterns × 2 groups each = 10 groups: (mn0,mx0, mn1,mx1, ...)
+            for i in range(0, 10, 2):
                 if g[i]:
                     mn = int(g[i])
                     mx = int(g[i + 1]) if g[i + 1] else mn
