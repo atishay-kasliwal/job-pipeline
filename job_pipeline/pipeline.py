@@ -52,24 +52,76 @@ _OUTPUT_COLUMNS: list[str] = [
 
 
 def _make_summary(text: str | None, max_chars: int = 200) -> str:
-    """Extract a clean 1-2 sentence summary from a job description."""
+    """
+    Extract a ~200 char summary by picking the most informative sentences.
+
+    Strategy: score each sentence by how many role-relevant keywords it contains,
+    then return the top 1-2 sentences (up to max_chars), joined together.
+    Falls back to the first meaningful sentence if scoring finds nothing.
+    """
     if not text:
         return ""
     import re
-    # Strip HTML tags
+
+    # Strip HTML tags and collapse whitespace
     clean = re.sub(r"<[^>]+>", " ", str(text))
-    # Collapse whitespace
     clean = re.sub(r"\s+", " ", clean).strip()
-    if len(clean) <= max_chars:
-        return clean
-    # Try to cut at a sentence boundary
-    cut = clean[:max_chars]
-    last_period = max(cut.rfind(". "), cut.rfind("! "), cut.rfind("? "))
-    if last_period > 80:
-        return cut[:last_period + 1]
-    # Fall back to word boundary
-    last_space = cut.rfind(" ")
-    return (cut[:last_space] if last_space > 80 else cut) + "…"
+
+    # Split into sentences
+    sentences = re.split(r"(?<=[.!?])\s+", clean)
+    sentences = [s.strip() for s in sentences if len(s.strip()) > 30]
+    if not sentences:
+        return clean[:max_chars]
+
+    # Keywords that signal a useful sentence (role description, not boilerplate)
+    SIGNAL_WORDS = {
+        "engineer", "develop", "build", "design", "architect", "implement",
+        "python", "java", "backend", "api", "cloud", "aws", "machine learning",
+        "ml", "ai", "data", "system", "platform", "service", "infrastructure",
+        "collaborate", "team", "product", "scale", "deploy", "software",
+        "experience", "skills", "responsibilities", "role", "looking for",
+    }
+
+    # Noise phrases that indicate boilerplate to skip
+    SKIP_PHRASES = {
+        "equal opportunity", "eeo", "affirmative action", "disability",
+        "discrimination", "applicants will receive", "we offer", "benefits",
+        "salary range", "compensation", "401k", "health insurance", "pto",
+        "click apply", "submit your", "please apply",
+    }
+
+    def score(s: str) -> int:
+        low = s.lower()
+        if any(p in low for p in SKIP_PHRASES):
+            return -1
+        return sum(1 for w in SIGNAL_WORDS if w in low)
+
+    scored = sorted(enumerate(sentences), key=lambda x: score(x[1]), reverse=True)
+
+    # Pick best sentences until we hit max_chars
+    chosen = []
+    total = 0
+    for _, s in scored:
+        if score(s) < 1:
+            break
+        if total + len(s) + 1 > max_chars:
+            break
+        chosen.append((sentences.index(s), s))
+        total += len(s) + 1
+        if total >= max_chars * 0.7:  # stop once we have enough
+            break
+
+    if not chosen:
+        # fallback: first meaningful sentence
+        first = sentences[0]
+        return first if len(first) <= max_chars else first[:max_chars - 1] + "…"
+
+    # Return in original document order
+    chosen.sort(key=lambda x: x[0])
+    result = " ".join(s for _, s in chosen)
+    if len(result) > max_chars:
+        result = result[:max_chars - 1] + "…"
+    return result
 
 
 def _ensure_output_columns(df: pd.DataFrame) -> pd.DataFrame:
