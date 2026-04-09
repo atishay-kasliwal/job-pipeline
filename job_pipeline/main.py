@@ -333,6 +333,11 @@ def main() -> None:
             except Exception as exc:
                 logging.error("Final dashboard deploy failed (non-fatal): %s", exc)
 
+        # Trigger the export workflow immediately after scraping
+        # so data is live within ~2 min instead of waiting for the :30 cron.
+        from job_pipeline.trigger_export import trigger_export
+        trigger_export()
+
 
 if __name__ == "__main__":
     main()

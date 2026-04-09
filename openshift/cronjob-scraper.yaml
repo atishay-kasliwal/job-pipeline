@@ -55,6 +55,12 @@ spec:
                     secretKeyRef:
                       name: job-pipeline-mongo
                       key: MONGO_URI
+                # Secret: GitHub token to trigger export workflow
+                - name: GITHUB_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: job-pipeline-mongo
+                      key: GITHUB_TOKEN
                 # ConfigMap: tunables
                 - name: LOG_LEVEL
                   valueFrom:
