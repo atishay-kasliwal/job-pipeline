@@ -40,24 +40,25 @@ SCRAPER: dict = {
 # Multiple search terms — scraper runs once per term and merges results.
 SEARCH_TERMS: list[str] = [
     "software engineer",
-    "backend engineer",
-    "sde",
-    "software developer",
-    "python developer",
     "python engineer",
+    "backend engineer",
+    "machine learning engineer",
+    "data scientist",
+    "AI engineer",
 ]
 
 # ── Role filter ───────────────────────────────────────────────────────────────
+# Matched case-insensitively as substring of the job title.
 ROLE_INCLUDE_KEYWORDS: list[str] = [
-    "software engineer",
+    "software",
+    "python",
     "backend",
-    "AI",
-    "Data Scientist",
-    "Machine Learning",
-    "software developer",
-    "python developer",
-    "python engineer",
-    "Software Development Engineer",
+    "machine learning",
+    "data scientist",
+    "data engineer",
+    "ml engineer",
+    "ai engineer",
+    "applied scientist",
 ]
 
 # Companies to exclude — job aggregators, spam boards, low-quality sources.
