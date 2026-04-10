@@ -12,14 +12,25 @@ docs/metadata.json       — last_updated timestamp + counts
 """
 import json
 import logging
+import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 logger = logging.getLogger(__name__)
 
 DOCS_DIR = Path(__file__).resolve().parent.parent / "docs"
+DEFAULT_DASHBOARD_TZ = "America/New_York"
+
+_tz_name = os.getenv("DASHBOARD_TZ", DEFAULT_DASHBOARD_TZ).strip() or DEFAULT_DASHBOARD_TZ
+try:
+    DASHBOARD_TZ = ZoneInfo(_tz_name)
+except Exception:  # pragma: no cover - fallback only if host tz data is missing
+    logger.warning("Invalid DASHBOARD_TZ='%s'; falling back to UTC.", _tz_name)
+    DASHBOARD_TZ = timezone.utc
+    _tz_name = "UTC"
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -38,6 +49,17 @@ def _serialise(obj: Any) -> Any:
 def _write_json(path: Path, data: Any) -> None:
     path.write_text(json.dumps(data, indent=2, default=str))
     logger.info("Wrote %s", path)
+
+
+def _local_day_bounds_utc(days_ago: int) -> tuple[datetime, datetime]:
+    """
+    Return [start_utc, end_utc) for a local calendar day in ``DASHBOARD_TZ``.
+    """
+    now_local = datetime.now(tz=DASHBOARD_TZ)
+    day_local = now_local.date() - timedelta(days=days_ago)
+    start_local = datetime.combine(day_local, datetime.min.time(), tzinfo=DASHBOARD_TZ)
+    end_local = start_local + timedelta(days=1)
+    return start_local.astimezone(timezone.utc), end_local.astimezone(timezone.utc)
 
 
 # ── Export logic ──────────────────────────────────────────────────────────────
@@ -77,17 +99,16 @@ def export_pipeline(pipeline: str) -> list[dict]:
 
 def export_today_jobs() -> list[dict]:
     """
-    Fetch all standard-pipeline jobs from today (UTC) across all sessions.
+    Fetch all standard-pipeline jobs from today in ``DASHBOARD_TZ`` across all sessions.
     """
     from job_pipeline.storage import get_db
-    from datetime import date
     db = get_db()
 
-    today_start = datetime.combine(date.today(), datetime.min.time()).replace(tzinfo=timezone.utc)
+    day_start, day_end = _local_day_bounds_utc(days_ago=0)
 
     # Get all session_ids from today
     sessions = db["sessions"].find(
-        {"pipeline": "standard", "archived": False, "run_at": {"$gte": today_start}},
+        {"pipeline": "standard", "archived": False, "run_at": {"$gte": day_start, "$lt": day_end}},
         {"session_id": 1},
     )
     sids = [s["session_id"] for s in sessions]
@@ -111,15 +132,12 @@ def export_today_jobs() -> list[dict]:
 
 def export_yesterday_jobs() -> list[dict]:
     """
-    Fetch all standard-pipeline jobs from yesterday (UTC) across all sessions.
+    Fetch all standard-pipeline jobs from yesterday in ``DASHBOARD_TZ`` across all sessions.
     """
     from job_pipeline.storage import get_db
-    from datetime import date, timedelta
     db = get_db()
 
-    yesterday = date.today() - timedelta(days=1)
-    day_start = datetime.combine(yesterday, datetime.min.time()).replace(tzinfo=timezone.utc)
-    day_end   = datetime.combine(date.today(), datetime.min.time()).replace(tzinfo=timezone.utc)
+    day_start, day_end = _local_day_bounds_utc(days_ago=1)
 
     sessions = db["sessions"].find(
         {"pipeline": "standard", "archived": False, "run_at": {"$gte": day_start, "$lt": day_end}},
@@ -175,6 +193,7 @@ def run_export() -> None:
         "standard_count":  len(standard_jobs),
         "important_count": len(important_jobs),
         "today_count":     len(today_jobs),
+        "dashboard_tz":    _tz_name,
     }
 
     _write_json(DOCS_DIR / "jobs.json",           standard_jobs)

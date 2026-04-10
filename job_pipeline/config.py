@@ -130,11 +130,16 @@ ALLOWED_STATES: list[str] = [
 SPONSORSHIP_REJECT_PHRASES: list[str] = [
     # Sponsorship rejections
     "no sponsorship",
-    "No need for visa sponsorship",
-    "Must have the right to work in the UK without current or future sponsorship"
+    "no need for visa sponsorship",
+    "must have the right to work in the uk without current or future sponsorship",
     "will not sponsor",
     "cannot sponsor",
     "does not sponsor",
+    "not eligible for sponsorship",
+    "not eligible for visa sponsorship",
+    "not eligible for immigration sponsorship",
+    "not eligible for u.s. immigration sponsorship",
+    "not eligible for us immigration sponsorship",
     "sponsorship not available",
     "sponsorship is not available",
     "sponsorship: not available",

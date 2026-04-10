@@ -140,25 +140,27 @@ def filter_by_experience(df: pd.DataFrame) -> pd.DataFrame:
     _OVERQUALIFIED = re.compile(
         # ── number > 3 followed by experience context ──────────────────────
         # "4 years experience", "4+ years of experience",
-        # "5+ years of professional software development experience"
+        # "5+ years of professional software development exp"
         # allows up to 5 words between "years" and "experience"
-        r"(?<!\d)(?<!-)([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*years?\s+(?:\w+\s+){0,5}experience\b"
-        # "experience of 4 years", "experience: 4+ years"
-        r"|experience\s*(?:of|:)\s*([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*years?\b"
+        r"(?<!\d)(?<!-)([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*(?:years?|yrs?)\s+(?:\w+\s+){0,5}(?:experience|exp(?:erience)?)\b"
+        # "experience of 4 years", "exp of 4+ years"
+        r"|(?:experience|exp(?:erience)?)\s*(?:of|:)\s*([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*(?:years?|yrs?)\b"
         # ── explicit requirement phrases ────────────────────────────────────
         # "minimum 4 years", "minimum of 4 years", "min. 4 years"
-        r"|(?:minimum|min\.?)\s+(?:of\s+)?([4-9]|\d{2})\s*\+?\s*years?"
+        r"|(?:minimum|min\.?)\s+(?:of\s+)?([4-9]|\d{2})\s*\+?\s*(?:years?|yrs?)"
         # "at least 4 years"
-        r"|at\s+least\s+([4-9]|\d{2})\s*\+?\s*years?"
+        r"|at\s+least\s+([4-9]|\d{2})\s*\+?\s*(?:years?|yrs?)"
         # "4 or more years"
-        r"|\b([4-9]|\d{2})\+?\s*or\s+more\s+years?"
+        r"|\b([4-9]|\d{2})\+?\s*or\s+more\s+(?:years?|yrs?)"
         # "requires 4 years", "requiring 4+ years"
-        r"|requires?\s+([4-9]|\d{2})\s*\+?\s*years?"
+        r"|requires?\s+([4-9]|\d{2})\s*\+?\s*(?:years?|yrs?)"
         # ── ranges where lower bound > 3 ───────────────────────────────────
         # "4-6 years", "5–8 years", "4 to 6 years of experience"
-        r"|\b([4-9]|\d{2})\s*(?:[-–—]|to)\s*\d+\s*\+?\s*years?\s+(?:of\s+)?experience\b"
-        # two-digit standalone: "10 years", "12+ years" (anywhere — always senior)
-        r"|\b\d{2}\+?\s*years?\b",
+        r"|\b([4-9]|\d{2})\s*(?:[-–—]|to)\s*\d+\s*\+?\s*(?:years?|yrs?)\s+(?:of\s+)?(?:experience|exp(?:erience)?)\b"
+        # bare years requirement: "5+ years working...", "10 years"
+        # This intentionally catches explicit 4+ year requirements even when
+        # the word "experience" is omitted.
+        r"|\b([4-9]|\d{2})\s*\+?\s*(?:years?|yrs?)\b",
         re.IGNORECASE,
     )
 
@@ -276,15 +278,15 @@ def deduplicate(df: pd.DataFrame) -> pd.DataFrame:
 
 _EXP_RANGE_RE = re.compile(
     # "2 years experience", "2-4 years of experience", "2+ years experience"
-    r'\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*years?\s+(?:of\s+)?(?:relevant\s+|professional\s+|work\s+|related\s+)?experience\b'
+    r'\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*(?:years?|yrs?)\s+(?:of\s+)?(?:relevant\s+|professional\s+|work\s+|related\s+)?(?:experience|exp(?:erience)?)\b'
     # "2+ years", "3-5 years" (standalone, without "experience" word after)
-    r'|\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+\s*years?\b'
+    r'|\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+\s*(?:years?|yrs?)\b'
     # "minimum 2 years", "at least 3-5 years", "requires 2 years"
     r'|(?:minimum|at\s+least|requires?|minimum\s+of)\s+(?:of\s+)?(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*(?:years?|yrs?)\b'
     # "experience of 2-4 years", "experience: 2 years", "experience (3+ years)"
-    r'|experience\s*(?:of|:|\()\s*(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*(?:years?|yrs?)\b'
+    r'|(?:experience|exp(?:erience)?)\s*(?:of|:|\()\s*(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*(?:years?|yrs?)\b'
     # "2 yrs experience", "3-5 yrs of experience"
-    r'|\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*yrs?\s+(?:of\s+)?experience\b',
+    r'|\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*yrs?\s+(?:of\s+)?(?:experience|exp(?:erience)?)\b',
     re.IGNORECASE,
 )
 
@@ -325,7 +327,7 @@ def extract_exp_range(df: pd.DataFrame) -> pd.DataFrame:
 # Keep old name as a thin wrapper for backward compatibility with any callers.
 def extract_exp_years(df: pd.DataFrame) -> pd.DataFrame:
     df = extract_exp_range(df)
-    df["exp_years"] = df["min_exp"]
+    df["exp_years"] = df["max_exp"]
     return df
 
 
