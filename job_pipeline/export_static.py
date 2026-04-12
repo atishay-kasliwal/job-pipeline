@@ -161,6 +161,65 @@ def export_yesterday_jobs() -> list[dict]:
     return [_serialise(j) for j in unique]
 
 
+def export_week_jobs() -> list[dict]:
+    """
+    Fetch all standard-pipeline jobs from the last 7 days across all sessions.
+    Deduplicates by job_url (keeps first/oldest occurrence).
+    Adds a ``scraped_date`` field (YYYY-MM-DD in ``DASHBOARD_TZ``) so the
+    frontend can filter by day.
+    """
+    from job_pipeline.storage import get_db
+    db = get_db()
+
+    cutoff = datetime.now(tz=timezone.utc) - timedelta(days=7)
+
+    # Oldest-first so dedup keeps the earliest occurrence of each job
+    sessions = list(db["sessions"].find(
+        {"pipeline": "standard", "archived": False, "run_at": {"$gte": cutoff}},
+        {"session_id": 1, "run_at": 1},
+        sort=[("run_at", 1)],
+    ))
+
+    if not sessions:
+        return []
+
+    sid_to_date: dict[str, str] = {}
+    for s in sessions:
+        run_at = s["run_at"]
+        if run_at.tzinfo is None:
+            run_at = run_at.replace(tzinfo=timezone.utc)
+        sid_to_date[s["session_id"]] = run_at.astimezone(DASHBOARD_TZ).strftime("%Y-%m-%d")
+
+    sid_order = {s["session_id"]: i for i, s in enumerate(sessions)}
+    sids = list(sid_order.keys())
+
+    jobs = list(db["jobs"].find(
+        {"session_id": {"$in": sids}},
+        {"_id": 0, "run_at": 0},
+    ))
+
+    # Sort by session chronological order so dedup picks the oldest session
+    jobs.sort(key=lambda j: sid_order.get(j.get("session_id", ""), 999_999))
+
+    seen: set[str] = set()
+    unique: list[dict] = []
+    for j in jobs:
+        key = j.get("job_url") or f"{j.get('title')}-{j.get('company')}"
+        if key not in seen:
+            seen.add(key)
+            j["scraped_date"] = sid_to_date.get(j.get("session_id", ""), "")
+            unique.append(j)
+
+    # Newest date first, then highest score
+    unique.sort(
+        key=lambda j: (j.get("scraped_date", ""), j.get("score") or 0),
+        reverse=True,
+    )
+
+    logger.info("Exported %d unique jobs for weekly view (last 7 days).", len(unique))
+    return [_serialise(j) for j in unique]
+
+
 def export_run_history() -> list[dict]:
     """Fetch recent run history from MongoDB sessions in the format the frontend expects."""
     from job_pipeline.storage import get_db
@@ -186,6 +245,7 @@ def run_export() -> None:
     important_jobs  = export_pipeline("important")
     today_jobs      = export_today_jobs()
     yesterday_jobs  = export_yesterday_jobs()
+    week_jobs       = export_week_jobs()
     run_history     = export_run_history()
 
     metadata = {
@@ -193,6 +253,7 @@ def run_export() -> None:
         "standard_count":  len(standard_jobs),
         "important_count": len(important_jobs),
         "today_count":     len(today_jobs),
+        "week_count":      len(week_jobs),
         "dashboard_tz":    _tz_name,
     }
 
@@ -200,12 +261,13 @@ def run_export() -> None:
     _write_json(DOCS_DIR / "important_jobs.json", important_jobs)
     _write_json(DOCS_DIR / "today_jobs.json",     today_jobs)
     _write_json(DOCS_DIR / "yesterday_jobs.json", yesterday_jobs)
+    _write_json(DOCS_DIR / "week_jobs.json",      week_jobs)
     _write_json(DOCS_DIR / "run_history.json",    run_history)
     _write_json(DOCS_DIR / "metadata.json",       metadata)
 
     logger.info(
-        "Export complete — %d standard, %d important jobs.",
-        len(standard_jobs), len(important_jobs),
+        "Export complete — %d standard, %d important, %d weekly jobs.",
+        len(standard_jobs), len(important_jobs), len(week_jobs),
     )
 
 

@@ -100,6 +100,12 @@ ROLE_EXCLUDE_KEYWORDS: list[str] = [
     "quality engineer",
     "test engineer",
     "testing engineer",
+    # Non-target disciplines
+    "physical therapist",
+    "physical therapy",
+    "therapist",
+    "electrical engineer",
+    "electrical engineering",
 ]
 
 # ── Location filter ───────────────────────────────────────────────────────────

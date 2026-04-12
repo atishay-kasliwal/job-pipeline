@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atriveo Radar — Weekly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #08101a;
+      --bg-2: #0c1624;
+      --surface: rgba(15, 27, 42, 0.88);
+      --surface-strong: rgba(17, 31, 47, 0.96);
+      --line: #24374f;
+      --line-soft: rgba(70, 96, 125, 0.35);
+      --text: #e9f1fb;
+      --muted: #8fa4be;
+      --accent: #34d3c4;
+      --accent-soft: rgba(52, 211, 196, 0.2);
+      --accent-2: #ffab5e;
+      --good: #39d98a;
+      --warn: #ffcf6d;
+      --bad: #ff7d7d;
+      --radius-xl: 16px;
+      --radius-lg: 12px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
+      --shadow: 0 22px 44px rgba(2, 8, 15, 0.35);
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Sora", "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 16% -8%, rgba(52, 211, 196, 0.2) 0, transparent 38%),
+        radial-gradient(circle at 84% -16%, rgba(255, 171, 94, 0.2) 0, transparent 42%),
+        linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 66%, #07101a 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.26;
+      background-image:
+        linear-gradient(to right, rgba(143, 164, 190, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(143, 164, 190, 0.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .wrapper {
+      width: min(1480px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    /* ── Topbar ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      border-bottom: 1px solid var(--line-soft);
+      backdrop-filter: blur(12px);
+      background: rgba(8, 16, 26, 0.78);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 68px;
+      padding: 10px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: #04231f;
+      background: linear-gradient(145deg, #5bf0e2 0%, #32c8bc 100%);
+      box-shadow: 0 8px 20px rgba(34, 189, 174, 0.28);
+    }
+
+    .brand-copy {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-copy h1 { font-size: 16px; font-weight: 700; letter-spacing: 0.01em; }
+
+    .brand-copy p {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: rgba(8, 16, 26, 0.45);
+    }
+
+    .nav-link {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease;
+      font-family: "IBM Plex Mono", monospace;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+
+    .nav-link.active {
+      color: #001a17;
+      background: linear-gradient(145deg, #62eee1 0%, #35c9bb 100%);
+    }
+
+    .last-updated {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    /* ── Main ── */
+    main {
+      position: relative;
+      padding: 16px 0 24px;
+      animation: mainIn 420ms ease-out both;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: stretch;
+      margin-bottom: 12px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .stat-card {
+      position: relative;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(150deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      box-shadow: var(--shadow);
+      padding: 11px 12px 12px;
+      overflow: hidden;
+      animation: cardIn 420ms ease both;
+      animation-delay: calc(var(--idx, 0) * 55ms);
+    }
+
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; top: 0;
+      height: 2px;
+      background: var(--tone, var(--accent));
+    }
+
+    .stat-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .stat-value {
+      margin-top: 8px;
+      line-height: 1;
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--tone, var(--text));
+      font-variant-numeric: tabular-nums;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .panel {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      min-width: 500px;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 160px;
+      border: 1px solid var(--line-soft);
+      background: rgba(6, 13, 21, 0.55);
+      color: var(--text);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      padding: 9px 12px;
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .search-box::placeholder { color: var(--muted); }
+
+    .search-box:focus {
+      border-color: rgba(52, 211, 196, 0.65);
+      box-shadow: 0 0 0 3px rgba(52, 211, 196, 0.16);
+    }
+
+    .result-count {
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 0 4px;
+      font-family: "IBM Plex Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+    }
+
+    /* ── Filter chips row ── */
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 600;
+      margin-right: 2px;
+    }
+
+    .chip {
+      border: 1px solid var(--line-soft);
+      background: rgba(11, 20, 32, 0.62);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      font-family: "IBM Plex Mono", monospace;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .chip:hover {
+      color: var(--text);
+      border-color: rgba(52, 211, 196, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .chip.active {
+      color: #02211d;
+      border-color: rgba(52, 211, 196, 0.8);
+      background: linear-gradient(145deg, #62eee1 0%, #35c9bb 100%);
+    }
+
+    .chip-count {
+      border-radius: 999px;
+      min-width: 22px;
+      text-align: center;
+      font-size: 10px;
+      padding: 2px 7px;
+      background: rgba(255, 255, 255, 0.16);
+      color: inherit;
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 600;
+    }
+
+    .divider {
+      width: 1px;
+      height: 20px;
+      background: var(--line-soft);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+
+    /* ── Table ── */
+    .table-panel {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      max-height: calc(100vh - 225px);
+      min-height: 380px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 960px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      border-bottom: 1px solid var(--line);
+      background: rgba(10, 20, 33, 0.97);
+      color: var(--muted);
+      text-align: left;
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 600;
+      padding: 11px 16px;
+      white-space: nowrap;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    thead th:hover { color: var(--text); }
+
+    thead th .sort-icon { margin-left: 4px; opacity: 0.3; font-size: 9px; }
+    thead th.asc  .sort-icon::after { content: "▲"; opacity: 1; }
+    thead th.desc .sort-icon::after { content: "▼"; opacity: 1; }
+
+    tbody tr {
+      border-bottom: 1px solid rgba(36, 55, 79, 0.6);
+      animation: rowIn 280ms ease both;
+      animation-delay: var(--row-delay, 0ms);
+      transition: background 120ms ease;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+    td {
+      padding: 13px 16px;
+      font-size: 13px;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .td-num {
+      color: var(--muted);
+      font-size: 11px;
+      font-family: "IBM Plex Mono", monospace;
+      width: 36px;
+      text-align: right;
+      padding-right: 8px;
+    }
+
+    .td-title { min-width: 280px; max-width: 480px; white-space: normal; }
+
+    .title-cell { display: flex; flex-direction: column; gap: 4px; }
+
+    .title-cell strong {
+      font-size: 13.5px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--text);
+    }
+
+    .title-cell .title-meta {
+      color: var(--muted);
+      font-size: 11px;
+      font-family: "IBM Plex Mono", monospace;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .td-company { min-width: 140px; max-width: 200px; }
+
+    .company-cell { display: flex; flex-direction: column; gap: 3px; }
+
+    .company-cell strong {
+      font-size: 13px;
+      font-weight: 600;
+      color: #d8e4f3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 190px;
+      display: block;
+    }
+
+    .company-cell span {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    .td-location,
+    .td-date { color: var(--muted); font-size: 11.5px; font-family: "IBM Plex Mono", monospace; }
+
+    .score-num {
+      font-size: 15px;
+      font-weight: 700;
+      font-family: "IBM Plex Mono", monospace;
+      line-height: 1;
+    }
+
+    .score-num.high   { color: #5ee8a8; }
+    .score-num.medium { color: #ffd066; }
+    .score-num.low    { color: #ff9494; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 24px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      padding: 0 10px;
+      font-weight: 600;
+      font-family: "IBM Plex Mono", monospace;
+      white-space: nowrap;
+    }
+
+    .badge-newgrad { color: #52d98a; background: rgba(57, 217, 138, 0.12); }
+    .badge-entry   { color: #5bc8f5; background: rgba(94, 201, 255, 0.12); }
+    .badge-mid     { color: #f5b85a; background: rgba(255, 171, 94, 0.14); }
+    .badge-unknown { color: #7a93b0; background: rgba(122, 147, 176, 0.1); }
+
+    .badge-match-high   { color: #52d98a; background: rgba(57, 217, 138, 0.12); }
+    .badge-match-medium { color: #f5c842; background: rgba(245, 200, 66, 0.12); }
+    .badge-match-low    { color: #f5806a; background: rgba(245, 128, 106, 0.12); }
+
+    .badge-exp      { color: #7ab8f5; background: rgba(96, 166, 255, 0.12); }
+    .badge-exp-none { color: #4a607a; background: rgba(143, 164, 190, 0.07); }
+
+    .badge-comp-low    { color: #52d98a; background: rgba(57, 217, 138, 0.12); }
+    .badge-comp-medium { color: #f5c842; background: rgba(245, 200, 66, 0.12); }
+    .badge-comp-high   { color: #f5806a; background: rgba(245, 128, 106, 0.12); }
+
+    /* Day badge in table */
+    .badge-day {
+      color: #b5c8e2;
+      background: rgba(122, 147, 176, 0.13);
+      font-size: 10px;
+      padding: 0 8px;
+      height: 20px;
+      border-radius: 4px;
+      font-family: "IBM Plex Mono", monospace;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .apply-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-width: 76px;
+      border-radius: 7px;
+      border: none;
+      background: rgba(52, 211, 196, 0.15);
+      color: #34d3c4;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 14px;
+      transition: background 140ms ease, color 140ms ease;
+      font-family: "IBM Plex Mono", monospace;
+      letter-spacing: 0.03em;
+    }
+
+    .apply-btn:hover { background: rgba(52, 211, 196, 0.26); color: #7ef5ea; }
+    .apply-btn::after { content: "↗"; font-size: 11px; }
+
+    .na { color: #2e4560; font-size: 12px; font-family: "IBM Plex Mono", monospace; }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 52px 18px;
+      line-height: 1.7;
+      font-family: "IBM Plex Mono", monospace;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+      padding: 16px 0 24px;
+      font-family: "IBM Plex Mono", monospace;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ── Animations ── */
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(114, 240, 176, 0.65); }
+      100% { box-shadow: 0 0 0 8px rgba(114, 240, 176, 0); }
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes rowIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes mainIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1260px) {
+      .stats { grid-template-columns: repeat(3, minmax(120px, 1fr)); }
+      .overview-grid { grid-template-columns: 1fr; }
+      .controls { min-width: 0; }
+    }
+
+    @media (max-width: 860px) {
+      .wrapper { width: min(1480px, calc(100% - 18px)); }
+      .topbar-inner { min-height: 58px; }
+      .brand-copy h1 { font-size: 14px; }
+      .brand-copy p  { font-size: 10px; }
+      .stats { grid-template-columns: repeat(2, minmax(120px, 1fr)); }
+      .controls { flex-wrap: wrap; }
+      .search-box { width: 100%; flex: 1 1 100%; }
+      .result-count { width: 100%; padding: 2px 0 0; }
+      .table-wrap { max-height: calc(100vh - 265px); }
+      footer { text-transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrapper topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div class="brand-copy">
+        <h1>Atriveo Radar</h1>
+        <p>7-Day Job Intelligence</p>
+      </div>
+    </div>
+
+    <div class="header-meta">
+      <nav class="nav-links">
+        <a class="nav-link" href="index.html">Live Feed</a>
+        <a class="nav-link active" href="weekly.html">Weekly</a>
+      </nav>
+      <span class="last-updated" id="last-updated">Last updated: --</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrapper">
+
+  <!-- Stats + Search -->
+  <section class="overview-grid">
+    <div class="stats">
+      <div class="stat-card" style="--idx:0;--tone:#68ece0;">
+        <div class="stat-label">This Week</div>
+        <div class="stat-value" id="stat-week">--</div>
+      </div>
+      <div class="stat-card" style="--idx:1;--tone:#7bb9ff;">
+        <div class="stat-label">Companies</div>
+        <div class="stat-value" id="stat-companies">--</div>
+      </div>
+      <div class="stat-card" style="--idx:2;--tone:#ffc57d;">
+        <div class="stat-label">Top Score</div>
+        <div class="stat-value" id="stat-top-score">--</div>
+      </div>
+      <div class="stat-card" style="--idx:3;--tone:#b6ef9f;">
+        <div class="stat-label">New Grad</div>
+        <div class="stat-value" id="stat-new-grad">--</div>
+      </div>
+      <div class="stat-card" style="--idx:4;--tone:#8ee4ff;">
+        <div class="stat-label">Remote Mix</div>
+        <div class="stat-value" id="stat-remote">--</div>
+      </div>
+      <div class="stat-card" style="--idx:5;--tone:#ffd2a2;">
+        <div class="stat-label">Today's New</div>
+        <div class="stat-value" id="stat-today">--</div>
+      </div>
+    </div>
+
+    <div class="controls panel">
+      <input
+        class="search-box"
+        id="search"
+        type="search"
+        placeholder="Search title, company, location..."
+      />
+      <span class="result-count" id="result-count"></span>
+    </div>
+  </section>
+
+  <!-- Day chips -->
+  <div class="filter-row" id="day-filter-row">
+    <span class="filter-label">Day</span>
+    <div id="day-chips" style="display:contents"></div>
+    <div class="divider"></div>
+    <span class="filter-label">Level</span>
+    <div id="level-chips" style="display:contents"></div>
+  </div>
+
+  <!-- Table -->
+  <section class="panel table-panel">
+    <div class="table-wrap">
+      <table id="jobs-table">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Last 7 days · Deduplicated · Data refreshed hourly via GitHub Actions
+</footer>
+
+<script>
+  let weekJobs = [];
+  let activeDay = "All";
+  let activeLevel = "All";
+  let sortCol = null;
+  let sortDir = "desc";
+  let query = "";
+
+  // ── Helpers ──────────────────────────────────────────────────────────────────
+
+  const ESCAPE_MAP = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  function escapeHtml(v) { return String(v ?? "").replace(/[&<>"']/g, c => ESCAPE_MAP[c]); }
+
+  function parseDate(v) {
+    if (!v) return null;
+    const d = new Date(v);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  function numberOr(v, fallback = 0) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
+  function isRemote(job) {
+    return String(job.location || "").toLowerCase().includes("remote");
+  }
+
+  function formatPosted(value) {
+    const d = parseDate(value);
+    if (!d) return "--";
+    const diffH = Math.floor((Date.now() - d.getTime()) / 3_600_000);
+    if (diffH >= 0 && diffH < 24) return diffH === 0 ? "now" : `${diffH}h ago`;
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  }
+
+  function safeUrl(v) {
+    if (!v) return null;
+    try {
+      const p = new URL(v);
+      return (p.protocol === "http:" || p.protocol === "https:") ? p.toString() : null;
+    } catch { return null; }
+  }
+
+  function scoreClass(s) {
+    return s >= 5 ? "high" : s >= 2 ? "medium" : "low";
+  }
+
+  function sortValue(job, key) {
+    if (key === "date_posted") return parseDate(job.date_posted)?.getTime() || 0;
+    if (key === "scraped_date") return job.scraped_date || "";
+    if (["score", "score_pct", "competition_score", "min_exp", "max_exp"].includes(key)) {
+      return numberOr(job[key], 0);
+    }
+    return String(job[key] ?? "").toLowerCase();
+  }
+
+  // ── Day label helpers ─────────────────────────────────────────────────────────
+
+  function todayLocal() {
+    // YYYY-MM-DD in the browser's local timezone
+    return new Date().toLocaleDateString("en-CA"); // "en-CA" gives YYYY-MM-DD
+  }
+
+  function dayLabel(dateStr) {
+    const today = todayLocal();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toLocaleDateString("en-CA");
+
+    if (dateStr === today) return "Today";
+    if (dateStr === yesterdayStr) return "Yesterday";
+
+    // "Mon Apr 7"
+    const d = new Date(dateStr + "T12:00:00"); // noon to avoid DST edge
+    return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  }
+
+  // ── Load ──────────────────────────────────────────────────────────────────────
+
+  async function loadAll() {
+    try {
+      const [meta, jobs] = await Promise.all([
+        fetch("metadata.json").then(r => r.json()),
+        fetch("week_jobs.json").then(r => r.json()),
+      ]);
+
+      weekJobs = Array.isArray(jobs) ? jobs : [];
+
+      const ts = parseDate(meta?.last_updated);
+      document.getElementById("last-updated").textContent =
+        ts ? `Last updated: ${ts.toLocaleString()}` : "Last updated: --";
+
+      // Stats
+      const companies = new Set(weekJobs.map(j => j.company).filter(Boolean));
+      const topScore = weekJobs.reduce((m, j) => Math.max(m, numberOr(j.score, 0)), 0);
+      const newGrad  = weekJobs.filter(j => (j.level || "") === "New Grad").length;
+      const remote   = weekJobs.filter(isRemote).length;
+      const remotePct = weekJobs.length ? Math.round((remote / weekJobs.length) * 100) : 0;
+      const todayCount = weekJobs.filter(j => j.scraped_date === todayLocal()).length;
+
+      document.getElementById("stat-week").textContent      = meta?.week_count ?? weekJobs.length;
+      document.getElementById("stat-companies").textContent = companies.size;
+      document.getElementById("stat-top-score").textContent = topScore;
+      document.getElementById("stat-new-grad").textContent  = newGrad;
+      document.getElementById("stat-remote").textContent    = `${remotePct}%`;
+      document.getElementById("stat-today").textContent     = todayCount;
+
+      render();
+    } catch (err) {
+      document.getElementById("tbody").innerHTML =
+        `<tr><td colspan="10"><div class="empty">Could not load job data.<br>${escapeHtml(err.message)}</div></td></tr>`;
+    }
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────────────
+
+  function renderDayChips(jobs) {
+    // Unique scraped_dates present in the full dataset, sorted newest first
+    const allDates = [...new Set(weekJobs.map(j => j.scraped_date).filter(Boolean))].sort().reverse();
+    const dayCounts = { All: weekJobs.length };
+    allDates.forEach(d => { dayCounts[d] = weekJobs.filter(j => j.scraped_date === d).length; });
+
+    const days = ["All", ...allDates];
+    document.getElementById("day-chips").innerHTML = days.map(d => `
+      <button class="chip ${activeDay === d ? "active" : ""}" data-day="${escapeHtml(d)}">
+        ${escapeHtml(d === "All" ? "All Days" : dayLabel(d))}
+        <span class="chip-count">${dayCounts[d] ?? 0}</span>
+      </button>
+    `).join("");
+
+    document.querySelectorAll("#day-chips .chip").forEach(btn => {
+      btn.addEventListener("click", () => { activeDay = btn.dataset.day; render(); });
+    });
+  }
+
+  function renderLevelChips(jobs) {
+    const levels = ["All", "New Grad", "Entry", "Mid"];
+    const counts = {};
+    levels.forEach(l => {
+      counts[l] = l === "All" ? jobs.length : jobs.filter(j => (j.level || "") === l).length;
+    });
+
+    document.getElementById("level-chips").innerHTML = levels.map(l => `
+      <button class="chip ${activeLevel === l ? "active" : ""}" data-level="${escapeHtml(l)}">
+        ${escapeHtml(l)} <span class="chip-count">${counts[l]}</span>
+      </button>
+    `).join("");
+
+    document.querySelectorAll("#level-chips .chip").forEach(btn => {
+      btn.addEventListener("click", () => { activeLevel = btn.dataset.level; render(); });
+    });
+  }
+
+  function render() {
+    // Day filter on the full dataset
+    let jobs = activeDay === "All"
+      ? weekJobs
+      : weekJobs.filter(j => j.scraped_date === activeDay);
+
+    renderDayChips(jobs);
+    renderLevelChips(jobs);
+
+    // Level filter
+    if (activeLevel !== "All") {
+      jobs = jobs.filter(j => (j.level || "") === activeLevel);
+    }
+
+    // Search
+    if (query) {
+      const q = query.toLowerCase();
+      jobs = jobs.filter(j =>
+        [j.title, j.company, j.location].some(v => String(v || "").toLowerCase().includes(q))
+      );
+    }
+
+    // Sort
+    if (sortCol) {
+      jobs = [...jobs].sort((a, b) => {
+        const va = sortValue(a, sortCol);
+        const vb = sortValue(b, sortCol);
+        if (typeof va === "number" && typeof vb === "number") {
+          return sortDir === "asc" ? va - vb : vb - va;
+        }
+        return sortDir === "asc"
+          ? String(va).localeCompare(String(vb))
+          : String(vb).localeCompare(String(va));
+      });
+    }
+
+    document.getElementById("result-count").textContent =
+      `${jobs.length} ${jobs.length === 1 ? "job" : "jobs"} · Weekly`;
+
+    // Column definitions
+    const cols = [
+      { key: "_num",              label: "#",           nosort: true },
+      { key: "title",             label: "Role" },
+      { key: "company",           label: "Company / Location" },
+      { key: "level",             label: "Level" },
+      { key: "score",             label: "Score" },
+      { key: "score_pct",         label: "Match" },
+      { key: "competition_score", label: "Competition" },
+      { key: "min_exp",           label: "Exp" },
+      { key: "scraped_date",      label: "Seen" },
+      { key: "date_posted",       label: "Posted" },
+      { key: "_apply",            label: "",            nosort: true },
+    ];
+
+    document.getElementById("thead").innerHTML = `<tr>${cols.map(col => {
+      const classes = [];
+      if (!col.nosort && sortCol === col.key) classes.push(sortDir);
+      const attr = col.nosort ? "" : `data-col="${col.key}"`;
+      return `<th class="${classes.join(" ")}" ${attr}>${col.label}<span class="sort-icon"></span></th>`;
+    }).join("")}</tr>`;
+
+    document.querySelectorAll("thead th[data-col]").forEach(th => {
+      th.addEventListener("click", () => {
+        const col = th.dataset.col;
+        sortDir = sortCol === col && sortDir === "desc" ? "asc" : "desc";
+        sortCol = col;
+        render();
+      });
+    });
+
+    if (!jobs.length) {
+      document.getElementById("tbody").innerHTML =
+        `<tr><td colspan="${cols.length}"><div class="empty">No jobs match this view.</div></td></tr>`;
+      return;
+    }
+
+    document.getElementById("tbody").innerHTML = jobs.map((job, idx) => {
+      const scoreValue = numberOr(job.score, 0);
+      const scoreNum   = `<span class="score-num ${scoreClass(scoreValue)}">${scoreValue}</span>`;
+
+      const matchValue = Math.max(0, Math.round(numberOr(job.score_pct, 0)));
+      const matchCls   = matchValue >= 70 ? "badge-match-high" : matchValue >= 40 ? "badge-match-medium" : "badge-match-low";
+      const matchBadge = `<span class="badge ${matchCls}">${matchValue}%</span>`;
+
+      const level    = job.level || "Unlabeled";
+      const lvlCls   = { "New Grad": "badge-newgrad", "Entry": "badge-entry", "Mid": "badge-mid" }[level] || "badge-unknown";
+      const lvlBadge = `<span class="badge ${lvlCls}">${escapeHtml(level)}</span>`;
+
+      const minExp = job.min_exp, maxExp = job.max_exp;
+      let expBadge = `<span class="badge badge-exp-none">--</span>`;
+      if (minExp != null || maxExp != null) {
+        const mn = numberOr(minExp, 0);
+        const mx = maxExp == null ? mn : numberOr(maxExp, mn);
+        expBadge = `<span class="badge badge-exp">${mx > mn ? `${mn}–${mx}y` : `${mn}y`}</span>`;
+      }
+
+      const comp    = numberOr(job.competition_score, 0);
+      const compCls = comp >= 7 ? "badge-comp-high" : comp >= 4 ? "badge-comp-medium" : "badge-comp-low";
+      const compCell = `<td><span class="badge ${compCls}">${comp}</span></td>`;
+
+      const seenLabel = job.scraped_date ? dayLabel(job.scraped_date) : "--";
+      const seenCell  = `<td class="td-date"><span class="badge-day">${escapeHtml(seenLabel)}</span></td>`;
+
+      const site     = job.site ? escapeHtml(job.site) : "";
+      const metaParts = [site].filter(Boolean).join(" · ");
+      const posted   = formatPosted(job.date_posted);
+      const url      = safeUrl(job.job_url);
+      const apply    = url
+        ? `<a class="apply-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Apply</a>`
+        : `<span class="na">—</span>`;
+
+      return `<tr style="--row-delay:${Math.min(idx * 12, 260)}ms">
+        <td class="td-num">${idx + 1}</td>
+        <td class="td-title">
+          <div class="title-cell">
+            <strong>${escapeHtml(job.title || "Untitled role")}</strong>
+            <div class="title-meta">${metaParts || "Role listing"}</div>
+          </div>
+        </td>
+        <td class="td-company">
+          <div class="company-cell">
+            <strong>${escapeHtml(job.company || "—")}</strong>
+            <span>${escapeHtml(job.location || "Remote")}</span>
+          </div>
+        </td>
+        <td>${lvlBadge}</td>
+        <td>${scoreNum}</td>
+        <td>${matchBadge}</td>
+        ${compCell}
+        <td>${expBadge}</td>
+        ${seenCell}
+        <td class="td-date">${escapeHtml(posted)}</td>
+        <td>${apply}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  // ── Events ────────────────────────────────────────────────────────────────────
+
+  document.getElementById("search").addEventListener("input", e => {
+    query = e.target.value;
+    render();
+  });
+
+  loadAll();
+</script>
+</body>
+</html>
