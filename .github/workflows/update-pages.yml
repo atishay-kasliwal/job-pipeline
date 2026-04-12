@@ -45,6 +45,7 @@ jobs:
           cp docs/important_jobs.json atriveo-app/public/
           cp docs/today_jobs.json     atriveo-app/public/
           cp docs/yesterday_jobs.json atriveo-app/public/
+          cp docs/week_jobs.json      atriveo-app/public/
           cp docs/run_history.json    atriveo-app/public/
           cp docs/metadata.json       atriveo-app/public/
 
