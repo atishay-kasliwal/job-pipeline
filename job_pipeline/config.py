@@ -76,6 +76,8 @@ COMPANY_EXCLUDE: list[str] = [
     "turing",
     "micro1",
     "hackajob",
+    "sundayy",
+    "jobright.ai"
 ]
 
 ROLE_EXCLUDE_KEYWORDS: list[str] = [
