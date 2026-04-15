@@ -108,6 +108,10 @@ ROLE_EXCLUDE_KEYWORDS: list[str] = [
     "therapist",
     "electrical engineer",
     "electrical engineering",
+    "nurse",
+    "nursing",
+    "registered nurse",
+    "clinical nurse",
 ]
 
 # ── Location filter ───────────────────────────────────────────────────────────
