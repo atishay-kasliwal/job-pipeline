@@ -199,14 +199,14 @@ def calculate_score(row: pd.Series) -> dict:
     Compute all score signals for one job row.
 
     Returns a dict with:
-      score            — raw integer (may be -999 for hard-filtered jobs)
+      score            — raw integer
       score_pct        — 0-100 normalised against SCORE_MAX_RAW
       competition_score — estimated applicant competition (higher = worse)
     """
     text = _combined_text(row)
 
-    if should_skip(text):
-        return {"score": -999, "score_pct": 0, "competition_score": 0}
+    if should_skip(text) and not _is_top500(row):
+        return {"score": 0, "score_pct": 0, "competition_score": 0}
 
     ks = keyword_score(text)
     sb = synergy_bonus(text)
