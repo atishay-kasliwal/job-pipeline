@@ -20,8 +20,8 @@ metadata:
     app: job-pipeline
     component: scraper
 spec:
-  # Every hour at :00
-  schedule: "0 * * * *"
+  # Every hour 7am–12pm ET (11:00–16:00 UTC); note: shifts 1h in winter (EST)
+  schedule: "0 11-16 * * *"
   concurrencyPolicy: Forbid          # skip if previous run still active
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3

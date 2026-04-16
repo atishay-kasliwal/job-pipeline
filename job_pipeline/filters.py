@@ -89,17 +89,31 @@ def filter_by_location(
 
     Rows with an empty/null location are kept (they may be fully remote).
 
+    Full state names (>2 chars) use substring matching.
+    Two-letter abbreviations use word-boundary matching to avoid false positives
+    like "ga" matching "singapore" or "in" matching "india".
+
     Args:
         df: Input DataFrame.
         allowed_states: Override the default list from config.ALLOWED_STATES.
     """
-    states_lower = [s.lower() for s in (allowed_states or ALLOWED_STATES)]
+    states = allowed_states or ALLOWED_STATES
+    full_names = [s.lower() for s in states if len(s) > 2]
+    abbrevs = [s.lower() for s in states if len(s) == 2]
+    abbrev_re = re.compile(
+        r'\b(?:' + '|'.join(re.escape(a) for a in abbrevs) + r')\b',
+        re.IGNORECASE,
+    ) if abbrevs else None
 
     def _passes(row: pd.Series) -> bool:
         loc = str(row.get("location", "") or "").lower()
         if not loc:
             return True  # unknown location → keep (may be remote)
-        return any(state in loc for state in states_lower)
+        if any(name in loc for name in full_names):
+            return True
+        if abbrev_re and abbrev_re.search(loc):
+            return True
+        return False
 
     before = len(df)
     result = df[df.apply(_passes, axis=1)].copy()
