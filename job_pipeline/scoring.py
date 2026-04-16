@@ -13,17 +13,22 @@ import pandas as pd
 from job_pipeline.config import (
     BIG_TECH_COMPANIES,
     H1B_SCORE_BONUS,
+    TOP500_SCORE_BONUS,
     LEVEL_SCORES,
     PERSONAL_STACK,
     SCORE_MAX_RAW,
     SYNERGY_COMBOS,
     H1B_2026_CSV,
+    TOP_500_COMPANIES_CSV,
 )
 
 logger = logging.getLogger(__name__)
 
 # Module-level H1B set — loaded once from h1b_2026.csv.
 _h1b_companies: set[str] | None = None
+
+# Module-level Top-500 set — loaded once from top_500_companies.csv.
+_top500_companies: set[str] | None = None
 
 
 def _get_h1b_companies() -> set[str]:
@@ -36,6 +41,18 @@ def _get_h1b_companies() -> set[str]:
             logger.warning("Could not load H1B company list: %s", exc)
             _h1b_companies = set()
     return _h1b_companies
+
+
+def _get_top500_companies() -> set[str]:
+    global _top500_companies
+    if _top500_companies is None:
+        try:
+            from job_pipeline.important_filter import load_top_companies
+            _top500_companies = load_top_companies(TOP_500_COMPANIES_CSV)
+        except Exception as exc:
+            logger.warning("Could not load Top-500 company list: %s", exc)
+            _top500_companies = set()
+    return _top500_companies
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -82,6 +99,12 @@ def _is_big_tech(row: pd.Series) -> bool:
 def _is_h1b_sponsor(row: pd.Series) -> bool:
     company = str(row.get("company", "") or "").strip().lower()
     return company in _get_h1b_companies()
+
+
+def _is_top500(row: pd.Series) -> bool:
+    from job_pipeline.important_filter import _norm_company
+    company = str(row.get("company", "") or "")
+    return _norm_company(company) in _get_top500_companies()
 
 
 # ── Scoring components ────────────────────────────────────────────────────────
@@ -198,6 +221,7 @@ def calculate_score(row: pd.Series) -> dict:
 
     big_tech = _is_big_tech(row)
     h1b      = _is_h1b_sponsor(row)
+    top500   = _is_top500(row)
 
     raw = (
         ks
@@ -208,6 +232,7 @@ def calculate_score(row: pd.Series) -> dict:
         + ss
         + (2 if big_tech else 0)
         + (H1B_SCORE_BONUS if h1b else 0)
+        + (TOP500_SCORE_BONUS if top500 else 0)
     )
     pct = min(100, max(0, round(raw / SCORE_MAX_RAW * 100)))
 

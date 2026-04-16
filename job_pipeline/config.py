@@ -287,6 +287,9 @@ LEVEL_SCORES: dict[str, int] = {
 # H1B sponsor bonus — applied when the company appears in h1b_2026.csv.
 H1B_SCORE_BONUS: int = 8
 
+# Top-500 company bonus — lifts well-matched roles at top US companies.
+TOP500_SCORE_BONUS: int = 50
+
 # Practical maximum raw score used for % normalisation.
 # Represents a near-perfect job match (not every keyword firing at once).
 SCORE_MAX_RAW: int = 130
