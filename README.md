@@ -2,8 +2,8 @@
 
 An end-to-end automated system that scrapes, filters, scores, and publishes early-career software engineering job postings — personalized for H1B sponsorship, tech-stack fit, and target company lists — with a live dashboard updated hourly.
 
-**Live dashboard →** https://atriveo-airflow.github.io  
-**Admin analytics →** https://atriveo-airflow.github.io/admin
+**Live dashboard →** https://application.atriveo.com  
+**Admin analytics →** https://application.atriveo.com/admin
 
 ---
 
@@ -11,9 +11,7 @@ An end-to-end automated system that scrapes, filters, scores, and publishes earl
 
 > Dashboard with 5 pipeline tabs, real-time search, level/location filters, and hourly run history
 
-![Dashboard](https://atriveo-airflow.github.io)
-
-Live: **https://atriveo-airflow.github.io**
+Live: **https://application.atriveo.com**
 
 ---
 
@@ -66,7 +64,7 @@ macOS cron (~20x/day)
         └──► deploy.py          GitHub Contents API → GitHub Pages dashboard
                                         │
                                         ▼
-                          atriveo-airflow.github.io
+                          application.atriveo.com
                           (5 tabs · run history · admin analytics)
 ```
 
