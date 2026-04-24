@@ -326,15 +326,9 @@ def main() -> None:
             )
             _print("Keywords Pipeline", df)
 
-        if deploy_once_at_end:
-            from job_pipeline.deploy import deploy_output
-            try:
-                deploy_output()
-            except Exception as exc:
-                logging.error("Final dashboard deploy failed (non-fatal): %s", exc)
-
-        # Trigger the export workflow immediately after scraping
-        # so data is live within ~2 min instead of waiting for the :30 cron.
+        # Trigger the GitHub Actions export workflow so data is live within ~2 min
+        # instead of waiting for the :30 cron. Works with GITHUB_TOKEN env var
+        # or gh CLI token (gh auth login).
         from job_pipeline.trigger_export import trigger_export
         trigger_export()
 

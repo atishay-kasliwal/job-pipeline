@@ -5,6 +5,7 @@ instead of waiting for the :30 cron schedule (which can be delayed 30-60 min).
 """
 import logging
 import os
+import subprocess
 
 import httpx
 
@@ -15,14 +16,40 @@ WORKFLOW_FILE = "update-pages.yml"
 GITHUB_API = "https://api.github.com"
 
 
+def _resolve_token() -> str:
+    """
+    Resolve a GitHub token from the environment or the gh CLI.
+
+    Priority:
+    1. GITHUB_TOKEN env var
+    2. gh auth token (uses existing gh CLI session)
+    """
+    token = os.getenv("GITHUB_TOKEN", "").strip()
+    if token:
+        return token
+
+    try:
+        result = subprocess.run(
+            ["gh", "auth", "token"],
+            capture_output=True, text=True, check=True,
+        )
+        token = result.stdout.strip()
+        if token:
+            return token
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pass
+
+    return ""
+
+
 def trigger_export() -> bool:
     """
     Dispatch the update-pages workflow. Returns True on success.
-    Requires GITHUB_TOKEN env var with workflow dispatch permissions.
+    Uses GITHUB_TOKEN env var or falls back to gh CLI token.
     """
-    token = os.getenv("GITHUB_TOKEN")
+    token = _resolve_token()
     if not token:
-        logger.warning("GITHUB_TOKEN not set — skipping export trigger.")
+        logger.warning("No GitHub token found — skipping export trigger. Run `gh auth login` or set GITHUB_TOKEN.")
         return False
 
     url = f"{GITHUB_API}/repos/{GITHUB_REPO}/actions/workflows/{WORKFLOW_FILE}/dispatches"
