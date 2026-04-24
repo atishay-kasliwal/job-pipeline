@@ -313,6 +313,22 @@ def save_descriptions(df: pd.DataFrame, output_dir: Path) -> None:
         logger.info("descriptions.json: +%d new descriptions (%d total).", added, len(existing))
 
 
+def save_resume(text: str) -> None:
+    """Upsert the user's resume text into MongoDB (single document)."""
+    _col("resume").replace_one(
+        {},
+        {"text": text, "updated_at": datetime.now(tz=timezone.utc)},
+        upsert=True,
+    )
+    logger.info("Resume saved to MongoDB (%d chars).", len(text))
+
+
+def get_resume() -> str | None:
+    """Return the stored resume text, or None if not set."""
+    doc = _col("resume").find_one({}, {"_id": 0, "text": 1})
+    return doc.get("text") if doc else None
+
+
 def upsert_descriptions(df: pd.DataFrame) -> int:
     """
     Upsert job_url → description pairs to the MongoDB ``descriptions`` collection.

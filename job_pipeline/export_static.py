@@ -318,6 +318,66 @@ def _clean(text: str) -> str:
     return re.sub(r"\s+", " ", text)
 
 
+def compute_job_scores(resume_text: str, job_urls: list[str]) -> dict[str, dict]:
+    """
+    Compute ATS + Fit scores for the given job URLs against the stored resume.
+
+    ATS Score  — % of the JD's skill keywords that appear in the resume.
+    Fit Score  — TF-IDF cosine similarity between resume and full JD text (0-100).
+
+    Returns {job_url: {"ats_score": int, "fit_score": int}}.
+    """
+    try:
+        from sklearn.feature_extraction.text import TfidfVectorizer
+        from sklearn.metrics.pairwise import cosine_similarity
+    except ImportError:
+        logger.warning("scikit-learn not installed — skipping job score computation.")
+        return {}
+
+    from job_pipeline.storage import get_db
+    db = get_db()
+
+    docs = list(db["descriptions"].find(
+        {"job_url": {"$in": job_urls}},
+        {"_id": 0, "job_url": 1, "description": 1},
+    ))
+    if not docs:
+        logger.info("No descriptions found for scoring — skipping.")
+        return {}
+
+    url_to_desc = {d["job_url"]: d["description"] for d in docs}
+    urls = list(url_to_desc.keys())
+    resume_lower = resume_text.lower()
+
+    # TF-IDF fit scores
+    texts = [resume_text] + [url_to_desc[u] for u in urls]
+    vectorizer = TfidfVectorizer(max_features=8000, stop_words="english", ngram_range=(1, 2))
+    tfidf = vectorizer.fit_transform(texts)
+    similarities = cosine_similarity(tfidf[0:1], tfidf[1:])[0]
+
+    result: dict[str, dict] = {}
+    for i, url in enumerate(urls):
+        desc_lower = url_to_desc[url].lower()
+
+        # ATS score: keyword overlap between JD skills and resume skills
+        jd_skills: set[str] = set()
+        matched: set[str] = set()
+        for cat in _SKILL_CATEGORIES.values():
+            for canonical, patterns in cat["skills"]:
+                compiled = [re.compile(p) for p in patterns]
+                if any(c.search(desc_lower) for c in compiled):
+                    jd_skills.add(canonical)
+                    if any(c.search(resume_lower) for c in compiled):
+                        matched.add(canonical)
+        ats = int(len(matched) / len(jd_skills) * 100) if jd_skills else 0
+
+        fit = int(round(float(similarities[i]) * 100))
+        result[url] = {"ats_score": ats, "fit_score": fit}
+
+    logger.info("Computed scores for %d jobs (ATS + Fit).", len(result))
+    return result
+
+
 def export_skills_summary() -> dict:
     """
     Build skill frequency counts from the MongoDB ``descriptions`` collection.
@@ -368,7 +428,15 @@ def run_export() -> None:
     Export both pipelines to docs/ and write a metadata file.
     Creates docs/ if it does not exist.
     """
+    import os
+    from job_pipeline.storage import get_resume, save_resume
+
     DOCS_DIR.mkdir(exist_ok=True)
+
+    # Allow resume to be injected via env var (e.g. from workflow_dispatch input)
+    resume_input = os.getenv("RESUME_TEXT", "").strip()
+    if resume_input:
+        save_resume(resume_input)
 
     standard_jobs   = export_pipeline("standard")
     important_jobs  = export_pipeline("important")
@@ -377,6 +445,26 @@ def run_export() -> None:
     week_jobs       = export_week_jobs()
     run_history     = export_run_history()
     skills_summary  = export_skills_summary()
+
+    # Attach ATS + Fit scores if a resume is available
+    resume = get_resume()
+    if resume:
+        all_urls = list({
+            j["job_url"]
+            for jobs_list in [today_jobs, yesterday_jobs, week_jobs]
+            for j in jobs_list
+            if j.get("job_url")
+        })
+        scores = compute_job_scores(resume, all_urls)
+        if scores:
+            for jobs_list in [standard_jobs, important_jobs, today_jobs, yesterday_jobs, week_jobs]:
+                for job in jobs_list:
+                    s = scores.get(job.get("job_url", ""))
+                    if s:
+                        job["ats_score"] = s["ats_score"]
+                        job["fit_score"] = s["fit_score"]
+    else:
+        logger.info("No resume stored — skipping ATS/Fit scoring.")
 
     metadata = {
         "last_updated":    datetime.now(tz=timezone.utc).isoformat(),

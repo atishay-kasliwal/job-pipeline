@@ -5,6 +5,12 @@ on:
     # Every hour at :30, 7am–12pm ET (11:30–16:30 UTC); note: shifts 1h in winter (EST)
     - cron: "30 11-16 * * *"
   workflow_dispatch:
+    inputs:
+      resume_text:
+        description: "Resume text for ATS/Fit scoring (updates stored resume)"
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -28,11 +34,12 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install "pymongo[srv]>=4.6.0" "pandas>=2.0.0" "python-dotenv>=1.0.0"
+        run: pip install "pymongo[srv]>=4.6.0" "pandas>=2.0.0" "python-dotenv>=1.0.0" "scikit-learn>=1.3.0"
 
       - name: Export job data from MongoDB → docs/
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
+          RESUME_TEXT: ${{ inputs.resume_text }}
         run: python -m job_pipeline.export_static
 
       - name: Checkout atriveo-app repo
