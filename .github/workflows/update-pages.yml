@@ -45,13 +45,14 @@ jobs:
       - name: Copy JSON files to atriveo-app/public/
         run: |
           mkdir -p atriveo-app/public
-          cp docs/jobs.json           atriveo-app/public/
-          cp docs/important_jobs.json atriveo-app/public/
-          cp docs/today_jobs.json     atriveo-app/public/
-          cp docs/yesterday_jobs.json atriveo-app/public/
-          cp docs/week_jobs.json      atriveo-app/public/
-          cp docs/run_history.json    atriveo-app/public/
-          cp docs/metadata.json       atriveo-app/public/
+          cp docs/jobs.json              atriveo-app/public/
+          cp docs/important_jobs.json    atriveo-app/public/
+          cp docs/today_jobs.json        atriveo-app/public/
+          cp docs/yesterday_jobs.json    atriveo-app/public/
+          cp docs/week_jobs.json         atriveo-app/public/
+          cp docs/run_history.json       atriveo-app/public/
+          cp docs/metadata.json          atriveo-app/public/
+          cp docs/skills_summary.json    atriveo-app/public/
 
       - name: Commit and push to atriveo-app
         run: |

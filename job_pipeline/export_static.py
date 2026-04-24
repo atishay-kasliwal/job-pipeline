@@ -13,6 +13,7 @@ docs/metadata.json       — last_updated timestamp + counts
 import json
 import logging
 import os
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -220,6 +221,134 @@ def export_week_jobs() -> list[dict]:
     return [_serialise(j) for j in unique]
 
 
+# ── Skills summary ────────────────────────────────────────────────────────────
+
+_SKILL_CATEGORIES: dict[str, dict] = {
+    "Languages": {"color": "#3b82f6", "skills": [
+        ("Python", ["python"]), ("Java", ["\\bjava\\b"]), ("JavaScript", ["javascript"]),
+        ("TypeScript", ["typescript"]), ("Go", ["golang", "go developer", "written in go"]),
+        ("Scala", ["\\bscala\\b"]), ("Kotlin", ["kotlin"]), ("C#", ["\\bc#\\b", "csharp"]),
+        ("C++", ["c\\+\\+", "\\bcpp\\b"]), ("Rust", ["\\brust\\b"]), ("Ruby", ["\\bruby\\b"]),
+        (".NET", ["\\.net\\b", "dotnet"]), ("Swift", ["\\bswift\\b"]), ("PHP", ["\\bphp\\b"]),
+        ("SQL", ["\\bsql\\b"]), ("Bash/Shell", ["\\bbash\\b", "shell scripting"]),
+        ("HTML/CSS", ["\\bhtml\\b", "\\bcss\\b"]),
+    ]},
+    "Frameworks & Libraries": {"color": "#8b5cf6", "skills": [
+        ("Spring Boot", ["spring boot"]), ("Spring", ["\\bspring\\b"]), ("FastAPI", ["fastapi"]),
+        ("Django", ["django"]), ("Flask", ["\\bflask\\b"]), ("Express", ["express\\.js", "\\bexpress\\b"]),
+        ("NestJS", ["nestjs"]), ("React", ["\\breact\\b", "react\\.js"]),
+        ("Next.js", ["next\\.js", "nextjs"]), ("Vue", ["\\bvue\\b"]), ("Angular", ["angular"]),
+        ("Node.js", ["node\\.js", "nodejs"]), ("GraphQL", ["graphql"]),
+        ("Rails", ["ruby on rails", "\\brails\\b"]), ("LangChain", ["langchain"]),
+        ("Pandas", ["pandas"]), ("NumPy", ["numpy"]), ("Scikit-learn", ["scikit.learn", "sklearn"]),
+        ("PyTorch", ["pytorch"]), ("TensorFlow", ["tensorflow"]),
+        ("Playwright", ["playwright"]), ("Selenium", ["selenium"]),
+    ]},
+    "Cloud": {"color": "#f59e0b", "skills": [
+        ("AWS", ["\\baws\\b", "amazon web services"]), ("GCP", ["\\bgcp\\b", "google cloud"]),
+        ("Azure", ["\\bazure\\b"]), ("Lambda", ["\\blambda\\b"]), ("ECS", ["\\becs\\b"]),
+        ("EKS", ["\\beks\\b"]), ("EC2", ["\\bec2\\b"]), ("S3", ["\\bs3\\b"]),
+        ("DynamoDB", ["dynamodb"]), ("SQS", ["\\bsqs\\b"]), ("Kinesis", ["kinesis"]),
+        ("CloudWatch", ["cloudwatch"]), ("API Gateway", ["api gateway"]),
+        ("Cloud Run", ["cloud run"]), ("GKE", ["\\bgke\\b"]), ("Serverless", ["serverless"]),
+    ]},
+    "Backend & Architecture": {"color": "#0ea5e9", "skills": [
+        ("Microservices", ["microservices"]), ("REST API", ["rest api", "restful", "\\brest\\b"]),
+        ("Distributed Systems", ["distributed systems"]), ("Event-Driven", ["event.driven"]),
+        ("Kafka", ["kafka"]), ("RabbitMQ", ["rabbitmq"]), ("gRPC", ["\\bgrpc\\b"]),
+        ("WebSocket", ["websocket"]), ("System Design", ["system design"]),
+        ("Scalability", ["scalab", "horizontal scaling"]),
+        ("Caching", ["\\bcaching\\b", "cache layer"]), ("API Design", ["api design"]),
+        ("Load Balancing", ["load balanc"]), ("Service Mesh", ["service mesh", "\\bistio\\b"]),
+    ]},
+    "DevOps & Infrastructure": {"color": "#10b981", "skills": [
+        ("Docker", ["docker"]), ("Kubernetes", ["kubernetes", "\\bk8s\\b"]),
+        ("Terraform", ["terraform"]),
+        ("CI/CD", ["ci/cd", "continuous integration", "continuous deploy"]),
+        ("GitHub Actions", ["github actions"]), ("Jenkins", ["jenkins"]),
+        ("Helm", ["\\bhelm\\b"]), ("ArgoCD", ["argocd"]), ("Ansible", ["ansible"]),
+        ("Prometheus", ["prometheus"]), ("Grafana", ["grafana"]), ("Datadog", ["datadog"]),
+        ("OpenTelemetry", ["opentelemetry", "\\botel\\b"]), ("Linux", ["linux"]),
+        ("Git", ["\\bgit\\b"]),
+    ]},
+    "Data & Storage": {"color": "#f43f5e", "skills": [
+        ("PostgreSQL", ["postgresql", "postgres"]), ("MySQL", ["mysql"]),
+        ("MongoDB", ["mongodb"]), ("Redis", ["redis"]),
+        ("Elasticsearch", ["elasticsearch", "opensearch"]), ("Cassandra", ["cassandra"]),
+        ("BigQuery", ["bigquery"]), ("Snowflake", ["snowflake"]), ("ClickHouse", ["clickhouse"]),
+        ("Spark", ["apache spark", "pyspark", "\\bspark\\b"]), ("Airflow", ["airflow"]),
+        ("dbt", ["\\bdbt\\b"]), ("Databricks", ["databricks"]), ("Kafka", ["kafka"]),
+        ("Flink", ["\\bflink\\b"]),
+        ("ETL/ELT", ["\\betl\\b", "\\belt\\b", "data pipeline", "data ingestion"]),
+        ("Vector DB", ["vector database", "vector db", "pinecone", "weaviate", "qdrant"]),
+    ]},
+    "AI & Machine Learning": {"color": "#ec4899", "skills": [
+        ("LLM", ["\\bllm\\b", "large language model"]), ("GenAI", ["generative ai", "\\bgenai\\b"]),
+        ("RAG", ["\\brag\\b", "retrieval.augmented"]), ("OpenAI", ["openai", "gpt-4"]),
+        ("PyTorch", ["pytorch"]), ("TensorFlow", ["tensorflow"]),
+        ("Hugging Face", ["hugging face", "huggingface", "transformers"]),
+        ("LangChain", ["langchain"]),
+        ("Machine Learning", ["machine learning"]), ("Deep Learning", ["deep learning"]),
+        ("NLP", ["\\bnlp\\b", "natural language processing"]), ("MLflow", ["mlflow"]),
+        ("Agents", ["ai agent", "llm agent", "agentic"]),
+        ("Fine-tuning", ["fine.tun", "\\brlhf\\b"]),
+        ("Embeddings", ["embeddings", "vector embeddings"]),
+        ("Prompt Eng", ["prompt engineering"]),
+        ("Vertex AI", ["vertex ai"]), ("SageMaker", ["sagemaker"]),
+    ]},
+    "Security": {"color": "#6366f1", "skills": [
+        ("OAuth/OIDC", ["oauth", "\\boidc\\b"]), ("JWT", ["\\bjwt\\b"]),
+        ("TLS/SSL", ["\\btls\\b", "\\bssl\\b"]),
+        ("IAM", ["aws iam", "iam roles", "iam policies", "identity.*access management"]),
+        ("Zero Trust", ["zero trust"]), ("SOC 2", ["soc 2", "soc2"]),
+        ("GDPR", ["gdpr"]), ("RBAC", ["\\brbac\\b"]), ("Encryption", ["encrypt"]),
+    ]},
+    "Soft Skills & Process": {"color": "#64748b", "skills": [
+        ("Agile/Scrum", ["agile", "scrum"]), ("Cross-functional", ["cross.functional"]),
+        ("Mentorship", ["mentor"]), ("Code Review", ["code review"]),
+        ("On-call", ["on.call", "oncall"]), ("Leadership", ["tech lead", "technical lead"]),
+    ]},
+}
+
+
+def _clean(text: str) -> str:
+    text = re.sub(r"\*+", " ", text)
+    text = re.sub(r"\\-", "-", text)
+    text = text.lower()
+    return re.sub(r"\s+", " ", text)
+
+
+def export_skills_summary() -> dict:
+    """
+    Build skill frequency counts from the MongoDB ``descriptions`` collection.
+    Returns a dict ready to write as skills_summary.json.
+    """
+    from job_pipeline.storage import get_db
+    db = get_db()
+
+    docs = list(db["descriptions"].find({}, {"_id": 0, "description": 1}))
+    texts = [_clean(d["description"]) for d in docs if d.get("description")]
+    total = len(texts)
+    logger.info("Building skills summary from %d descriptions.", total)
+
+    categories_out: dict = {}
+    for cat, meta in _SKILL_CATEGORIES.items():
+        skills_out: dict[str, int] = {}
+        for canonical, patterns in meta["skills"]:
+            compiled = [re.compile(p) for p in patterns]
+            count = sum(1 for t in texts if any(c.search(t) for c in compiled))
+            if count > 0:
+                skills_out[canonical] = count
+        skills_out = dict(sorted(skills_out.items(), key=lambda x: x[1], reverse=True))
+        categories_out[cat] = {"color": meta["color"], "skills": skills_out}
+
+    return {
+        "generated_at": datetime.now(tz=timezone.utc).isoformat(),
+        "total_analyzed": total,
+        "categories": categories_out,
+    }
+
+
 def export_run_history() -> list[dict]:
     """Fetch recent run history from MongoDB sessions in the format the frontend expects."""
     from job_pipeline.storage import get_db
@@ -247,6 +376,7 @@ def run_export() -> None:
     yesterday_jobs  = export_yesterday_jobs()
     week_jobs       = export_week_jobs()
     run_history     = export_run_history()
+    skills_summary  = export_skills_summary()
 
     metadata = {
         "last_updated":    datetime.now(tz=timezone.utc).isoformat(),
@@ -257,13 +387,14 @@ def run_export() -> None:
         "dashboard_tz":    _tz_name,
     }
 
-    _write_json(DOCS_DIR / "jobs.json",           standard_jobs)
-    _write_json(DOCS_DIR / "important_jobs.json", important_jobs)
-    _write_json(DOCS_DIR / "today_jobs.json",     today_jobs)
-    _write_json(DOCS_DIR / "yesterday_jobs.json", yesterday_jobs)
-    _write_json(DOCS_DIR / "week_jobs.json",      week_jobs)
-    _write_json(DOCS_DIR / "run_history.json",    run_history)
-    _write_json(DOCS_DIR / "metadata.json",       metadata)
+    _write_json(DOCS_DIR / "jobs.json",             standard_jobs)
+    _write_json(DOCS_DIR / "important_jobs.json",   important_jobs)
+    _write_json(DOCS_DIR / "today_jobs.json",       today_jobs)
+    _write_json(DOCS_DIR / "yesterday_jobs.json",   yesterday_jobs)
+    _write_json(DOCS_DIR / "week_jobs.json",        week_jobs)
+    _write_json(DOCS_DIR / "run_history.json",      run_history)
+    _write_json(DOCS_DIR / "metadata.json",         metadata)
+    _write_json(DOCS_DIR / "skills_summary.json",   skills_summary)
 
     logger.info(
         "Export complete — %d standard, %d important, %d weekly jobs.",

@@ -313,6 +313,42 @@ def save_descriptions(df: pd.DataFrame, output_dir: Path) -> None:
         logger.info("descriptions.json: +%d new descriptions (%d total).", added, len(existing))
 
 
+def upsert_descriptions(df: pd.DataFrame) -> int:
+    """
+    Upsert job_url → description pairs to the MongoDB ``descriptions`` collection.
+
+    Uses $setOnInsert so existing descriptions are never overwritten.
+    Returns the number of new documents inserted.
+    """
+    if "description" not in df.columns:
+        return 0
+
+    ops = []
+    for _, row in df.iterrows():
+        url = row.get("job_url")
+        desc = row.get("description")
+        if url and desc and not pd.isna(desc):
+            ops.append(
+                UpdateOne(
+                    {"job_url": url},
+                    {"$setOnInsert": {"job_url": url, "description": str(desc)}},
+                    upsert=True,
+                )
+            )
+
+    if not ops:
+        return 0
+
+    try:
+        result = _col("descriptions").bulk_write(ops, ordered=False)
+        inserted = result.upserted_count
+    except BulkWriteError as exc:
+        inserted = exc.details.get("nUpserted", 0)
+
+    logger.info("descriptions (MongoDB): +%d new entries (%d submitted).", inserted, len(ops))
+    return inserted
+
+
 def _snapshot_filename(session_id: str, pipeline: str) -> str:
     """Return a filesystem-safe snapshot filename for a run."""
     safe_sid = session_id.replace(":", "-")
