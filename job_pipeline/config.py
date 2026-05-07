@@ -56,7 +56,6 @@ ROLE_INCLUDE_KEYWORDS: list[str] = [
     "new grad",
     "machine learning",
     "data scientist",
-    "data engineer",
     "ml engineer",
     "ai engineer",
     "applied scientist",

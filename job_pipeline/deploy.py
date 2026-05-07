@@ -36,6 +36,7 @@ logger = logging.getLogger(__name__)
 DASHBOARD_REPO = "atriveo-airflow/atriveo-airflow.github.io"
 GITHUB_API = "https://api.github.com"
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output"
+DOCS_SOURCE_DIR = Path(__file__).resolve().parent.parent / "docs"
 
 
 # ── Auth ──────────────────────────────────────────────────────────────────────
@@ -123,6 +124,17 @@ def _read_json(path: Path) -> list:
     return json.loads(path.read_text()) if path.exists() else []
 
 
+def _put_local_file(local_path: Path, remote_path: str, message: str, hdrs: dict) -> bool:
+    """
+    Push a local static file (e.g., dashboard HTML) if present.
+    Missing files are skipped without failing deploy.
+    """
+    if not local_path.exists():
+        logger.warning("Skipping missing local file: %s", local_path)
+        return True
+    return _put_file(remote_path, local_path.read_text(), message, hdrs)
+
+
 def _push_run_snapshots(hdrs: dict, message: str, max_snapshots: int = 48) -> list[bool]:
     """
     Push per-run snapshot files from ``output/runs/`` to ``docs/runs/``.
@@ -196,6 +208,9 @@ def _deploy(
         return json.dumps(obj, indent=2, default=str)
 
     results = [
+        _put_local_file(DOCS_SOURCE_DIR / "index.html",         "docs/index.html",         message, hdrs),
+        _put_local_file(DOCS_SOURCE_DIR / "weekly.html",        "docs/weekly.html",        message, hdrs),
+        _put_local_file(DOCS_SOURCE_DIR / "unclicked_100.html", "docs/unclicked_100.html", message, hdrs),
         _put_file("docs/jobs.json",           _enc(jobs),              message, hdrs),
         _put_file("docs/important_jobs.json", _enc(important),         message, hdrs),
         _put_file("docs/top500_jobs.json",    _enc(top500 or []),      message, hdrs),
