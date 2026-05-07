@@ -770,6 +770,7 @@
       <nav style="display:flex;align-items:center;gap:4px;border:1px solid var(--line-soft);border-radius:var(--radius-sm);overflow:hidden;background:rgba(8,16,26,0.45);">
         <a href="index.html" style="appearance:none;border:0;color:#001a17;background:linear-gradient(145deg,#62eee1 0%,#35c9bb 100%);font-size:12px;font-weight:600;padding:7px 14px;font-family:'IBM Plex Mono',monospace;text-decoration:none;display:inline-flex;align-items:center;">Live Feed</a>
         <a href="weekly.html" style="appearance:none;border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:600;padding:7px 14px;font-family:'IBM Plex Mono',monospace;text-decoration:none;display:inline-flex;align-items:center;transition:background 160ms ease,color 160ms ease;" onmouseover="this.style.color='var(--text)';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.color='var(--muted)';this.style.background='transparent'">Weekly</a>
+        <a href="unclicked_100.html" style="appearance:none;border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:600;padding:7px 14px;font-family:'IBM Plex Mono',monospace;text-decoration:none;display:inline-flex;align-items:center;transition:background 160ms ease,color 160ms ease;" onmouseover="this.style.color='var(--text)';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.color='var(--muted)';this.style.background='transparent'">100+ Unclicked</a>
       </nav>
       <span class="live-pill"><span class="live-dot"></span>Live Feed</span>
       <span class="last-updated" id="last-updated">Last updated: --</span>
@@ -843,6 +844,7 @@
 </footer>
 
 <script>
+  const CLICKED_JOBS_KEY = "atriveo_clicked_jobs";
   let standardJobs = [];
   let importantJobs = [];
   let activeTab = "standard";
@@ -909,6 +911,22 @@
     } catch {
       return null;
     }
+  }
+
+  function readClickedJobs() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(CLICKED_JOBS_KEY) || "[]");
+      return Array.isArray(parsed) ? new Set(parsed.filter(Boolean)) : new Set();
+    } catch {
+      return new Set();
+    }
+  }
+
+  function markJobClicked(url) {
+    if (!url) return;
+    const clicked = readClickedJobs();
+    clicked.add(url);
+    localStorage.setItem(CLICKED_JOBS_KEY, JSON.stringify([...clicked]));
   }
 
   function levelClass(level) {
@@ -1196,6 +1214,12 @@
   document.getElementById("search").addEventListener("input", event => {
     query = event.target.value;
     render();
+  });
+
+  document.addEventListener("click", event => {
+    const applyLink = event.target.closest(".apply-btn");
+    if (!applyLink) return;
+    markJobClicked(applyLink.getAttribute("href"));
   });
 
   loadAll();

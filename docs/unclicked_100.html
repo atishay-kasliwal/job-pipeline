@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atriveo Radar — 100+ Unclicked</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #08101a; --bg-2: #0c1624; --surface: rgba(15, 27, 42, 0.88);
+      --line: #24374f; --line-soft: rgba(70, 96, 125, 0.35); --text: #e9f1fb; --muted: #8fa4be;
+      --radius-lg: 12px; --radius-sm: 8px; --shadow: 0 22px 44px rgba(2, 8, 15, 0.35);
+    }
+    body {
+      min-height: 100vh; font-family: "Sora", "Avenir Next", "Segoe UI", sans-serif; color: var(--text);
+      background:
+        radial-gradient(circle at 16% -8%, rgba(52, 211, 196, 0.2) 0, transparent 38%),
+        radial-gradient(circle at 84% -16%, rgba(255, 171, 94, 0.2) 0, transparent 42%),
+        linear-gradient(160deg, var(--bg) 0%, var(--bg-2) 66%, #07101a 100%);
+      overflow-x: hidden;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.26;
+      background-image:
+        linear-gradient(to right, rgba(143, 164, 190, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(143, 164, 190, 0.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .wrapper { width: min(1480px, calc(100% - 32px)); margin: 0 auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 30; border-bottom: 1px solid var(--line-soft);
+      backdrop-filter: blur(12px); background: rgba(8, 16, 26, 0.78);
+    }
+    .topbar-inner {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 68px; padding: 10px 0;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center;
+      font-weight: 800; font-size: 14px; color: #04231f;
+      background: linear-gradient(145deg, #5bf0e2 0%, #32c8bc 100%);
+      box-shadow: 0 8px 20px rgba(34, 189, 174, 0.28);
+    }
+    .brand-copy { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-copy h1 { font-size: 16px; font-weight: 700; }
+    .brand-copy p {
+      margin-top: 4px; color: var(--muted); font-size: 11px; letter-spacing: 0.08em;
+      text-transform: uppercase; font-family: "IBM Plex Mono", monospace;
+    }
+    .header-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-links {
+      display: flex; align-items: center; gap: 4px; border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm); overflow: hidden; background: rgba(8, 16, 26, 0.45);
+    }
+    .nav-link {
+      border: 0; background: transparent; color: var(--muted); font-size: 12px; font-weight: 600;
+      padding: 7px 14px; transition: background 160ms ease, color 160ms ease;
+      font-family: "IBM Plex Mono", monospace; text-decoration: none; display: inline-flex; align-items: center;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: #001a17; background: linear-gradient(145deg, #62eee1 0%, #35c9bb 100%); }
+    .last-updated {
+      color: var(--muted); font-size: 12px; white-space: nowrap; font-family: "IBM Plex Mono", monospace;
+    }
+    main { padding: 16px 0 24px; }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr)); gap: 10px; margin-bottom: 12px; }
+    .stat-card {
+      border: 1px solid var(--line-soft); border-radius: var(--radius-lg); background: var(--surface);
+      box-shadow: var(--shadow); padding: 11px 12px 12px;
+    }
+    .stat-label {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+    }
+    .stat-value {
+      margin-top: 8px; line-height: 1; font-weight: 700; font-size: 28px; color: #68ece0;
+      font-variant-numeric: tabular-nums; font-family: "IBM Plex Mono", monospace;
+    }
+    .panel {
+      border: 1px solid var(--line-soft); border-radius: var(--radius-lg); background: var(--surface);
+      box-shadow: var(--shadow); backdrop-filter: blur(12px);
+    }
+    .controls { display: flex; align-items: center; gap: 8px; padding: 8px; margin-bottom: 10px; }
+    .search-box {
+      flex: 1; min-width: 160px; border: 1px solid var(--line-soft); background: rgba(6, 13, 21, 0.55);
+      color: var(--text); border-radius: var(--radius-sm); font-size: 13px; padding: 9px 12px; outline: none;
+    }
+    .result-count {
+      white-space: nowrap; color: var(--muted); font-size: 11px; padding: 0 4px; font-family: "IBM Plex Mono", monospace;
+      text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500;
+    }
+    .table-panel { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg); }
+    .table-wrap { overflow-x: auto; max-height: calc(100vh - 250px); min-height: 380px; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    thead th {
+      position: sticky; top: 0; z-index: 2; border-bottom: 1px solid var(--line); background: rgba(10, 20, 33, 0.97);
+      color: var(--muted); text-align: left; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+      font-family: "IBM Plex Mono", monospace; font-weight: 600; padding: 11px 16px;
+    }
+    tbody tr { border-bottom: 1px solid rgba(36, 55, 79, 0.6); }
+    tbody tr:last-child { border-bottom: none; }
+    td { padding: 13px 16px; font-size: 13px; white-space: nowrap; }
+    .td-num { color: var(--muted); font-size: 11px; font-family: "IBM Plex Mono", monospace; text-align: right; width: 36px; }
+    .td-title { min-width: 280px; max-width: 520px; white-space: normal; }
+    .title-cell strong { font-size: 13.5px; font-weight: 600; line-height: 1.3; }
+    .company-cell strong { font-size: 13px; font-weight: 600; color: #d8e4f3; }
+    .company-cell span, .td-date { color: var(--muted); font-size: 11.5px; font-family: "IBM Plex Mono", monospace; }
+    .score-num { font-size: 15px; font-weight: 700; font-family: "IBM Plex Mono", monospace; color: #5ee8a8; }
+    .apply-btn {
+      display: inline-flex; align-items: center; justify-content: center; min-width: 76px; border-radius: 7px; border: none;
+      background: rgba(52, 211, 196, 0.15); color: #34d3c4; font-size: 12px; font-weight: 700; padding: 7px 14px;
+      font-family: "IBM Plex Mono", monospace; text-decoration: none;
+    }
+    .empty {
+      text-align: center; color: var(--muted); font-size: 13px; padding: 52px 18px; line-height: 1.7;
+      font-family: "IBM Plex Mono", monospace;
+    }
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrapper topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div class="brand-copy">
+        <h1>Atriveo Radar</h1>
+        <p>Weekly 100+ Queue</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <nav class="nav-links">
+        <a class="nav-link" href="index.html">Live Feed</a>
+        <a class="nav-link" href="weekly.html">Weekly</a>
+        <a class="nav-link active" href="unclicked_100.html">100+ Unclicked</a>
+      </nav>
+      <span class="last-updated" id="last-updated">Last updated: --</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrapper">
+  <section class="stats">
+    <div class="stat-card">
+      <div class="stat-label">Weekly 100+</div>
+      <div class="stat-value" id="stat-total">--</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Unclicked</div>
+      <div class="stat-value" id="stat-unclicked">--</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Clicked</div>
+      <div class="stat-value" id="stat-clicked">--</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Top Score</div>
+      <div class="stat-value" id="stat-top">--</div>
+    </div>
+  </section>
+
+  <section class="panel controls">
+    <input class="search-box" id="search" type="search" placeholder="Search title, company, location..." />
+    <span class="result-count" id="result-count"></span>
+  </section>
+
+  <section class="panel table-panel">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Role</th>
+            <th>Company / Location</th>
+            <th>Score</th>
+            <th>Seen</th>
+            <th>Apply</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+  const CLICKED_JOBS_KEY = "atriveo_clicked_jobs";
+  let allHundredPlus = [];
+  let query = "";
+
+  const ESCAPE_MAP = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  function escapeHtml(value) { return String(value ?? "").replace(/[&<>"']/g, char => ESCAPE_MAP[char]); }
+
+  function readClickedJobs() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(CLICKED_JOBS_KEY) || "[]");
+      return Array.isArray(parsed) ? new Set(parsed.filter(Boolean)) : new Set();
+    } catch {
+      return new Set();
+    }
+  }
+
+  function markJobClicked(url) {
+    if (!url) return;
+    const clicked = readClickedJobs();
+    clicked.add(url);
+    localStorage.setItem(CLICKED_JOBS_KEY, JSON.stringify([...clicked]));
+  }
+
+  function safeUrl(value) {
+    if (!value) return null;
+    try {
+      const parsed = new URL(value);
+      return (parsed.protocol === "http:" || parsed.protocol === "https:") ? parsed.toString() : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function dayLabel(dateStr) {
+    if (!dateStr) return "--";
+    const d = new Date(dateStr + "T12:00:00");
+    return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  }
+
+  function updateStats() {
+    const clickedUrls = readClickedJobs();
+    const unclicked = allHundredPlus.filter(job => !clickedUrls.has(job.job_url));
+    const top = allHundredPlus.reduce((max, job) => Math.max(max, Number(job.score) || 0), 0);
+    document.getElementById("stat-total").textContent = allHundredPlus.length;
+    document.getElementById("stat-unclicked").textContent = unclicked.length;
+    document.getElementById("stat-clicked").textContent = allHundredPlus.length - unclicked.length;
+    document.getElementById("stat-top").textContent = top;
+    return unclicked;
+  }
+
+  function render() {
+    let jobs = updateStats();
+    if (query) {
+      const q = query.toLowerCase();
+      jobs = jobs.filter(job =>
+        [job.title, job.company, job.location].some(value => String(value || "").toLowerCase().includes(q))
+      );
+    }
+    jobs = [...jobs].sort((a, b) => (Number(b.score) || 0) - (Number(a.score) || 0));
+
+    document.getElementById("result-count").textContent =
+      `${jobs.length} ${jobs.length === 1 ? "job" : "jobs"} · weekly · 100+ · unclicked`;
+
+    if (!jobs.length) {
+      document.getElementById("tbody").innerHTML =
+        `<tr><td colspan="6"><div class="empty">No unclicked 100+ jobs for this week.</div></td></tr>`;
+      return;
+    }
+
+    document.getElementById("tbody").innerHTML = jobs.map((job, idx) => {
+      const url = safeUrl(job.job_url);
+      const apply = url
+        ? `<a class="apply-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Apply</a>`
+        : "—";
+      return `<tr>
+        <td class="td-num">${idx + 1}</td>
+        <td class="td-title"><div class="title-cell"><strong>${escapeHtml(job.title || "Untitled role")}</strong></div></td>
+        <td><div class="company-cell"><strong>${escapeHtml(job.company || "—")}</strong><span>${escapeHtml(job.location || "Remote")}</span></div></td>
+        <td><span class="score-num">${Number(job.score) || 0}</span></td>
+        <td class="td-date">${escapeHtml(dayLabel(job.scraped_date))}</td>
+        <td>${apply}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  async function loadAll() {
+    try {
+      const [meta, jobs] = await Promise.all([
+        fetch("metadata.json").then(r => r.json()),
+        fetch("week_jobs.json").then(r => r.json()),
+      ]);
+      const ts = meta?.last_updated ? new Date(meta.last_updated) : null;
+      document.getElementById("last-updated").textContent =
+        ts && !Number.isNaN(ts.getTime()) ? `Last updated: ${ts.toLocaleString()}` : "Last updated: --";
+      const jobList = Array.isArray(jobs) ? jobs : [];
+      allHundredPlus = jobList.filter(job => (Number(job.score) || 0) >= 100);
+      render();
+    } catch (error) {
+      document.getElementById("tbody").innerHTML =
+        `<tr><td colspan="6"><div class="empty">Could not load job data.<br>${escapeHtml(error.message)}</div></td></tr>`;
+    }
+  }
+
+  document.getElementById("search").addEventListener("input", event => {
+    query = event.target.value;
+    render();
+  });
+
+  document.addEventListener("click", event => {
+    const applyLink = event.target.closest(".apply-btn");
+    if (!applyLink) return;
+    markJobClicked(applyLink.getAttribute("href"));
+    setTimeout(render, 0);
+  });
+
+  loadAll();
+</script>
+</body>
+</html>

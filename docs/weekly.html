@@ -610,6 +610,7 @@
       <nav class="nav-links">
         <a class="nav-link" href="index.html">Live Feed</a>
         <a class="nav-link active" href="weekly.html">Weekly</a>
+        <a class="nav-link" href="unclicked_100.html">100+ Unclicked</a>
       </nav>
       <span class="last-updated" id="last-updated">Last updated: --</span>
     </div>
@@ -684,6 +685,7 @@
 </footer>
 
 <script>
+  const CLICKED_JOBS_KEY = "atriveo_clicked_jobs";
   let weekJobs = [];
   let activeDay = "All";
   let activeLevel = "All";
@@ -725,6 +727,22 @@
       const p = new URL(v);
       return (p.protocol === "http:" || p.protocol === "https:") ? p.toString() : null;
     } catch { return null; }
+  }
+
+  function readClickedJobs() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(CLICKED_JOBS_KEY) || "[]");
+      return Array.isArray(parsed) ? new Set(parsed.filter(Boolean)) : new Set();
+    } catch {
+      return new Set();
+    }
+  }
+
+  function markJobClicked(url) {
+    if (!url) return;
+    const clicked = readClickedJobs();
+    clicked.add(url);
+    localStorage.setItem(CLICKED_JOBS_KEY, JSON.stringify([...clicked]));
   }
 
   function scoreClass(s) {
@@ -979,6 +997,12 @@
   document.getElementById("search").addEventListener("input", e => {
     query = e.target.value;
     render();
+  });
+
+  document.addEventListener("click", event => {
+    const applyLink = event.target.closest(".apply-btn");
+    if (!applyLink) return;
+    markJobClicked(applyLink.getAttribute("href"));
   });
 
   loadAll();
