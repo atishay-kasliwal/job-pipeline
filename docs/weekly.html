@@ -531,6 +531,29 @@
     .apply-btn:hover { background: rgba(52, 211, 196, 0.26); color: #7ef5ea; }
     .apply-btn::after { content: "↗"; font-size: 11px; }
 
+    .message-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 90px;
+      border-radius: 7px;
+      border: 1px solid rgba(123, 185, 255, 0.45);
+      background: rgba(123, 185, 255, 0.14);
+      color: #8ec1ff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 12px;
+      cursor: pointer;
+      transition: background 140ms ease, color 140ms ease;
+      font-family: "IBM Plex Mono", monospace;
+      letter-spacing: 0.02em;
+    }
+
+    .message-btn:hover {
+      background: rgba(123, 185, 255, 0.26);
+      color: #c8e1ff;
+    }
+
     .na { color: #2e4560; font-size: 12px; font-family: "IBM Plex Mono", monospace; }
 
     .empty {
@@ -745,6 +768,22 @@
     localStorage.setItem(CLICKED_JOBS_KEY, JSON.stringify([...clicked]));
   }
 
+  function extractJobId(url) {
+    const safe = safeUrl(url);
+    if (!safe) return "";
+    const match = safe.match(/\/jobs\/view\/(\d+)/);
+    return match ? match[1] : "";
+  }
+
+  function buildReferralMessage(job) {
+    const title = job?.title || "this role";
+    const company = job?.company || "your company";
+    const jobId = extractJobId(job?.job_url);
+    return `Hi Kavish,
+I hope you're doing well! I'm a former SDE2 at Bounteous, currently pursuing my MS in Data Science at Stony Brook. I came across the ${title} role (Job ID: ${jobId}) at ${company}, and would appreciate it if you could review my resume or consider referring me.
+Thanks!`;
+  }
+
   function scoreClass(s) {
     return s >= 5 ? "high" : s >= 2 ? "medium" : "low";
   }
@@ -906,6 +945,7 @@
       { key: "min_exp",           label: "Exp" },
       { key: "scraped_date",      label: "Seen" },
       { key: "date_posted",       label: "Posted" },
+      { key: "_message",          label: "",            nosort: true },
       { key: "_apply",            label: "",            nosort: true },
     ];
 
@@ -962,6 +1002,8 @@
       const metaParts = [site].filter(Boolean).join(" · ");
       const posted   = formatPosted(job.date_posted);
       const url      = safeUrl(job.job_url);
+      const message = buildReferralMessage(job);
+      const messageBtn = `<button class="message-btn" data-message="${escapeHtml(message)}">Message</button>`;
       const apply    = url
         ? `<a class="apply-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Apply</a>`
         : `<span class="na">—</span>`;
@@ -987,6 +1029,7 @@
         <td>${expBadge}</td>
         ${seenCell}
         <td class="td-date">${escapeHtml(posted)}</td>
+        <td>${messageBtn}</td>
         <td>${apply}</td>
       </tr>`;
     }).join("");
@@ -1001,8 +1044,19 @@
 
   document.addEventListener("click", event => {
     const applyLink = event.target.closest(".apply-btn");
-    if (!applyLink) return;
-    markJobClicked(applyLink.getAttribute("href"));
+    if (applyLink) {
+      markJobClicked(applyLink.getAttribute("href"));
+      return;
+    }
+
+    const messageButton = event.target.closest(".message-btn");
+    if (!messageButton) return;
+    const messageText = messageButton.getAttribute("data-message") || "";
+    navigator.clipboard.writeText(messageText).then(() => {
+      const original = messageButton.textContent;
+      messageButton.textContent = "Copied!";
+      setTimeout(() => { messageButton.textContent = original; }, 1200);
+    });
   });
 
   loadAll();

@@ -114,6 +114,11 @@
       background: rgba(52, 211, 196, 0.15); color: #34d3c4; font-size: 12px; font-weight: 700; padding: 7px 14px;
       font-family: "IBM Plex Mono", monospace; text-decoration: none;
     }
+    .message-btn {
+      display: inline-flex; align-items: center; justify-content: center; min-width: 90px; border-radius: 7px;
+      border: 1px solid rgba(123, 185, 255, 0.45); background: rgba(123, 185, 255, 0.14); color: #8ec1ff;
+      font-size: 12px; font-weight: 700; padding: 7px 12px; cursor: pointer; font-family: "IBM Plex Mono", monospace;
+    }
     .empty {
       text-align: center; color: var(--muted); font-size: 13px; padding: 52px 18px; line-height: 1.7;
       font-family: "IBM Plex Mono", monospace;
@@ -176,6 +181,7 @@
             <th>Company / Location</th>
             <th>Score</th>
             <th>Seen</th>
+            <th>Message</th>
             <th>Apply</th>
           </tr>
         </thead>
@@ -219,6 +225,22 @@
     }
   }
 
+  function extractJobId(url) {
+    const safe = safeUrl(url);
+    if (!safe) return "";
+    const match = safe.match(/\/jobs\/view\/(\d+)/);
+    return match ? match[1] : "";
+  }
+
+  function buildReferralMessage(job) {
+    const title = job?.title || "this role";
+    const company = job?.company || "your company";
+    const jobId = extractJobId(job?.job_url);
+    return `Hi Kavish,
+I hope you're doing well! I'm a former SDE2 at Bounteous, currently pursuing my MS in Data Science at Stony Brook. I came across the ${title} role (Job ID: ${jobId}) at ${company}, and would appreciate it if you could review my resume or consider referring me.
+Thanks!`;
+  }
+
   function dayLabel(dateStr) {
     if (!dateStr) return "--";
     const d = new Date(dateStr + "T12:00:00");
@@ -251,12 +273,14 @@
 
     if (!jobs.length) {
       document.getElementById("tbody").innerHTML =
-        `<tr><td colspan="6"><div class="empty">No unclicked 100+ jobs for this week.</div></td></tr>`;
+        `<tr><td colspan="7"><div class="empty">No unclicked 100+ jobs for this week.</div></td></tr>`;
       return;
     }
 
     document.getElementById("tbody").innerHTML = jobs.map((job, idx) => {
       const url = safeUrl(job.job_url);
+      const message = buildReferralMessage(job);
+      const messageBtn = `<button class="message-btn" data-message="${escapeHtml(message)}">Message</button>`;
       const apply = url
         ? `<a class="apply-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Apply</a>`
         : "—";
@@ -266,6 +290,7 @@
         <td><div class="company-cell"><strong>${escapeHtml(job.company || "—")}</strong><span>${escapeHtml(job.location || "Remote")}</span></div></td>
         <td><span class="score-num">${Number(job.score) || 0}</span></td>
         <td class="td-date">${escapeHtml(dayLabel(job.scraped_date))}</td>
+        <td>${messageBtn}</td>
         <td>${apply}</td>
       </tr>`;
     }).join("");
@@ -285,7 +310,7 @@
       render();
     } catch (error) {
       document.getElementById("tbody").innerHTML =
-        `<tr><td colspan="6"><div class="empty">Could not load job data.<br>${escapeHtml(error.message)}</div></td></tr>`;
+        `<tr><td colspan="7"><div class="empty">Could not load job data.<br>${escapeHtml(error.message)}</div></td></tr>`;
     }
   }
 
@@ -296,9 +321,19 @@
 
   document.addEventListener("click", event => {
     const applyLink = event.target.closest(".apply-btn");
-    if (!applyLink) return;
-    markJobClicked(applyLink.getAttribute("href"));
-    setTimeout(render, 0);
+    if (applyLink) {
+      markJobClicked(applyLink.getAttribute("href"));
+      setTimeout(render, 0);
+      return;
+    }
+    const messageButton = event.target.closest(".message-btn");
+    if (!messageButton) return;
+    const messageText = messageButton.getAttribute("data-message") || "";
+    navigator.clipboard.writeText(messageText).then(() => {
+      const original = messageButton.textContent;
+      messageButton.textContent = "Copied!";
+      setTimeout(() => { messageButton.textContent = original; }, 1200);
+    });
   });
 
   loadAll();
