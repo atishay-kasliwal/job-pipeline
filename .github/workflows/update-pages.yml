@@ -60,6 +60,9 @@ jobs:
           cp docs/run_history.json       atriveo-app/public/
           cp docs/metadata.json          atriveo-app/public/
           cp docs/skills_summary.json    atriveo-app/public/
+          cp docs/index.html             atriveo-app/public/
+          cp docs/unclicked_100.html     atriveo-app/public/
+          cp docs/weekly.html            atriveo-app/public/
 
       - name: Commit and push to atriveo-app
         run: |
