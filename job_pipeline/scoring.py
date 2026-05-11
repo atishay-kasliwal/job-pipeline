@@ -97,6 +97,11 @@ def _is_big_tech(row: pd.Series) -> bool:
     return any(bt in company for bt in BIG_TECH_COMPANIES)
 
 
+def _is_consulting_or_llc(row: pd.Series) -> bool:
+    company = str(row.get("company", "") or "").lower()
+    return "consulting" in company or "llc" in company
+
+
 def _is_h1b_sponsor(row: pd.Series) -> bool:
     company = str(row.get("company", "") or "").strip().lower()
     return company in _get_h1b_companies()
@@ -230,9 +235,10 @@ def calculate_score(row: pd.Series) -> dict:
     ss = source_score(str(row.get("site", "") or ""))
     locs = location_score(str(row.get("location", "") or ""))
 
-    big_tech = _is_big_tech(row)
-    h1b      = _is_h1b_sponsor(row)
-    top500   = _is_top500(row)
+    big_tech      = _is_big_tech(row)
+    h1b           = _is_h1b_sponsor(row)
+    top500        = _is_top500(row)
+    consulting_llc = _is_consulting_or_llc(row)
 
     raw = (
         ks
@@ -245,6 +251,7 @@ def calculate_score(row: pd.Series) -> dict:
         + (2 if big_tech else 0)
         + (H1B_SCORE_BONUS if h1b else 0)
         + (TOP500_SCORE_BONUS if top500 else 0)
+        + (-200 if consulting_llc else 0)
     )
     pct = min(100, max(0, round(raw / SCORE_MAX_RAW * 100)))
 
