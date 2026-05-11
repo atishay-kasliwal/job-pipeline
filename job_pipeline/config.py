@@ -289,6 +289,15 @@ H1B_SCORE_BONUS: int = 8
 # Top-500 company bonus — lifts well-matched roles at top US companies.
 TOP500_SCORE_BONUS: int = 50
 
+# Location bonuses — preferred markets ranked by opportunity / proximity.
+# Matched case-insensitively against the job's location field.
+# Format: (substring patterns, bonus points)
+LOCATION_BONUSES: list[tuple[list[str], int]] = [
+    (["new york", ", ny"],        100),   # New York
+    (["north carolina", ", nc"],   90),   # North Carolina
+    (["seattle", ", wa"],          80),   # Seattle / Washington
+]
+
 # Practical maximum raw score used for % normalisation.
 # Represents a near-perfect job match (not every keyword firing at once).
 SCORE_MAX_RAW: int = 130

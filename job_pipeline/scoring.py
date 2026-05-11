@@ -13,6 +13,7 @@ import pandas as pd
 from job_pipeline.config import (
     BIG_TECH_COMPANIES,
     H1B_SCORE_BONUS,
+    LOCATION_BONUSES,
     TOP500_SCORE_BONUS,
     LEVEL_SCORES,
     PERSONAL_STACK,
@@ -178,6 +179,15 @@ def source_score(source: str) -> int:
     return {"linkedin": 2, "company": 3}.get(source.lower(), 0)
 
 
+def location_score(location: str) -> int:
+    """Bonus for preferred markets (New York > North Carolina > Seattle)."""
+    loc = (location or "").lower().strip()
+    for patterns, bonus in LOCATION_BONUSES:
+        if any(p in loc for p in patterns):
+            return bonus
+    return 0
+
+
 def should_skip(text: str) -> bool:
     """
     Hard discard: senior-only roles, extreme experience requirements,
@@ -218,6 +228,7 @@ def calculate_score(row: pd.Series) -> dict:
     age = _hours_since_posted(row)
     rs = recency_score(age)
     ss = source_score(str(row.get("site", "") or ""))
+    locs = location_score(str(row.get("location", "") or ""))
 
     big_tech = _is_big_tech(row)
     h1b      = _is_h1b_sponsor(row)
@@ -230,6 +241,7 @@ def calculate_score(row: pd.Series) -> dict:
         + ls
         + rs
         + ss
+        + locs
         + (2 if big_tech else 0)
         + (H1B_SCORE_BONUS if h1b else 0)
         + (TOP500_SCORE_BONUS if top500 else 0)
