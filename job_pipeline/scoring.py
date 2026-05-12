@@ -99,7 +99,7 @@ def _is_big_tech(row: pd.Series) -> bool:
 
 def _is_consulting_or_llc(row: pd.Series) -> bool:
     company = str(row.get("company", "") or "").lower()
-    return "consulting" in company or "llc" in company
+    return "consulting" in company or "llc" in company or "beaconfire" in company
 
 
 def _is_h1b_sponsor(row: pd.Series) -> bool:
