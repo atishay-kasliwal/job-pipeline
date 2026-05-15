@@ -11,6 +11,7 @@ and the ``stem`` package is installed, each scrape request is routed
 through a fresh Tor circuit — giving a new exit-node IP every run.
 Falls back to direct connection silently if Tor is unavailable.
 """
+from __future__ import annotations
 import logging
 from typing import Any
 

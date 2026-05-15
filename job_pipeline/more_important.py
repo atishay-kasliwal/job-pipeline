@@ -7,6 +7,7 @@ Run as a module:
     python -m job_pipeline.more_important --hours-old 3 --results 100
     python -m job_pipeline.more_important --no-save
 """
+from __future__ import annotations
 import argparse
 import logging
 import sys

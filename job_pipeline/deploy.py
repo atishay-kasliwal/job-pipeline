@@ -20,6 +20,7 @@ Called automatically by the standard and important pipelines when
 
     python -m job_pipeline.deploy
 """
+from __future__ import annotations
 import base64
 import json
 import logging

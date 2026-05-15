@@ -5,6 +5,7 @@ recency, and H1B signal.
 calculate_score()   — all signals → raw int + score_pct (0-100) + competition
 apply_scores()      — vectorised application across a full DataFrame
 """
+from __future__ import annotations
 import logging
 from datetime import date, datetime, timezone
 

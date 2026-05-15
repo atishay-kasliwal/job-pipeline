@@ -4,6 +4,7 @@ Standard pipeline: scrape → deduplicate → filter → score → output.
 Orchestrates the individual modules in the correct order and owns the
 save-to-disk responsibility for the standard (non-important) pipeline.
 """
+from __future__ import annotations
 import logging
 from datetime import datetime, timezone
 from pathlib import Path

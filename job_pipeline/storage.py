@@ -15,6 +15,7 @@ distribution so you can open Atlas and immediately see what each run found.
 All writes are idempotent on job_url so re-running a scrape does not
 produce duplicate documents in MongoDB.
 """
+from __future__ import annotations
 import json
 import logging
 from collections import Counter

@@ -18,6 +18,7 @@ Prerequisites
     2. Paste your resume text into data/resume.txt.
     3. Run the pipeline at least once so output/descriptions.json is populated.
 """
+from __future__ import annotations
 import json
 import logging
 import os

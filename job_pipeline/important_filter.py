@@ -8,6 +8,7 @@ A job is considered "important" when ALL of the following are true:
 Neutral language (no mention either way) is treated as sponsorship-friendly
 to avoid over-filtering opportunities.
 """
+from __future__ import annotations
 import logging
 import re
 from pathlib import Path
