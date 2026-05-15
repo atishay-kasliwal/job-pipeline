@@ -84,33 +84,32 @@ def insert_run(
     Returns:
         The session_id used (useful for logging / testing).
     """
-    if df.empty:
-        logger.info("Empty DataFrame — nothing to store in MongoDB.")
-        return ""
-
     now = datetime.now(tz=timezone.utc)
     sid = session_id or now.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    records = _df_to_records(df, sid, pipeline, now)
+    inserted = 0
+    if not df.empty:
+        records = _df_to_records(df, sid, pipeline, now)
 
-    # Upsert each job on job_url to avoid exact duplicates within a session
-    ops = [
-        UpdateOne(
-            {"session_id": sid, "job_url": r.get("job_url")},
-            {"$setOnInsert": r},
-            upsert=True,
-        )
-        for r in records
-    ]
+        # Upsert each job on job_url to avoid exact duplicates within a session
+        ops = [
+            UpdateOne(
+                {"session_id": sid, "job_url": r.get("job_url")},
+                {"$setOnInsert": r},
+                upsert=True,
+            )
+            for r in records
+        ]
 
-    try:
-        result = _col("jobs").bulk_write(ops, ordered=False)
-        inserted = result.upserted_count
-    except BulkWriteError as exc:
-        inserted = exc.details.get("nUpserted", 0)
-        logger.warning("Bulk write partial error (duplicates skipped): %s", exc.details)
+        try:
+            result = _col("jobs").bulk_write(ops, ordered=False)
+            inserted = result.upserted_count
+        except BulkWriteError as exc:
+            inserted = exc.details.get("nUpserted", 0)
+            logger.warning("Bulk write partial error (duplicates skipped): %s", exc.details)
 
-    # Session metadata
+    # Session metadata — always written so the dashboard shows the current hour
+    # even when all jobs were already seen today (df is empty).
     _col("sessions").update_one(
         {"session_id": sid},
         {
@@ -118,7 +117,7 @@ def insert_run(
                 "session_id": sid,
                 "run_at": now,
                 "pipeline": pipeline,
-                "job_count": len(records),
+                "job_count": len(df),
                 "archived": False,
             }
         },
@@ -127,7 +126,7 @@ def insert_run(
 
     logger.info(
         "MongoDB: %d jobs stored (session='%s', pipeline='%s', new_inserts=%d).",
-        len(records), sid, pipeline, inserted,
+        len(df), sid, pipeline, inserted,
     )
     return sid
 
