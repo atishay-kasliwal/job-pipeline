@@ -111,7 +111,7 @@ def insert_run(
     # Session metadata — always written so the dashboard shows the current hour
     # even when all jobs were already seen today (df is empty).
     _col("sessions").update_one(
-        {"session_id": sid},
+        {"session_id": sid, "pipeline": pipeline},
         {
             "$set": {
                 "session_id": sid,
