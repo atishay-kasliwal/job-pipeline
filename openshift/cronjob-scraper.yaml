@@ -38,7 +38,7 @@ spec:
           containers:
             - name: scraper
               # Replace with your actual image registry path after oc build
-              image: image-registry.openshift-image-registry.svc:5000/<your-namespace>/job-pipeline:latest
+              image: ghcr.io/atishay-kasliwal/job-pipeline:latest
               imagePullPolicy: Always
               command:
                 - python

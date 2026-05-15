@@ -34,7 +34,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: archiver
-              image: image-registry.openshift-image-registry.svc:5000/<your-namespace>/job-pipeline:latest
+              image: ghcr.io/atishay-kasliwal/job-pipeline:latest
               imagePullPolicy: Always
               command:
                 - python
