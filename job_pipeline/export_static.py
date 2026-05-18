@@ -444,7 +444,11 @@ def run_export() -> None:
     yesterday_jobs  = export_yesterday_jobs()
     week_jobs       = export_week_jobs()
     run_history     = export_run_history()
-    skills_summary  = export_skills_summary()
+    try:
+        skills_summary = export_skills_summary()
+    except Exception as exc:
+        logger.warning("export_skills_summary failed (%s); using empty result.", exc)
+        skills_summary = {"generated_at": datetime.now(tz=timezone.utc).isoformat(), "total_analyzed": 0, "categories": {}}
 
     # Attach ATS + Fit scores if a resume is available
     resume = get_resume()
