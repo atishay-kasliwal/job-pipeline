@@ -72,4 +72,5 @@ jobs:
           git add public/
           git diff --staged --quiet \
             && echo "No changes to commit." \
-            || (git commit -m "chore: update job data $(date -u +'%Y-%m-%dT%H:%M:%SZ')" && git push)
+            || (git commit -m "chore: update job data $(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+                && for i in 1 2 3; do git push && break || (echo "Push attempt $i failed, retrying..."; sleep 10); done)

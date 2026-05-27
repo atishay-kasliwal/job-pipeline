@@ -614,7 +614,129 @@
       .result-count { width: 100%; padding: 2px 0 0; }
       .table-wrap { max-height: calc(100vh - 265px); }
       footer { text-transform: none; }
+      .cards-grid { grid-template-columns: repeat(4, 1fr); }
     }
+
+    /* ── Card grid (Today view) ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 12px;
+      padding: 4px 0;
+    }
+
+    @media (max-width: 1400px) { .cards-grid { grid-template-columns: repeat(8, 1fr); } }
+    @media (max-width: 1100px) { .cards-grid { grid-template-columns: repeat(6, 1fr); } }
+    @media (max-width: 860px)  { .cards-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 560px)  { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .job-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      animation: cardIn 320ms ease both;
+      animation-delay: var(--card-delay, 0ms);
+      transition: border-color 140ms ease, transform 120ms ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .job-card:hover {
+      border-color: rgba(52, 211, 196, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .card-score {
+      font-size: 12px;
+      font-weight: 700;
+      font-family: "IBM Plex Mono", monospace;
+      border-radius: 999px;
+      padding: 3px 9px;
+      white-space: nowrap;
+    }
+
+    .card-score.high   { color: #5ee8a8; background: rgba(57,217,138,0.15);  border: 1px solid rgba(57,217,138,0.35); }
+    .card-score.medium { color: #ffd066; background: rgba(255,200,66,0.15);  border: 1px solid rgba(255,200,66,0.35); }
+    .card-score.low    { color: #ff9494; background: rgba(255,100,100,0.15); border: 1px solid rgba(255,100,100,0.35); }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--text);
+    }
+
+    .card-company {
+      font-size: 12px;
+      font-weight: 600;
+      color: #34d3c4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-meta {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: auto;
+    }
+
+    .click-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 7px;
+      border: 1px solid var(--line-soft);
+      background: rgba(255,255,255,0.05);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-family: "IBM Plex Mono", monospace;
+      transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+      text-decoration: none;
+    }
+
+    .click-btn:hover {
+      color: var(--text);
+      border-color: rgba(52,211,196,0.4);
+      background: rgba(52,211,196,0.08);
+    }
+
+    .card-actions .apply-btn  { flex: 1; padding: 6px 10px; font-size: 11px; }
+    .card-actions .message-btn { min-width: unset; padding: 6px 10px; font-size: 11px; }
   </style>
 </head>
 <body>
@@ -692,7 +814,7 @@
   </div>
 
   <!-- Table -->
-  <section class="panel table-panel">
+  <section class="panel table-panel" id="table-panel">
     <div class="table-wrap">
       <table id="jobs-table">
         <thead id="thead"></thead>
@@ -700,6 +822,9 @@
       </table>
     </div>
   </section>
+
+  <!-- Card grid (Today only) -->
+  <div id="cards-container" class="cards-grid" style="display:none"></div>
 
 </main>
 
@@ -780,7 +905,7 @@
     const company = job?.company || "your company";
     const jobId = extractJobId(job?.job_url);
     return `Hi Kavish,
-I hope you're doing well! I'm a former SDE2 at Bounteous, currently pursuing my MS in Data Science at Stony Brook. I came across the ${title} role (Job ID: ${jobId}) at ${company}, and would appreciate it if you could review my resume or consider referring me.
+I hope you're doing well! I'm a former SDE2 at Bounteous, recently completed my MS in Data Science at Stony Brook. I came across the ${title} role (Job ID: ${jobId}) at ${company}, and would appreciate it if you could review my resume or consider referring me.
 Thanks!`;
   }
 
@@ -894,6 +1019,61 @@ Thanks!`;
     });
   }
 
+  const AVATAR_PALETTE = [
+    { bg: "rgba(34,189,140,0.18)", color: "#5ee8a8" },
+    { bg: "rgba(94,180,255,0.18)", color: "#5bc8f5" },
+    { bg: "rgba(255,160,80,0.18)",  color: "#ffc57d" },
+    { bg: "rgba(200,130,255,0.18)", color: "#c57dff" },
+    { bg: "rgba(52,211,196,0.18)",  color: "#62eee1" },
+    { bg: "rgba(255,200,66,0.18)",  color: "#f5e87d" },
+    { bg: "rgba(255,120,120,0.18)", color: "#ff8a8a" },
+    { bg: "rgba(160,200,255,0.18)", color: "#9bc8ff" },
+  ];
+
+  function avatarColor(company) {
+    const code = (company || "?").toUpperCase().charCodeAt(0);
+    return AVATAR_PALETTE[code % AVATAR_PALETTE.length];
+  }
+
+  function renderCards(jobs) {
+    const container = document.getElementById("cards-container");
+    if (!jobs.length) {
+      container.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:52px 0;font-family:'IBM Plex Mono',monospace;font-size:13px;">No jobs match this view.</div>`;
+      return;
+    }
+    container.innerHTML = jobs.map((job, idx) => {
+      const scoreValue = numberOr(job.score, 0);
+      const scoreCls   = scoreClass(scoreValue);
+      const initial    = (job.company || "?")[0].toUpperCase();
+      const pal        = avatarColor(job.company);
+      const url        = safeUrl(job.job_url);
+      const message    = buildReferralMessage(job);
+      const posted     = formatPosted(job.date_posted);
+
+      const applyBtn = url
+        ? `<a class="apply-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Apply ↗</a>`
+        : `<span style="flex:1"></span>`;
+      const msgBtn = `<button class="message-btn" data-message="${escapeHtml(message)}">Msg</button>`;
+      const clickBtn = url
+        ? `<a class="click-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Click</a>`
+        : "";
+
+      return `<div class="job-card" style="--card-delay:${Math.min(idx * 18, 300)}ms">
+        <div class="card-header">
+          <div class="card-avatar" style="background:${pal.bg};color:${pal.color}">${initial}</div>
+          <span class="card-score ${scoreCls}">★${scoreValue}</span>
+        </div>
+        <div class="card-title">${escapeHtml(job.title || "Untitled role")}</div>
+        <div class="card-company">${escapeHtml(job.company || "—")}</div>
+        <div class="card-meta">
+          <span>${escapeHtml(posted)}</span>
+          ${job.location ? `<span>·</span><span>${escapeHtml(job.location)}</span>` : ""}
+        </div>
+        <div class="card-actions">${clickBtn}${msgBtn}${applyBtn}</div>
+      </div>`;
+    }).join("");
+  }
+
   function render() {
     // Day filter on the full dataset
     let jobs = activeDay === "All"
@@ -932,6 +1112,16 @@ Thanks!`;
 
     document.getElementById("result-count").textContent =
       `${jobs.length} ${jobs.length === 1 ? "job" : "jobs"} · Weekly`;
+
+    // Today → card grid; everything else → table
+    const isToday = activeDay === todayLocal();
+    document.getElementById("table-panel").style.display    = isToday ? "none" : "";
+    document.getElementById("cards-container").style.display = isToday ? "grid" : "none";
+
+    if (isToday) {
+      renderCards(jobs);
+      return;
+    }
 
     // Column definitions
     const cols = [
