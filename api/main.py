@@ -124,6 +124,16 @@ def get_swipe_queue(date: Optional[str] = None):
     return {"date": today, "count": len(queue), "jobs": queue}
 
 
+@app.get("/api/job-description")
+def get_job_description(url: str):
+    """Return the full description for a single job by URL."""
+    doc = get_db()["descriptions"].find_one(
+        {"job_url": url},
+        {"_id": 0, "description": 1},
+    )
+    return {"job_url": url, "description": (doc or {}).get("description")}
+
+
 class SwipeIn(BaseModel):
     job_url: str
     direction: str  # "right" | "left"
