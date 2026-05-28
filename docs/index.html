@@ -791,6 +791,7 @@
 
     <div class="header-meta">
       <nav style="display:flex;align-items:center;gap:4px;border:1px solid var(--line-soft);border-radius:var(--radius-sm);overflow:hidden;background:rgba(8,16,26,0.45);">
+        <a href="swipe.html" style="appearance:none;border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:600;padding:7px 14px;font-family:'IBM Plex Mono',monospace;text-decoration:none;display:inline-flex;align-items:center;transition:background 160ms ease,color 160ms ease;" onmouseover="this.style.color='var(--text)';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.color='var(--muted)';this.style.background='transparent'">Swipe</a>
         <a href="index.html" style="appearance:none;border:0;color:#001a17;background:linear-gradient(145deg,#62eee1 0%,#35c9bb 100%);font-size:12px;font-weight:600;padding:7px 14px;font-family:'IBM Plex Mono',monospace;text-decoration:none;display:inline-flex;align-items:center;">Live Feed</a>
         <a href="weekly.html" style="appearance:none;border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:600;padding:7px 14px;font-family:'IBM Plex Mono',monospace;text-decoration:none;display:inline-flex;align-items:center;transition:background 160ms ease,color 160ms ease;" onmouseover="this.style.color='var(--text)';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.color='var(--muted)';this.style.background='transparent'">Weekly</a>
         <a href="unclicked_100.html" style="appearance:none;border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:600;padding:7px 14px;font-family:'IBM Plex Mono',monospace;text-decoration:none;display:inline-flex;align-items:center;transition:background 160ms ease,color 160ms ease;" onmouseover="this.style.color='var(--text)';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.color='var(--muted)';this.style.background='transparent'">100+ Unclicked</a>
@@ -852,6 +853,15 @@
     </select>
   </div>
 
+  <!-- Right-swiped: Your Picks -->
+  <section id="picks-section" style="display:none; margin-bottom:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <h2 style="font-size:13px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:#52d98a;text-transform:uppercase;letter-spacing:0.08em;">★ Your Picks Today</h2>
+      <a href="swipe.html" style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--muted);text-decoration:none;border:1px solid var(--line-soft);border-radius:999px;padding:4px 10px;transition:color 140ms,border-color 140ms;" onmouseover="this.style.color='var(--text)';this.style.borderColor='var(--teal)'" onmouseout="this.style.color='var(--muted)';this.style.borderColor=''">+ Swipe more</a>
+    </div>
+    <div id="picks-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;"></div>
+  </section>
+
   <section class="panel table-panel">
     <div class="table-wrap">
       <table id="jobs-table">
@@ -860,6 +870,27 @@
       </table>
     </div>
   </section>
+
+  <!-- Left-swiped: Not Interested -->
+  <section id="skipped-section" style="display:none; margin-top:24px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <h2 style="font-size:13px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;">Not Interested Today</h2>
+      <span id="skipped-count" style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--muted);">0 jobs</span>
+    </div>
+    <section class="panel table-panel">
+      <div class="table-wrap" style="max-height:320px;">
+        <table style="min-width:700px;">
+          <thead>
+            <tr>
+              <th>#</th><th>Role</th><th>Company / Location</th><th>Score</th><th>Posted</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="skipped-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+
 </main>
 
 <footer>
@@ -1279,6 +1310,86 @@ Thanks!`;
   });
 
   loadAll();
+
+  // ── Swipe picks / skipped ─────────────────────────────────────────────────
+  const SWIPE_API = (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+    ? "http://localhost:8000"
+    : "https://atriveo-swipe-api.onrender.com";
+
+  const AVATAR_PAL_IDX = [
+    { bg: "rgba(34,189,140,0.2)",  color: "#5ee8a8" },
+    { bg: "rgba(94,180,255,0.2)",  color: "#5bc8f5" },
+    { bg: "rgba(255,160,80,0.2)",  color: "#ffc57d" },
+    { bg: "rgba(200,130,255,0.2)", color: "#c57dff" },
+    { bg: "rgba(52,211,196,0.2)",  color: "#62eee1" },
+    { bg: "rgba(255,200,66,0.2)",  color: "#f5e87d" },
+    { bg: "rgba(255,120,120,0.2)", color: "#ff8a8a" },
+    { bg: "rgba(160,200,255,0.2)", color: "#9bc8ff" },
+  ];
+
+  function swipeAvatarPal(company) {
+    const code = (company || "?").toUpperCase().charCodeAt(0);
+    return AVATAR_PAL_IDX[code % AVATAR_PAL_IDX.length];
+  }
+
+  async function loadSwipeSections() {
+    const today = new Date().toLocaleDateString("en-CA");
+    try {
+      const [rightRes, leftRes] = await Promise.all([
+        fetch(`${SWIPE_API}/api/swipes?direction=right&date=${today}`),
+        fetch(`${SWIPE_API}/api/swipes?direction=left&date=${today}`),
+      ]);
+      if (!rightRes.ok || !leftRes.ok) return;
+      const [right, left] = await Promise.all([rightRes.json(), leftRes.json()]);
+
+      // Picks grid
+      if (right.jobs && right.jobs.length > 0) {
+        document.getElementById("picks-section").style.display = "block";
+        document.getElementById("picks-grid").innerHTML = right.jobs.map(job => {
+          const s = numberOr(job.score, 0);
+          const cls = s >= 5 ? "high" : s >= 2 ? "medium" : "low";
+          const pal = swipeAvatarPal(job.company);
+          const clrs = { high: "#5ee8a8", medium: "#ffd066", low: "#ff9494" };
+          const bgs  = { high: "rgba(57,217,138,0.15)", medium: "rgba(255,200,66,0.15)", low: "rgba(255,100,100,0.15)" };
+          const url = safeUrl(job.job_url);
+          return `<div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:13px;background:${pal.bg};color:${pal.color}">${escapeHtml((job.company||"?")[0].toUpperCase())}</div>
+              <span style="font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace;border-radius:999px;padding:3px 9px;color:${clrs[cls]};background:${bgs[cls]};">★${s}</span>
+            </div>
+            <div style="font-size:13px;font-weight:600;line-height:1.3;color:var(--text);">${escapeHtml(job.title||"Untitled")}</div>
+            <div style="font-size:12px;font-weight:600;color:#34d3c4;">${escapeHtml(job.company||"—")}</div>
+            <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace;">${escapeHtml(job.location||"")}</div>
+            ${url ? `<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;justify-content:center;border-radius:8px;border:none;background:rgba(52,211,196,0.15);color:#34d3c4;font-size:11px;font-weight:700;padding:7px 0;font-family:'IBM Plex Mono',monospace;text-decoration:none;margin-top:auto;">Apply ↗</a>` : ""}
+          </div>`;
+        }).join("");
+      }
+
+      // Skipped table
+      if (left.jobs && left.jobs.length > 0) {
+        document.getElementById("skipped-section").style.display = "block";
+        document.getElementById("skipped-count").textContent = `${left.jobs.length} jobs`;
+        document.getElementById("skipped-tbody").innerHTML = left.jobs.map((job, i) => {
+          const s = numberOr(job.score, 0);
+          const cls = s >= 5 ? "high" : s >= 2 ? "medium" : "low";
+          const url = safeUrl(job.job_url);
+          const clrs = { high: "#5ee8a8", medium: "#ffd066", low: "#ff9494" };
+          return `<tr>
+            <td class="td-num">${i + 1}</td>
+            <td class="td-title"><div class="title-cell"><strong>${escapeHtml(job.title||"Untitled")}</strong></div></td>
+            <td class="td-company"><div class="company-cell"><strong>${escapeHtml(job.company||"—")}</strong><span>${escapeHtml(job.location||"")}</span></div></td>
+            <td><span class="score-num ${cls}" style="color:${clrs[cls]}">${s}</span></td>
+            <td class="td-date">${escapeHtml(formatPosted(job.date_posted))}</td>
+            <td>${url ? `<a class="apply-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">Apply</a>` : ""}</td>
+          </tr>`;
+        }).join("");
+      }
+    } catch (_) {
+      // API not available — silently skip, sections stay hidden
+    }
+  }
+
+  loadSwipeSections();
 </script>
 </body>
 </html>
