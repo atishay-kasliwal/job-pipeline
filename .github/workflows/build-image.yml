@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "job_pipeline/**"
+      - "api/**"
       - "requirements.txt"
       - "Dockerfile"
   workflow_dispatch:
