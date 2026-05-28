@@ -15,3 +15,8 @@ requests>=2.31.0
 
 # Claude API — used by the ATS resume analyzer
 anthropic>=0.40.0
+
+# Swipe API
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0

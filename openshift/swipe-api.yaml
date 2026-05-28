@@ -1,0 +1,100 @@
+# ── Swipe API — Deployment + Service + Route ─────────────────────────────────
+# FastAPI server that powers swipe.html (job queue, swipe storage, picks).
+#
+# Prerequisites (already applied for the scraper):
+#   openshift/secret.yaml  — job-pipeline-mongo secret with MONGO_URI
+#
+# Apply:
+#   oc apply -f openshift/swipe-api.yaml
+#
+# Check:
+#   oc get pods -l app=swipe-api
+#   oc logs -l app=swipe-api
+#   oc get route swipe-api
+# ─────────────────────────────────────────────────────────────────────────────
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swipe-api
+  labels:
+    app: swipe-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swipe-api
+  template:
+    metadata:
+      labels:
+        app: swipe-api
+    spec:
+      containers:
+        - name: swipe-api
+          image: ghcr.io/atishay-kasliwal/job-pipeline:latest
+          imagePullPolicy: Always
+          command:
+            - uvicorn
+            - api.main:app
+            - --host
+            - "0.0.0.0"
+            - --port
+            - "8080"
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: job-pipeline-mongo
+                  key: MONGO_URI
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: swipe-api
+  labels:
+    app: swipe-api
+spec:
+  selector:
+    app: swipe-api
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: swipe-api
+  labels:
+    app: swipe-api
+spec:
+  to:
+    kind: Service
+    name: swipe-api
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

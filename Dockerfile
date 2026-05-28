@@ -22,6 +22,7 @@ COPY --from=builder /install /usr/local
 
 # Copy application source
 COPY job_pipeline/ ./job_pipeline/
+COPY api/           ./api/
 COPY data/          ./data/
 
 # Directories written at runtime — must be owned by appuser
