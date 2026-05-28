@@ -7,8 +7,9 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from pymongo import DESCENDING, MongoClient
+from pymongo import ASCENDING, DESCENDING, MongoClient
 from pymongo.collection import Collection
+from zoneinfo import ZoneInfo
 
 try:
     from dotenv import load_dotenv
@@ -65,16 +66,35 @@ def _serialize(doc: dict) -> dict:
     return out
 
 
+_DASHBOARD_TZ = ZoneInfo(os.getenv("DASHBOARD_TZ", "America/New_York"))
+
+
+def _date_to_utc_range(date: str):
+    """Convert a YYYY-MM-DD local date to a [start, end) UTC datetime pair."""
+    from datetime import timedelta
+    day = datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=_DASHBOARD_TZ)
+    return day.astimezone(timezone.utc), (day + timedelta(days=1)).astimezone(timezone.utc)
+
+
 def _fetch_jobs_for_date(date: str) -> list[dict]:
-    """Return deduplicated jobs for a given date, sorted by score desc."""
+    """Return deduplicated jobs for a given local date, sorted by score desc."""
+    db = get_db()
+    start_utc, end_utc = _date_to_utc_range(date)
+    sessions = list(db["sessions"].find(
+        {"pipeline": "standard", "archived": False, "run_at": {"$gte": start_utc, "$lt": end_utc}},
+        {"session_id": 1},
+    ))
+    sids = [s["session_id"] for s in sessions]
+    if not sids:
+        return []
     pipeline = [
-        {"$match": {"scraped_date": date}},
+        {"$match": {"session_id": {"$in": sids}}},
         {"$sort": {"score": DESCENDING}},
         {"$group": {"_id": "$job_url", "doc": {"$first": "$$ROOT"}}},
         {"$replaceRoot": {"newRoot": "$doc"}},
         {"$sort": {"score": DESCENDING}},
     ]
-    return list(jobs_col().aggregate(pipeline))
+    return list(db["jobs"].aggregate(pipeline))
 
 
 def _swiped_urls(date: str) -> set[str]:
@@ -143,8 +163,14 @@ def get_swipes(direction: Optional[str] = None, date: Optional[str] = None):
     swiped_urls = [s["job_url"] for s in swipe_docs]
     direction_map = {s["job_url"]: s["direction"] for s in swipe_docs}
 
+    start_utc, end_utc = _date_to_utc_range(today)
+    sessions = list(get_db()["sessions"].find(
+        {"pipeline": "standard", "archived": False, "run_at": {"$gte": start_utc, "$lt": end_utc}},
+        {"session_id": 1},
+    ))
+    sids = [s["session_id"] for s in sessions]
     pipeline = [
-        {"$match": {"job_url": {"$in": swiped_urls}, "scraped_date": today}},
+        {"$match": {"job_url": {"$in": swiped_urls}, "session_id": {"$in": sids} if sids else {"$exists": True}}},
         {"$sort": {"score": DESCENDING}},
         {"$group": {"_id": "$job_url", "doc": {"$first": "$$ROOT"}}},
         {"$replaceRoot": {"newRoot": "$doc"}},

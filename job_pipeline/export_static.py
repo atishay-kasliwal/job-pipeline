@@ -15,6 +15,7 @@ import logging
 import os
 import re
 import sys
+from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
@@ -378,6 +379,18 @@ def compute_job_scores(resume_text: str, job_urls: list[str]) -> dict[str, dict]
     return result
 
 
+def _count_category(args: tuple) -> tuple[str, dict]:
+    cat, meta, texts = args
+    skills_out: dict[str, int] = {}
+    for canonical, patterns in meta["skills"]:
+        combined = re.compile("|".join(patterns))
+        count = sum(1 for t in texts if combined.search(t))
+        if count > 0:
+            skills_out[canonical] = count
+    skills_out = dict(sorted(skills_out.items(), key=lambda x: x[1], reverse=True))
+    return cat, {"color": meta["color"], "skills": skills_out}
+
+
 def export_skills_summary() -> dict:
     """
     Build skill frequency counts from the MongoDB ``descriptions`` collection.
@@ -391,16 +404,11 @@ def export_skills_summary() -> dict:
     total = len(texts)
     logger.info("Building skills summary from %d descriptions.", total)
 
+    work = [(cat, meta, texts) for cat, meta in _SKILL_CATEGORIES.items()]
     categories_out: dict = {}
-    for cat, meta in _SKILL_CATEGORIES.items():
-        skills_out: dict[str, int] = {}
-        for canonical, patterns in meta["skills"]:
-            compiled = [re.compile(p) for p in patterns]
-            count = sum(1 for t in texts if any(c.search(t) for c in compiled))
-            if count > 0:
-                skills_out[canonical] = count
-        skills_out = dict(sorted(skills_out.items(), key=lambda x: x[1], reverse=True))
-        categories_out[cat] = {"color": meta["color"], "skills": skills_out}
+    with ProcessPoolExecutor() as ex:
+        for cat, result in ex.map(_count_category, work):
+            categories_out[cat] = result
 
     return {
         "generated_at": datetime.now(tz=timezone.utc).isoformat(),
