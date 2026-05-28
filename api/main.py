@@ -198,3 +198,70 @@ def get_swipes(direction: Optional[str] = None, date: Optional[str] = None):
         jobs.sort(key=lambda j: j.get("score") or 0, reverse=True)
 
     return {"date": today, "direction": direction, "count": len(jobs), "jobs": jobs}
+
+
+@app.get("/api/picks/today")
+def get_picks_today(date: Optional[str] = None):
+    """
+    Return today's right-swiped picks with the full job document AND the
+    full description from MongoDB, sorted by score desc.
+    Each pick includes a `swiped_at` timestamp.
+    """
+    today = date or _today_utc()
+    db = get_db()
+
+    # 1. Today's right-swipes
+    swipe_docs = list(swipes_col().find(
+        {"date": today, "direction": "right"},
+        {"_id": 0, "job_url": 1, "swiped_at": 1},
+    ))
+    if not swipe_docs:
+        return {"date": today, "count": 0, "picks": []}
+
+    swiped_urls = [s["job_url"] for s in swipe_docs]
+    swipe_time_map = {
+        s["job_url"]: s["swiped_at"].isoformat() if isinstance(s.get("swiped_at"), datetime) else None
+        for s in swipe_docs
+    }
+
+    # 2. Job documents for those URLs (scoped to today's sessions, like the queue)
+    start_utc, end_utc = _date_to_utc_range(today)
+    sessions = list(db["sessions"].find(
+        {"pipeline": "standard", "archived": False, "run_at": {"$gte": start_utc, "$lt": end_utc}},
+        {"session_id": 1},
+    ))
+    sids = [s["session_id"] for s in sessions]
+
+    match_stage: dict = {"job_url": {"$in": swiped_urls}}
+    if sids:
+        match_stage["session_id"] = {"$in": sids}
+    job_pipeline = [
+        {"$match": match_stage},
+        {"$sort": {"score": DESCENDING}},
+        {"$group": {"_id": "$job_url", "doc": {"$first": "$$ROOT"}}},
+        {"$replaceRoot": {"newRoot": "$doc"}},
+    ]
+    jobs_map = {j["job_url"]: _serialize(j) for j in jobs_col().aggregate(job_pipeline)}
+
+    # 3. Full descriptions for those URLs
+    desc_docs = db["descriptions"].find(
+        {"job_url": {"$in": swiped_urls}},
+        {"_id": 0, "job_url": 1, "description": 1},
+    )
+    desc_map = {d["job_url"]: d.get("description") for d in desc_docs}
+
+    # 4. Join everything in swipe-order, then sort by score desc
+    picks: list[dict] = []
+    for url in swiped_urls:
+        job = jobs_map.get(url)
+        if not job:
+            # job no longer in today's sessions — still include a stub
+            job = {"job_url": url}
+        picks.append({
+            **job,
+            "description": desc_map.get(url),
+            "swiped_at": swipe_time_map.get(url),
+        })
+
+    picks.sort(key=lambda p: p.get("score") or 0, reverse=True)
+    return {"date": today, "count": len(picks), "picks": picks}
