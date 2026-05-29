@@ -178,6 +178,10 @@ def get_swipes(direction: Optional[str] = None, date: Optional[str] = None):
 
     swiped_urls = [s["job_url"] for s in swipe_docs]
     direction_map = {s["job_url"]: s["direction"] for s in swipe_docs}
+    swipe_time_map = {
+        s["job_url"]: s["swiped_at"].isoformat() if isinstance(s.get("swiped_at"), datetime) else None
+        for s in swipe_docs
+    }
 
     start_utc, end_utc = _date_to_utc_range(today)
     sessions = list(get_db()["sessions"].find(
@@ -198,6 +202,7 @@ def get_swipes(direction: Optional[str] = None, date: Optional[str] = None):
         if url in jobs_map:
             job = jobs_map[url]
             job["swipe_direction"] = direction_map[url]
+            job["swiped_at"]       = swipe_time_map.get(url)
             jobs.append(job)
 
     if direction == "right":
