@@ -145,14 +145,20 @@ def record_swipe(body: SwipeIn):
     if body.direction not in ("right", "left"):
         raise HTTPException(400, "direction must be 'right' or 'left'")
     today = body.date or _today_utc()
-    swipes_col().update_one(
-        {"job_url": body.job_url, "date": today},
-        {"$set": {
+    update: dict = {
+        "$set": {
             "job_url": body.job_url,
             "direction": body.direction,
             "date": today,
             "swiped_at": datetime.now(tz=timezone.utc),
-        }},
+        }
+    }
+    # First-time right-swipes initialize resume_created=False
+    if body.direction == "right":
+        update["$setOnInsert"] = {"resume_created": False}
+    swipes_col().update_one(
+        {"job_url": body.job_url, "date": today},
+        update,
         upsert=True,
     )
     return {"ok": True}
@@ -200,20 +206,29 @@ def get_swipes(direction: Optional[str] = None, date: Optional[str] = None):
     return {"date": today, "direction": direction, "count": len(jobs), "jobs": jobs}
 
 
-@app.get("/api/picks/today")
-def get_picks_today(date: Optional[str] = None):
+@app.post("/api/picks/today")
+def update_picks_today(date: Optional[str] = None):
     """
-    Return today's right-swiped picks with the full job document AND the
-    full description from MongoDB, sorted by score desc.
-    Each pick includes a `swiped_at` timestamp.
+    Backfill `resume_created: False` on any of today's right-swiped picks
+    that don't have the field yet, then return the picks with the full job
+    document AND full description, sorted by score desc.
+    Each pick includes `swiped_at` and `resume_created`.
     """
     today = date or _today_utc()
     db = get_db()
 
+    # 0. Ensure every right-swipe for the date has resume_created (default False).
+    #    $exists:False match means existing values (e.g. True after a resume is
+    #    generated) are preserved — this only initializes missing ones.
+    swipes_col().update_many(
+        {"date": today, "direction": "right", "resume_created": {"$exists": False}},
+        {"$set": {"resume_created": False}},
+    )
+
     # 1. Today's right-swipes
     swipe_docs = list(swipes_col().find(
         {"date": today, "direction": "right"},
-        {"_id": 0, "job_url": 1, "swiped_at": 1},
+        {"_id": 0, "job_url": 1, "swiped_at": 1, "resume_created": 1},
     ))
     if not swipe_docs:
         return {"date": today, "count": 0, "picks": []}
@@ -223,6 +238,7 @@ def get_picks_today(date: Optional[str] = None):
         s["job_url"]: s["swiped_at"].isoformat() if isinstance(s.get("swiped_at"), datetime) else None
         for s in swipe_docs
     }
+    resume_created_map = {s["job_url"]: bool(s.get("resume_created", False)) for s in swipe_docs}
 
     # 2. Job documents for those URLs (scoped to today's sessions, like the queue)
     start_utc, end_utc = _date_to_utc_range(today)
@@ -259,8 +275,9 @@ def get_picks_today(date: Optional[str] = None):
             job = {"job_url": url}
         picks.append({
             **job,
-            "description": desc_map.get(url),
-            "swiped_at": swipe_time_map.get(url),
+            "description":     desc_map.get(url),
+            "swiped_at":       swipe_time_map.get(url),
+            "resume_created":  resume_created_map.get(url, False),
         })
 
     picks.sort(key=lambda p: p.get("score") or 0, reverse=True)
