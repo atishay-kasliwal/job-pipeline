@@ -65,6 +65,25 @@ jobs:
           cp docs/unclicked_100.html     atriveo-app/public/
           cp docs/weekly.html            atriveo-app/public/
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: atriveo-app/package-lock.json
+
+      - name: Regenerate full-JD description buckets
+        # Rebuilds public/job_descriptions/*.json from MongoDB so the app's
+        # "Full Job Description" export stays in sync with the jobs just copied
+        # above. Without this the buckets go stale and exports fall back to the
+        # short summary. Non-fatal: a failure here must not block the data push.
+        working-directory: atriveo-app
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          npm ci
+          npm run export:descriptions || echo "export:descriptions failed (non-fatal) — buckets not refreshed this run"
+
       - name: Commit and push to atriveo-app
         run: |
           cd atriveo-app
