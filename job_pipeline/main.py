@@ -53,6 +53,8 @@ from job_pipeline.more_important import (
 from job_pipeline.pipeline import run_standard_pipeline
 from job_pipeline.scraper import scrape
 
+logger = logging.getLogger(__name__)
+
 
 @contextmanager
 def _single_run_lock(lock_path: Path):
@@ -325,6 +327,19 @@ def main() -> None:
                 deploy=deploy_each_pipeline,
             )
             _print("Keywords Pipeline", df)
+
+        # Backfill descriptions that JobSpy missed (~10% of LinkedIn jobs come
+        # back with an empty description). Runs before trigger_export so the
+        # GitHub export — which reads descriptions from MongoDB — picks them up.
+        # Non-fatal: a backfill hiccup must never block the export/deploy.
+        if not args.no_save:
+            try:
+                from job_pipeline.backfill_descriptions import backfill_missing
+                n = backfill_missing()
+                if n:
+                    logger.info("backfill: filled %d missing description(s).", n)
+            except Exception as exc:
+                logger.error("backfill failed (non-fatal): %s", exc)
 
         # Trigger the GitHub Actions export workflow so data is live within ~2 min
         # instead of waiting for the :30 cron. Works with GITHUB_TOKEN env var
