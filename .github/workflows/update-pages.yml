@@ -17,7 +17,7 @@ permissions:
 
 concurrency:
   group: update-job-data
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   export-and-deploy:
@@ -82,7 +82,7 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
           npm ci
-          npm run export:descriptions || echo "export:descriptions failed (non-fatal) — buckets not refreshed this run"
+          npm run jd:export || echo "jd:export failed (non-fatal) — buckets not refreshed this run"
 
       - name: Commit and push to atriveo-app
         run: |

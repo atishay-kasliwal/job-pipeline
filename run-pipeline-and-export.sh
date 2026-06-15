@@ -41,13 +41,13 @@ cd "$APP_DIR" || { echo "[$(ts)] ERROR: cannot cd $APP_DIR" >> "$LOG"; exit 1; }
 EXPORT_STATUS=$?
 echo "[$(ts)] jd:export exit=$EXPORT_STATUS" >> "$LOG"
 
-# 3. Enqueue top jobs for Mongo compile worker
-if [ -f "$APP_DIR/.env" ]; then
-  "$NODE_BIN" --env-file="$APP_DIR/.env" scripts/resume-enqueue.mjs >> "$LOG" 2>&1
-  ENQUEUE_STATUS=$?
-  echo "[$(ts)] resume:enqueue exit=$ENQUEUE_STATUS" >> "$LOG"
+# 3. Feed export + Cloudflare deploy + resume enqueue (async — must not block hourly runs)
+POST_SCRIPT="$APP_DIR/scripts/post-pipeline-deploy.sh"
+if [ -x "$POST_SCRIPT" ]; then
+  nohup /bin/bash "$POST_SCRIPT" >> "$LOG" 2>&1 &
+  echo "[$(ts)] post-pipeline-deploy pid=$! (async)" >> "$LOG"
 else
-  echo "[$(ts)] ERROR: missing $APP_DIR/.env — resume:enqueue skipped" >> "$LOG"
+  echo "[$(ts)] WARN: missing $POST_SCRIPT — feed deploy skipped" >> "$LOG"
 fi
 
 echo "[$(ts)] === pipeline+export run done ===" >> "$LOG"
