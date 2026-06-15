@@ -41,13 +41,13 @@ cd "$APP_DIR" || { echo "[$(ts)] ERROR: cannot cd $APP_DIR" >> "$LOG"; exit 1; }
 EXPORT_STATUS=$?
 echo "[$(ts)] jd:export exit=$EXPORT_STATUS" >> "$LOG"
 
-# 3. Feed export + Cloudflare deploy + resume enqueue (async — must not block hourly runs)
-POST_SCRIPT="$APP_DIR/scripts/post-pipeline-deploy.sh"
-if [ -x "$POST_SCRIPT" ]; then
-  nohup /bin/bash "$POST_SCRIPT" >> "$LOG" 2>&1 &
-  echo "[$(ts)] post-pipeline-deploy pid=$! (async)" >> "$LOG"
+# 3. Push job feed to Cloudflare (async — independent of resume queue)
+FEED_SCRIPT="$APP_DIR/scripts/sync-job-feed.sh"
+if [ -x "$FEED_SCRIPT" ]; then
+  nohup /bin/bash "$FEED_SCRIPT" >> "$LOG" 2>&1 &
+  echo "[$(ts)] feed-sync pid=$! (async)" >> "$LOG"
 else
-  echo "[$(ts)] WARN: missing $POST_SCRIPT — feed deploy skipped" >> "$LOG"
+  echo "[$(ts)] WARN: missing $FEED_SCRIPT — feed deploy skipped" >> "$LOG"
 fi
 
 echo "[$(ts)] === pipeline+export run done ===" >> "$LOG"
