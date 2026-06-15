@@ -450,10 +450,24 @@ def run_export() -> None:
     important_jobs  = export_pipeline("important")
     today_jobs      = export_today_jobs()
     yesterday_jobs  = export_yesterday_jobs()
-    week_jobs       = export_week_jobs()
+
+    quick = os.getenv("EXPORT_QUICK", "").strip().lower() in ("1", "true", "yes")
+    week_cache = DOCS_DIR / "week_jobs.json"
+    if quick and week_cache.exists():
+        try:
+            week_jobs = json.loads(week_cache.read_text(encoding="utf-8"))
+            logger.info("EXPORT_QUICK: reusing cached week_jobs.json (%d jobs)", len(week_jobs))
+        except Exception as exc:
+            logger.warning("EXPORT_QUICK cache read failed (%s); exporting week", exc)
+            week_jobs = export_week_jobs()
+    else:
+        week_jobs = export_week_jobs()
+
     run_history     = export_run_history()
     try:
-        skills_summary = export_skills_summary()
+        skills_summary = export_skills_summary() if not quick else json.loads(
+            (DOCS_DIR / "skills_summary.json").read_text(encoding="utf-8")
+        ) if (DOCS_DIR / "skills_summary.json").exists() else {"generated_at": datetime.now(tz=timezone.utc).isoformat(), "total_analyzed": 0, "categories": {}}
     except Exception as exc:
         logger.warning("export_skills_summary failed (%s); using empty result.", exc)
         skills_summary = {"generated_at": datetime.now(tz=timezone.utc).isoformat(), "total_analyzed": 0, "categories": {}}

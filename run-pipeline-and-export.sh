@@ -31,6 +31,12 @@ echo "[$(ts)] node=$NODE_BIN app=$APP_DIR pipeline=$PIPELINE_DIR" >> "$LOG"
 
 # 1. Scrape
 cd "$PIPELINE_DIR" || { echo "[$(ts)] ERROR: cannot cd $PIPELINE_DIR" >> "$LOG"; exit 1; }
+
+if ! "$PIPELINE_DIR/.venv/bin/python3" -c "import pandas" 2>/dev/null; then
+  echo "[$(ts)] WARN: pandas missing — pip install" >> "$LOG"
+  "$PIPELINE_DIR/.venv/bin/pip" install -q -r requirements.txt >> "$LOG" 2>&1 || true
+fi
+
 GITHUB_TOKEN="${GITHUB_TOKEN:-}" "$PIPELINE_DIR/.venv/bin/python3" -m job_pipeline.main --pipeline all --deploy >> "$LOG" 2>&1
 PIPE_STATUS=$?
 echo "[$(ts)] scraper exit=$PIPE_STATUS" >> "$LOG"
@@ -41,13 +47,7 @@ cd "$APP_DIR" || { echo "[$(ts)] ERROR: cannot cd $APP_DIR" >> "$LOG"; exit 1; }
 EXPORT_STATUS=$?
 echo "[$(ts)] jd:export exit=$EXPORT_STATUS" >> "$LOG"
 
-# 3. Push job feed to Cloudflare (async — independent of resume queue)
-FEED_SCRIPT="$APP_DIR/scripts/sync-job-feed.sh"
-if [ -x "$FEED_SCRIPT" ]; then
-  nohup /bin/bash "$FEED_SCRIPT" >> "$LOG" 2>&1 &
-  echo "[$(ts)] feed-sync pid=$! (async)" >> "$LOG"
-else
-  echo "[$(ts)] WARN: missing $FEED_SCRIPT — feed deploy skipped" >> "$LOG"
-fi
+# 3. Feed deploy runs on its own schedule (:20 LaunchAgent) — avoid duplicate export here.
+echo "[$(ts)] feed-sync deferred to com.atriveo.feed-sync (:20)" >> "$LOG"
 
 echo "[$(ts)] === pipeline+export run done ===" >> "$LOG"
