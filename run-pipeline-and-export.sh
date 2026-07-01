@@ -26,19 +26,49 @@ done
 
 ts() { date "+%Y-%m-%dT%H:%M:%S%z"; }
 
+# Pick a stable system python to (re)build the venv with.
+resolve_base_python() {
+  for candidate in \
+    /opt/homebrew/bin/python3.12 /usr/local/bin/python3.12 \
+    /opt/homebrew/bin/python3.11 /usr/local/bin/python3.11 \
+    /opt/homebrew/bin/python3 /usr/local/bin/python3 \
+    "$(command -v python3 2>/dev/null)"; do
+    if [ -n "$candidate" ] && [ -x "$candidate" ]; then echo "$candidate"; return 0; fi
+  done
+  echo "python3"
+}
+
+# Rebuild the venv if its interpreter is missing or dangling (a Homebrew python
+# upgrade can delete the interpreter the venv was built against, which silently
+# breaks every hourly run with "bad interpreter"). Self-heals instead of failing.
+ensure_venv() {
+  local venv="$PIPELINE_DIR/.venv"
+  local py="$venv/bin/python3"
+  if [ -x "$py" ] && "$py" -c "import sys" >/dev/null 2>&1; then return 0; fi
+  echo "[$(ts)] WARN: venv missing/dead — rebuilding" >> "$LOG"
+  local base_py; base_py="$(resolve_base_python)"
+  [ -d "$venv" ] && { mv "$venv" "${venv}.broken-$(date +%Y%m%d-%H%M%S)" 2>>"$LOG" || rm -rf "$venv"; }
+  "$base_py" -m venv "$venv" >> "$LOG" 2>&1 || { echo "[$(ts)] ERROR: venv rebuild failed (base=$base_py)" >> "$LOG"; return 1; }
+  "$py" -m pip install -q --upgrade pip >> "$LOG" 2>&1 || true
+  "$py" -m pip install -q -r "$PIPELINE_DIR/requirements.txt" >> "$LOG" 2>&1 || true
+  echo "[$(ts)] venv rebuilt (base=$base_py)" >> "$LOG"
+}
+
 echo "[$(ts)] === pipeline+export run start ===" >> "$LOG"
 echo "[$(ts)] node=$NODE_BIN app=$APP_DIR pipeline=$PIPELINE_DIR" >> "$LOG"
 
 # 1. Scrape
 cd "$PIPELINE_DIR" || { echo "[$(ts)] ERROR: cannot cd $PIPELINE_DIR" >> "$LOG"; exit 1; }
 
+ensure_venv
 if ! "$PIPELINE_DIR/.venv/bin/python3" -c "import pandas" 2>/dev/null; then
   echo "[$(ts)] WARN: pandas missing — pip install" >> "$LOG"
-  "$PIPELINE_DIR/.venv/bin/pip" install -q -r requirements.txt >> "$LOG" 2>&1 || true
+  "$PIPELINE_DIR/.venv/bin/python3" -m pip install -q -r requirements.txt >> "$LOG" 2>&1 || true
 fi
 
-GITHUB_TOKEN="${GITHUB_TOKEN:-}" "$PIPELINE_DIR/.venv/bin/python3" -m job_pipeline.main --pipeline all --deploy >> "$LOG" 2>&1
-PIPE_STATUS=$?
+GITHUB_TOKEN="${GITHUB_TOKEN:-}" "$PIPELINE_DIR/.venv/bin/python3" -m job_pipeline.main --pipeline all --deploy 2>&1 \
+  | grep -v ": No such file or directory" >> "$LOG"
+PIPE_STATUS="${PIPESTATUS[0]}"
 echo "[$(ts)] scraper exit=$PIPE_STATUS" >> "$LOG"
 
 # 2. JD buckets from MongoDB

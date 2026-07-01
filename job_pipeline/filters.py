@@ -155,8 +155,8 @@ def filter_by_experience(df: pd.DataFrame) -> pd.DataFrame:
         # ── number > 3 followed by experience context ──────────────────────
         # "4 years experience", "4+ years of experience",
         # "5+ years of professional software development exp"
-        # allows up to 5 words between "years" and "experience"
-        r"(?<!\d)(?<!-)([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*(?:years?|yrs?)\s+(?:\w+\s+){0,5}(?:experience|exp(?:erience)?)\b"
+        # (?<!to ) prevents matching the upper bound of "3 to 5 years experience"
+        r"(?<!\d)(?<!-)(?<!to )([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*(?:years?|yrs?)\s+(?:\w+\s+){0,5}(?:experience|exp(?:erience)?)\b"
         # "experience of 4 years", "exp of 4+ years"
         r"|(?:experience|exp(?:erience)?)\s*(?:of|:)\s*([4-9]|\d{2})\s*(?:\+|[-–—]\s*\d+)?\s*\+?\s*(?:years?|yrs?)\b"
         # ── explicit requirement phrases ────────────────────────────────────
@@ -169,12 +169,13 @@ def filter_by_experience(df: pd.DataFrame) -> pd.DataFrame:
         # "requires 4 years", "requiring 4+ years"
         r"|requires?\s+([4-9]|\d{2})\s*\+?\s*(?:years?|yrs?)"
         # ── ranges where lower bound > 3 ───────────────────────────────────
-        # "4-6 years", "5–8 years", "4 to 6 years of experience"
-        r"|\b([4-9]|\d{2})\s*(?:[-–—]|to)\s*\d+\s*\+?\s*(?:years?|yrs?)\s+(?:of\s+)?(?:experience|exp(?:erience)?)\b"
-        # bare years requirement: "5+ years working...", "10 years"
-        # This intentionally catches explicit 4+ year requirements even when
-        # the word "experience" is omitted.
-        r"|\b([4-9]|\d{2})\s*\+?\s*(?:years?|yrs?)\b",
+        # "4-6 years", "5–8 years", "4 to 6 years"
+        r"|\b([4-9]|\d{2})\s*(?:[-–—]|to)\s*\d+\s*\+?\s*(?:years?|yrs?)\b"
+        # ── bare explicit minimums ──────────────────────────────────────────
+        # "5+ years" (explicit + means minimum, not a range upper bound)
+        r"|\b([4-9]|\d{2})\+\s*(?:years?|yrs?)\b"
+        # 2-digit year counts (10+ years) are always senior roles
+        r"|\b\d{2}\s*(?:years?|yrs?)\b",
         re.IGNORECASE,
     )
 
@@ -291,9 +292,12 @@ def deduplicate(df: pd.DataFrame) -> pd.DataFrame:
 # ── Experience extractor ──────────────────────────────────────────────────────
 
 _EXP_RANGE_RE = re.compile(
-    # "2 years experience", "2-4 years of experience", "2+ years experience"
-    r'\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*(?:years?|yrs?)\s+(?:of\s+)?(?:relevant\s+|professional\s+|work\s+|related\s+)?(?:experience|exp(?:erience)?)\b'
-    # "2+ years", "3-5 years" (standalone, without "experience" word after)
+    # "3 to 5 years experience", "1 to 3 years of python experience" — explicit to-range
+    r'\b(\d+)\s+to\s+(\d+)\s*\+?\s*(?:years?|yrs?)\b'
+    # "2 years experience", "2-4 years of experience", "1-3 years of python/java experience"
+    # (?<!to ) prevents matching the upper bound of "N to M years" as a standalone hit
+    r'|(?<!to )\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*(?:years?|yrs?)\s+(?:(?!\d)(?:\w+[/\w]*\s+){0,5})?(?:experience|exp(?:erience)?)\b'
+    # "2+ years", "3-5 years" (standalone, explicit +)
     r'|\b(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+\s*(?:years?|yrs?)\b'
     # "minimum 2 years", "at least 3-5 years", "requires 2 years"
     r'|(?:minimum|at\s+least|requires?|minimum\s+of)\s+(?:of\s+)?(\d+)\s*(?:[-–—]\s*(\d+))?\s*\+?\s*(?:years?|yrs?)\b'
@@ -320,8 +324,8 @@ def extract_exp_range(df: pd.DataFrame) -> pd.DataFrame:
         mins, maxs = [], []
         for m in _EXP_RANGE_RE.finditer(text):
             g = m.groups()
-            # 5 patterns × 2 groups each = 10 groups: (mn0,mx0, mn1,mx1, ...)
-            for i in range(0, 10, 2):
+            # 6 patterns × 2 groups each = 12 groups: (mn0,mx0, mn1,mx1, ...)
+            for i in range(0, 12, 2):
                 if g[i]:
                     mn = int(g[i])
                     mx = int(g[i + 1]) if g[i + 1] else mn

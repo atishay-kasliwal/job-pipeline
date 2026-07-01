@@ -154,15 +154,24 @@ python -m job_pipeline.main --pipeline standard --no-save --top 10
 python -m job_pipeline.main --pipeline all --deploy
 ```
 
-### Cron Setup (automated hourly runs)
+### Cron / LaunchAgent (automated hourly runs)
+
+Runs every hour **12 AM – 11 PM** local time (24×/day). On Mac, use the LaunchAgent template:
+
+```bash
+cp openshift/com.atriveo.job-pipeline.plist ~/Library/LaunchAgents/
+# Edit GITHUB_TOKEN in the plist, then:
+launchctl unload ~/Library/LaunchAgents/com.atriveo.job-pipeline.plist 2>/dev/null
+launchctl load ~/Library/LaunchAgents/com.atriveo.job-pipeline.plist
+```
+
+Or crontab equivalent:
 
 ```bash
 GH_TOKEN=$(gh auth token)
 (cat <<EOF
 GITHUB_TOKEN=${GH_TOKEN}
-0 8-23 * * * cd "$HOME/job-pipeline" && .venv/bin/python -m job_pipeline.main --pipeline all --deploy >> /tmp/atriveo_pipeline.log 2>&1
-0 0,1 * * * cd "$HOME/job-pipeline" && .venv/bin/python -m job_pipeline.main --pipeline all --deploy >> /tmp/atriveo_pipeline.log 2>&1
-0 5 * * * cd "$HOME/job-pipeline" && .venv/bin/python -m job_pipeline.main --pipeline all --deploy >> /tmp/atriveo_pipeline.log 2>&1
+0 0-23 * * * cd "$HOME/job-pipeline" && .venv/bin/python -m job_pipeline.main --pipeline all --deploy >> /tmp/atriveo_pipeline.log 2>&1
 EOF
 ) | crontab -
 ```

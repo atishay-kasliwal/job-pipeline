@@ -299,8 +299,8 @@ LOCATION_BONUSES: list[tuple[list[str], int]] = [
 ]
 
 # Practical maximum raw score used for % normalisation.
-# Represents a near-perfect job match (not every keyword firing at once).
-SCORE_MAX_RAW: int = 130
+# Calibrated to match the frontend's MAX_RAW_SCORE constant (jobPresentation.ts).
+SCORE_MAX_RAW: int = 250
 
 # Companies that attract large applicant pools (higher competition estimate).
 BIG_TECH_COMPANIES: list[str] = [
