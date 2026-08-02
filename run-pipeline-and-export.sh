@@ -32,6 +32,10 @@ APP_DIR="${ATRIVEO_APP_DIR:-$(cd "$PIPELINE_DIR/../atriveo-app" 2>/dev/null && p
 LOG="${ATRIVEO_SCRAPE_LOG:-/tmp/atriveo_pipeline.log}"
 STATE_FILE="${ATRIVEO_SCRAPE_STATE:-/tmp/atriveo_scrape_state.json}"
 LOCK="${ATRIVEO_SCRAPE_LOCK:-/tmp/atriveo_scrape.lock}"
+# Durations of past runs, so the UI can say "about N minutes left" from real
+# history instead of a hardcoded guess. Lives in the repo's gitignored output/
+# rather than /tmp, which a reboot wipes.
+HISTORY_FILE="${ATRIVEO_SCRAPE_HISTORY:-$PIPELINE_DIR/output/scrape_history.json}"
 
 RUN_ID=""
 SKIP_RESUME=0
@@ -182,6 +186,62 @@ ensure_venv() {
   log "venv rebuilt (base=$base_py)"
 }
 
+# Append this run's timings to the rolling history the UI estimates from. Only
+# successful runs are recorded — a run that died in phase 1 says nothing useful
+# about how long a full one takes. Keeps the last 20.
+record_history() {
+  local py="$PIPELINE_DIR/.venv/bin/python3"
+  [ -x "$py" ] || py="$(resolve_base_python)"
+  mkdir -p "$(dirname "$HISTORY_FILE")" 2>/dev/null || return 0
+  STATE_FILE="$STATE_FILE" HISTORY_FILE="$HISTORY_FILE" "$py" - <<'PY' 2>>"$LOG" || true
+import json, os
+from datetime import datetime
+
+def parse(ts):
+    if not ts:
+        return None
+    try:
+        return datetime.strptime(ts, "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError:
+        return None
+
+state_path, hist_path = os.environ["STATE_FILE"], os.environ["HISTORY_FILE"]
+with open(state_path) as fh:
+    state = json.load(fh)
+
+start, end = parse(state.get("startedAt")), parse(state.get("updatedAt"))
+if not start or not end:
+    raise SystemExit(0)
+
+phases = []
+for p in state.get("phases", []):
+    ps, pe = parse(p.get("startedAt")), parse(p.get("finishedAt"))
+    if ps and pe:
+        phases.append({"name": p.get("name"), "durationSec": round((pe - ps).total_seconds())})
+
+entry = {
+    "runId": state.get("runId"),
+    "finishedAt": state.get("updatedAt"),
+    "durationSec": round((end - start).total_seconds()),
+    "phases": phases,
+}
+
+try:
+    with open(hist_path) as fh:
+        history = json.load(fh)
+    if not isinstance(history, list):
+        history = []
+except (OSError, ValueError):
+    history = []
+
+history.append(entry)
+tmp = hist_path + ".tmp"
+with open(tmp, "w") as fh:
+    json.dump(history[-20:], fh)
+os.replace(tmp, hist_path)
+PY
+}
+
 # today_count from the dashboard metadata — used to report "N new" in the UI.
 read_job_count() {
   local meta="$PIPELINE_DIR/docs/metadata.json"
@@ -254,6 +314,7 @@ JOBS_AFTER="$(read_job_count)"
 PHASE="done"
 STATUS="done"
 EXIT_CODE=0
+record_history
 log "=== run $RUN_ID done · jobs ${JOBS_BEFORE:-?} → ${JOBS_AFTER:-?} ==="
 write_state "$(iso)"
 exit 0
