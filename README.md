@@ -29,7 +29,7 @@ Job searching for early-career SWE roles is broken:
 
 ## Solution
 
-This pipeline runs **~20 times per day**, fully automated:
+Every run is triggered on demand — from the app, the dock, or the CLI:
 
 - Scrapes LinkedIn across 6 search terms simultaneously
 - Runs a 5-stage filter cascade that cuts ~75% of irrelevant results
@@ -42,7 +42,7 @@ This pipeline runs **~20 times per day**, fully automated:
 ## Architecture
 
 ```
-macOS cron (~20x/day)
+"Scrape now" (app / dock / CLI)
         │
         ▼
   main.py (CLI entry point)
@@ -79,7 +79,7 @@ macOS cron (~20x/day)
 | Storage | MongoDB Atlas (4 collections), JSON snapshots |
 | Deploy | GitHub Contents API (no CI runner needed) |
 | Frontend | Vanilla JS, CSS custom properties, IBM Plex Mono + Sora |
-| Automation | macOS cron, Python venv |
+| Automation | On-demand trigger via tailor sidecar, Python venv |
 | Auth | GitHub CLI (`gh auth token`) |
 
 ---
@@ -113,7 +113,7 @@ macOS cron (~20x/day)
 
 - **~480 raw jobs scraped per run** across 6 search terms
 - **~75% filtered out** — only ~109 jobs survive the full cascade (signal, not noise)
-- **~20 automated runs per day** — 8 AM to 1 AM on the hour, plus a 5 AM overnight run
+- **Runs when you ask** — no timers; one run at a time, cancellable mid-flight
 - **15,000+ job descriptions** stored in MongoDB Atlas across all runs
 - **5 company-tier pipelines** covering everything from any company to verified H1B sponsors
 - **Sub-15-minute end-to-end runtime** per run (scrape → filter → score → store → deploy)
@@ -154,27 +154,41 @@ python -m job_pipeline.main --pipeline standard --no-save --top 10
 python -m job_pipeline.main --pipeline all --deploy
 ```
 
-### Cron / LaunchAgent (automated hourly runs)
+### Triggering a run (on demand)
 
-Runs every hour **12 AM – 11 PM** local time (24×/day). On Mac, use the LaunchAgent template:
+Nothing scrapes on a timer. A run starts only when you ask for one — from the
+web app, the dock, or a terminal.
+
+`run-pipeline-and-export.sh` is the single entry point and runs the whole chain:
+
+| Phase | Step |
+|---|---|
+| `scrape` | JobSpy → MongoDB (+ GitHub Pages deploy) |
+| `jd_export` | JD buckets for the app's feed |
+| `feed_deploy` | Feed JSON → Cloudflare Pages |
+| `resume_queue` | Enqueue fresh JDs for the compile worker |
 
 ```bash
-cp openshift/com.atriveo.job-pipeline.plist ~/Library/LaunchAgents/
-# Edit GITHUB_TOKEN in the plist, then:
-launchctl unload ~/Library/LaunchAgents/com.atriveo.job-pipeline.plist 2>/dev/null
-launchctl load ~/Library/LaunchAgents/com.atriveo.job-pipeline.plist
+# Directly
+./run-pipeline-and-export.sh
+./run-pipeline-and-export.sh --skip-deploy --skip-resume   # scrape + JD export only
+
+# From atriveo-app (same lock, same state file)
+npm run scrape:now
+npm run scrape:now -- --status
+npm run scrape:now -- --cancel
 ```
 
-Or crontab equivalent:
+In the UI: **Scrape now** in the app header, or the scrape button in the dock's
+footer. Both go through the tailor sidecar (`POST /scrape/start`), which spawns
+this script and reports progress from `/tmp/atriveo_scrape_state.json`.
 
-```bash
-GH_TOKEN=$(gh auth token)
-(cat <<EOF
-GITHUB_TOKEN=${GH_TOKEN}
-0 0-23 * * * cd "$HOME/job-pipeline" && .venv/bin/python -m job_pipeline.main --pipeline all --deploy >> /tmp/atriveo_pipeline.log 2>&1
-EOF
-) | crontab -
-```
+Only one run happens at a time — a second trigger gets HTTP 409 and attaches to
+the run already in flight. Runs survive closing the app; `SIGTERM` (or the Stop
+button) cancels one cleanly.
+
+**Why on demand:** timed scraping burned LinkedIn quota overnight, and on a
+laptop that sleeps, a schedule fires at unpredictable wake times or not at all.
 
 ---
 
