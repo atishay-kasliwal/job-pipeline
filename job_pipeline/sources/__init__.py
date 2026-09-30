@@ -18,13 +18,16 @@ logger = logging.getLogger(__name__)
 
 def collect_ats_jobs() -> pd.DataFrame:
     """Rows from every enabled ATS source. Never raises: a broken source only logs."""
+    import importlib
+
     frames: list[pd.DataFrame] = []
-    gh = ATS_SOURCES.get("greenhouse", {})
-    if gh.get("enabled"):
+    for ats, settings in ATS_SOURCES.items():
+        if not settings.get("enabled"):
+            continue
         try:
-            from job_pipeline.sources.greenhouse import collect_from_registry
-            frames.append(collect_from_registry(**{k: v for k, v in gh.items() if k != "enabled"}))
+            module = importlib.import_module(f"job_pipeline.sources.{ats}")
+            frames.append(module.collect_from_registry(**{k: v for k, v in settings.items() if k != "enabled"}))
         except Exception as exc:  # noqa: BLE001 — discovery must not break the hourly run
-            logger.warning("Greenhouse source failed (non-fatal): %s", exc)
+            logger.warning("%s source failed (non-fatal): %s", ats, exc)
     frames = [f for f in frames if not f.empty]
     return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()

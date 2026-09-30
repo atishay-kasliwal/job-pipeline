@@ -1,5 +1,5 @@
 """
-Find Greenhouse boards to poll — not limited to any company list.
+Find ATS boards (Greenhouse, Lever, Ashby) to poll — not limited to any company list.
 
 Sources:
   --commoncrawl N   board tokens from Common Crawl's URL index (N index pages)
@@ -7,8 +7,8 @@ Sources:
   --tokens a,b      explicit tokens
 Every token is validated against the Job Board API before use.
 
-    python -m job_pipeline.sources.discover_boards --commoncrawl 2            # dry run
-    python -m job_pipeline.sources.discover_boards --commoncrawl 2 --write    # save to ats_boards
+    python -m job_pipeline.sources.discover_boards --commoncrawl 2                       # dry run
+    python -m job_pipeline.sources.discover_boards --ats lever --commoncrawl 2 --write   # save to ats_boards
 """
 from __future__ import annotations
 
@@ -30,29 +30,45 @@ _TOKEN = re.compile(r"^[a-z0-9][a-z0-9_-]{1,60}$")
 _NOT_BOARDS = {"embed", "api", "v1", "jobs", "job_app", "static", "assets", "favicon.ico", "robots.txt"}
 
 
-def token_from_url(url: str) -> str | None:
-    """https://job-boards.greenhouse.io/<token>/jobs/… → token."""
+HOSTS = {
+    "greenhouse": ("job-boards.greenhouse.io", "boards.greenhouse.io"),
+    "lever": ("jobs.lever.co",),
+    "ashby": ("jobs.ashbyhq.com",),
+}
+VALIDATE_URL = {
+    "greenhouse": API + "/{token}",
+    "lever": "https://api.lever.co/v0/postings/{token}?mode=json&limit=1",
+    "ashby": "https://api.ashbyhq.com/posting-api/job-board/{token}",
+}
+
+
+def token_from_url(url: str, ats: str = "greenhouse") -> str | None:
+    """https://job-boards.greenhouse.io/<token>/jobs/… (or jobs.lever.co/<token>/…) → token."""
     try:
         parsed = urlparse(url)
     except ValueError:
         return None
-    if not (parsed.hostname or "").endswith("greenhouse.io"):
+    if (parsed.hostname or "").lower() not in HOSTS[ats]:
         return None
     first = next((p for p in parsed.path.split("/") if p), "").lower()
     return first if _TOKEN.match(first) and first not in _NOT_BOARDS else None
 
 
-def from_commoncrawl(pages: int, session: requests.Session) -> set[str]:
+def from_commoncrawl(pages: int, session: requests.Session, ats: str = "greenhouse") -> set[str]:
     latest = session.get(f"{CC_INDEX}/collinfo.json", timeout=30).json()[0]["id"]
     tokens: set[str] = set()
-    for host in ("job-boards.greenhouse.io", "boards.greenhouse.io"):
+    for host in HOSTS[ats]:
         for page in range(pages):
-            res = session.get(f"{CC_INDEX}/{latest}-index", params={"url": f"{host}/*", "output": "json", "fl": "url", "page": page}, timeout=120)
+            try:
+                res = session.get(f"{CC_INDEX}/{latest}-index", params={"url": f"{host}/*", "output": "json", "fl": "url", "page": page}, timeout=120)
+            except requests.RequestException as exc:  # the index is large and occasionally drops connections
+                logger.warning("Common Crawl %s page %d: %s", host, page, exc)
+                break
             if res.status_code != 200:
                 break
             for line in res.text.splitlines():
                 try:
-                    token = token_from_url(json.loads(line)["url"])
+                    token = token_from_url(json.loads(line)["url"], ats)
                 except (ValueError, KeyError):
                     continue
                 if token:
@@ -60,22 +76,29 @@ def from_commoncrawl(pages: int, session: requests.Session) -> set[str]:
     return tokens
 
 
-def from_jobs() -> set[str]:
+def from_jobs(ats: str = "greenhouse") -> set[str]:
     from job_pipeline.storage import get_db
     tokens: set[str] = set()
-    for url in get_db()["jobs"].distinct("job_url_direct", {"job_url_direct": {"$regex": "greenhouse\\.io"}}):
+    for url in get_db()["jobs"].distinct("job_url_direct", {"job_url_direct": {"$regex": "|".join(h.replace(".", "\\.") for h in HOSTS[ats])}}):
         ident = parse_posting_identity(url)
-        if ident and ident.get("ats_board"):
+        if ident and ident.get("ats") == ats and ident.get("ats_board"):
             tokens.add(ident["ats_board"])
     return tokens
 
 
-def validate(tokens: set[str], session: requests.Session, workers: int = 8) -> dict[str, str]:
-    """token → company name, for boards the Job Board API recognizes."""
+def validate(tokens: set[str], session: requests.Session, workers: int = 8, ats: str = "greenhouse") -> dict[str, str]:
+    """token → company name, for boards the ATS's public API recognizes."""
     def one(token: str) -> tuple[str, str | None]:
         try:
-            res = session.get(f"{API}/{token}", headers=HEADERS, timeout=15)
-            return token, (res.json().get("name") or token) if res.ok else None
+            res = session.get(VALIDATE_URL[ats].format(token=token), headers=HEADERS, timeout=15)
+            if not res.ok:
+                return token, None
+            body = res.json()
+            if ats == "greenhouse":
+                return token, body.get("name") or token
+            if ats == "lever" and not isinstance(body, list):
+                return token, None
+            return token, token.replace("-", " ").title()
         except requests.RequestException:
             return token, None
     with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -84,6 +107,7 @@ def validate(tokens: set[str], session: requests.Session, workers: int = 8) -> d
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--ats", choices=sorted(HOSTS), default="greenhouse")
     parser.add_argument("--commoncrawl", type=int, default=0, metavar="PAGES")
     parser.add_argument("--from-jobs", action="store_true")
     parser.add_argument("--tokens", default="")
@@ -93,15 +117,15 @@ def main() -> None:
     session = requests.Session()
     found: dict[str, set[str]] = {}
     if args.commoncrawl:
-        found["commoncrawl"] = from_commoncrawl(args.commoncrawl, session)
+        found["commoncrawl"] = from_commoncrawl(args.commoncrawl, session, args.ats)
     if args.from_jobs:
-        found["linkedin_apply_url"] = from_jobs()
+        found["linkedin_apply_url"] = from_jobs(args.ats)
     if args.tokens:
         found["manual"] = {t.strip().lower() for t in args.tokens.split(",") if t.strip()}
     all_tokens = set().union(*found.values()) if found else set()
     print(f"{len(all_tokens)} candidate tokens; validating…")
-    valid = validate(all_tokens, session)
-    print(f"{len(valid)} valid Greenhouse boards")
+    valid = validate(all_tokens, session, ats=args.ats)
+    print(f"{len(valid)} valid {args.ats} boards")
     if not args.write:
         for token, name in list(valid.items())[:25]:
             print(f"  {token:<28} {name}")
@@ -111,7 +135,7 @@ def main() -> None:
     for via, tokens in found.items():
         for token in tokens:
             if token in valid:
-                ats_boards.upsert_discovered("greenhouse", token, valid[token], via)
+                ats_boards.upsert_discovered(args.ats, token, valid[token], via)
     print(f"Saved {len(valid)} boards to ats_boards.")
 
 

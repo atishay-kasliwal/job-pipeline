@@ -251,6 +251,29 @@ job-pipeline/
 
 ---
 
+## ATS board sources (Greenhouse, Lever, Ashby)
+
+Beyond LinkedIn, every run polls employer job boards from the Mongo `ats_boards`
+registry through their public APIs and feeds new postings into the same
+dedupe → filters → scoring → storage. Rows carry `ats`, `ats_board`,
+`ats_posting_id` and `application_key` (the posting identity used by the
+playatriveo application engine); `job_url_direct` holds the apply link.
+
+```bash
+python -m job_pipeline.sources.discover_boards --commoncrawl 5 --write              # grow Greenhouse boards
+python -m job_pipeline.sources.discover_boards --ats lever --commoncrawl 5 --write  # Lever
+python -m job_pipeline.sources.discover_boards --ats ashby --from-jobs --write      # Ashby (from seen apply links)
+python -m job_pipeline.sources.greenhouse --boards discord,figma --hours 72         # read-only dry run
+.venv/bin/python -m unittest discover -s tests                                       # tests
+```
+
+Each source polls up to `ATS_<NAME>_MAX_BOARDS` boards per run (rotating, boards
+with recent matches first) and emits only postings published since that board's
+last poll. `ATS_GREENHOUSE=0` / `ATS_LEVER=0` / `ATS_ASHBY=0` disable a source;
+a failing source never blocks the LinkedIn scrape.
+
+---
+
 ## Author
 
 **Atishay Kasliwal** — Master's Student, Stony Brook University  

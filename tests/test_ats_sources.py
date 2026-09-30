@@ -108,3 +108,44 @@ class DiscoveryTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LeverAshbySourceTests(unittest.TestCase):
+    def test_lever_rows(self):
+        from job_pipeline.sources import lever
+        now = datetime(2026, 9, 29, 16, 0, tzinfo=timezone.utc)
+        ms = lambda h: int((now - timedelta(hours=h)).timestamp() * 1000)  # noqa: E731
+        uid = "6ed76ce8-4156-4b60-b120-403538bd66cd"
+        session = _Session({"https://api.lever.co/v0/postings/acme": _Resp(200, [
+            {"id": uid, "text": "Backend Engineer", "createdAt": ms(1), "categories": {"location": "New York, NY"},
+             "descriptionPlain": "Build APIs", "hostedUrl": f"https://jobs.lever.co/acme/{uid}", "applyUrl": f"https://jobs.lever.co/acme/{uid}/apply"},
+            {"id": "old", "text": "Software Engineer", "createdAt": ms(50), "categories": {}},
+        ])})
+        # _Session ignores query params: route on the bare URL
+        session.get = (lambda orig: (lambda url, **kw: orig(url)))(session.get)
+        df = lever.collect_boards([{"token": "acme"}], now=now, session=session)
+        self.assertEqual(df["job_url_direct"].tolist(), [f"https://jobs.lever.co/acme/{uid}/apply"])
+        self.assertEqual(parse_posting_identity(df.iloc[0]["job_url_direct"])["application_key"], f"lever:{uid}")
+
+    def test_ashby_rows(self):
+        from job_pipeline.sources import ashby
+        now = datetime(2026, 9, 29, 16, 0, tzinfo=timezone.utc)
+        uid = "34413f8d-26bf-4bbc-8ade-eb309a0e2245"
+        session = _Session({"https://api.ashbyhq.com/posting-api/job-board/ramp": _Resp(200, {"jobs": [
+            {"id": uid, "title": "Software Engineer", "publishedAt": (now - timedelta(hours=2)).isoformat(), "location": "New York",
+             "isListed": True, "descriptionPlain": "Ship", "jobUrl": f"https://jobs.ashbyhq.com/ramp/{uid}", "applyUrl": f"https://jobs.ashbyhq.com/ramp/{uid}/application"},
+            {"id": "hidden", "title": "Software Engineer", "publishedAt": now.isoformat(), "isListed": False},
+        ]})})
+        df = ashby.collect_boards([{"token": "ramp", "company_name": "Ramp"}], now=now, session=session)
+        self.assertEqual(df["company"].tolist(), ["Ramp"])
+        self.assertEqual(parse_posting_identity(df.iloc[0]["job_url_direct"])["application_key"], f"ashby:{uid}")
+
+    def test_lever_token_and_backfill_parser(self):
+        from job_pipeline.backfill_apply_urls import apply_url_from_html
+        self.assertEqual(token_from_url("https://jobs.lever.co/palantir/abc", "lever"), "palantir")
+        html = '<code id="applyUrl" style="display:none"><!--"https://www.linkedin.com/jobs/view/externalApply/1?url=https%3A%2F%2Fjob-boards.greenhouse.io%2Facme%2Fjobs%2F9&urlHash=x"--></code>'
+        self.assertEqual(apply_url_from_html(html), "https://job-boards.greenhouse.io/acme/jobs/9")
+
+    def test_repairs_linkedin_suffix_on_job_url_direct(self):
+        self.assertEqual(parse_posting_identity("https://job-boards.greenhouse.io/acme/jobs/9&urlHash=Ab1&trk=x")["application_key"], "greenhouse:9")
+        self.assertEqual(parse_posting_identity("https://boards.greenhouse.io/acme/jobs/9?gh_src=z&urlHash=Ab1")["application_key"], "greenhouse:9")

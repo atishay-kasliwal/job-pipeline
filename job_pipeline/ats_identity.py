@@ -21,8 +21,19 @@ def _identity(ats: str, board: str | None, posting_id: str, key: str) -> dict[st
     return {"ats": ats, "ats_board": board, "ats_posting_id": posting_id, "application_key": key}
 
 
+_LINKEDIN_JUNK = re.compile(r"&(urlHash|trk|refId|trackingId)=[^&#]*")
+
+
+def repair_linkedin_url(url: str) -> str:
+    """JobSpy's job_url_direct can end in LinkedIn's own params ("…/jobs/9&urlHash=x"); strip them."""
+    cleaned = _LINKEDIN_JUNK.sub("", url)
+    if "&" in cleaned and "?" not in cleaned:
+        cleaned = cleaned.replace("&", "?", 1)
+    return cleaned
+
+
 def parse_posting_identity(url: Any) -> dict[str, Any] | None:
-    raw = str(url or "").strip()
+    raw = repair_linkedin_url(str(url or "").strip())
     if not raw.lower().startswith(("http://", "https://")):
         return None
     try:

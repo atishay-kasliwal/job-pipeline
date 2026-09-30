@@ -58,6 +58,20 @@ ATS_SOURCES: dict = {
         "timeout_s": 15,
         "first_poll_hours": 24,
     },
+    "lever": {
+        "enabled": os.environ.get("ATS_LEVER", "1") == "1",
+        "max_boards_per_run": int(os.environ.get("ATS_LEVER_MAX_BOARDS", "200")),
+        "workers": 8,
+        "timeout_s": 15,
+        "first_poll_hours": 24,
+    },
+    "ashby": {
+        "enabled": os.environ.get("ATS_ASHBY", "1") == "1",
+        "max_boards_per_run": int(os.environ.get("ATS_ASHBY_MAX_BOARDS", "200")),
+        "workers": 8,
+        "timeout_s": 15,
+        "first_poll_hours": 24,
+    },
 }
 
 # ── Role filter ───────────────────────────────────────────────────────────────
