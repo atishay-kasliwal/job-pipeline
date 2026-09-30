@@ -59,8 +59,13 @@ def list_jobs(session: requests.Session, token: str, timeout: float) -> tuple[st
 
 
 def job_detail(session: requests.Session, token: str, job_id: int, timeout: float) -> dict | None:
-    res = session.get(f"{API}/{token}/jobs/{job_id}", headers=HEADERS, timeout=timeout)
-    return res.json() if res.ok else None
+    """The posting's detail (description). A slow or failed request only costs this posting its description."""
+    try:
+        res = session.get(f"{API}/{token}/jobs/{job_id}", headers=HEADERS, timeout=timeout)
+        return res.json() if res.ok else None
+    except (requests.RequestException, ValueError) as exc:
+        logger.info("greenhouse %s/%s detail: %s", token, job_id, exc)
+        return None
 
 
 def to_row(token: str, job: dict, detail: dict | None, company: str | None) -> dict[str, Any]:
