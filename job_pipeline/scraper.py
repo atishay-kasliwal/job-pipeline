@@ -19,6 +19,7 @@ import pandas as pd
 from jobspy import scrape_jobs
 
 from job_pipeline.config import SCRAPER, SEARCH_TERMS
+from job_pipeline.ats_identity import add_ats_identity
 from job_pipeline.identity import job_identity_key
 
 logger = logging.getLogger(__name__)
@@ -106,6 +107,15 @@ def scrape(overrides: dict[str, Any] | None = None) -> pd.DataFrame:
             df["search_term"] = term
             frames.append(df)
 
+    # ATS boards (Greenhouse, …) go through the same pipeline as LinkedIn rows.
+    try:
+        from job_pipeline.sources import collect_ats_jobs
+        ats_df = collect_ats_jobs()
+        if not ats_df.empty:
+            frames.append(ats_df)
+    except Exception as exc:  # noqa: BLE001 — never block the LinkedIn scrape
+        logger.warning("ATS sources failed (non-fatal): %s", exc)
+
     if not frames:
         logger.warning("All search terms returned 0 results.")
         return pd.DataFrame()
@@ -118,6 +128,7 @@ def scrape(overrides: dict[str, Any] | None = None) -> pd.DataFrame:
     combined["_job_key"] = combined.apply(job_identity_key, axis=1)
     combined = combined.drop_duplicates(subset=["_job_key"]).drop(columns=["_job_key"])
     combined = combined.reset_index(drop=True)
+    combined = add_ats_identity(combined)
 
     logger.info(
         "Combined %d terms → %d raw rows (%d dupes removed)",

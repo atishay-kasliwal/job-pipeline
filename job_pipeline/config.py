@@ -47,6 +47,19 @@ SEARCH_TERMS: list[str] = [
     "AI engineer",
 ]
 
+# ── ATS discovery sources (feed the same filters/scoring/storage as JobSpy) ─────
+# Boards come from the Mongo `ats_boards` registry
+# (python -m job_pipeline.sources.discover_boards --write). Set ATS_GREENHOUSE=0 to disable.
+ATS_SOURCES: dict = {
+    "greenhouse": {
+        "enabled": os.environ.get("ATS_GREENHOUSE", "1") == "1",
+        "max_boards_per_run": int(os.environ.get("ATS_GREENHOUSE_MAX_BOARDS", "300")),
+        "workers": 8,
+        "timeout_s": 15,
+        "first_poll_hours": 24,
+    },
+}
+
 # ── Role filter ───────────────────────────────────────────────────────────────
 # Matched case-insensitively as substring of the job title.
 ROLE_INCLUDE_KEYWORDS: list[str] = [

@@ -41,6 +41,11 @@ _OUTPUT_COLUMNS: list[str] = [
     "min_exp",
     "max_exp",
     "job_url",
+    "job_url_direct",  # external apply link (JobSpy); used by the playatriveo application engine
+    "ats",
+    "ats_board",
+    "ats_posting_id",
+    "application_key",  # posting identity shared with the application engine
     "date_posted",
     "batch_time",
     "score",

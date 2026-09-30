@@ -58,7 +58,10 @@ def canonical_job_url(url: Any) -> str:
 
     scheme = (parsed.scheme or "https").lower()
     clean_path = re.sub(r"/+$", "", path) or "/"
-    return urlunparse((scheme, host, clean_path, "", "", ""))
+    # Employer careers pages embed ATS boards and identify the posting only by a
+    # query param (…/careers?gh_jid=123). Keep those, drop everything else.
+    kept = "&".join(f"{k}={query[k][0]}" for k in ("ashby_jid", "gh_jid") if query.get(k))
+    return urlunparse((scheme, host, clean_path, "", kept, ""))
 
 
 def job_identity_key(job: Mapping[str, Any]) -> str:
