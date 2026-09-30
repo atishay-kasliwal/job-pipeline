@@ -94,6 +94,13 @@ ROLE_INCLUDE_KEYWORDS: list[str] = [
     "ml engineer",
     "ai engineer",
     "applied scientist",
+    "full stack",
+    "full-stack",
+    "fullstack",
+    "research engineer",
+    "forward deployed",
+    "forward-deployed",
+    "data analyst",
 ]
 
 # Companies to exclude — job aggregators, spam boards, low-quality sources.
