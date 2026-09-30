@@ -23,6 +23,12 @@
 
 set -uo pipefail
 
+# Everything below sits in one { } group so bash parses the whole script before
+# running any of it. Bash otherwise reads a script from disk as it goes, so a
+# git pull or edit landing during a 15-minute run would resume at a stale byte
+# offset and execute garbage.
+{
+
 # Resolve our own directory rather than hardcoding /Users/<name>/job-pipeline —
 # this repo now moves between machines (Mac mini → MacBook Air) and the old
 # absolute path silently ran whichever checkout happened to live there.
@@ -272,6 +278,10 @@ if ! "$PIPELINE_DIR/.venv/bin/python3" -c "import pandas" 2>/dev/null; then
   "$PIPELINE_DIR/.venv/bin/python3" -m pip install -q -r requirements.txt >> "$LOG" 2>&1 || true
 fi
 
+# Free quota before inserting. Best effort: a failed prune must not block the scrape.
+"$PIPELINE_DIR/.venv/bin/python3" -m job_pipeline.prune >> "$LOG" 2>&1 \
+  || log "WARN: prune failed (exit $?) — continuing"
+
 JOBS_BEFORE="$(read_job_count)"
 
 GITHUB_TOKEN="${GITHUB_TOKEN:-}" "$PIPELINE_DIR/.venv/bin/python3" -m job_pipeline.main --pipeline all --deploy 2>&1 \
@@ -318,3 +328,4 @@ record_history
 log "=== run $RUN_ID done · jobs ${JOBS_BEFORE:-?} → ${JOBS_AFTER:-?} ==="
 write_state "$(iso)"
 exit 0
+}
