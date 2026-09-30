@@ -37,6 +37,14 @@ SCRAPER: dict = {
     #   zip_recruiter — returns 0 results
 }
 
+# How many LinkedIn searches run at the same time. 1 = one after another (the original behaviour).
+# LinkedIn throttles heavy scraping, so this is capped at 3; raise it slowly and watch for empty results.
+LINKEDIN_WORKERS: int = max(1, min(3, int(os.environ.get("LINKEDIN_WORKERS", "1"))))
+
+# Poll the ATS boards (Greenhouse, Lever, Ashby) while LinkedIn is being scraped instead of afterwards.
+# They are different sites, so they do not compete. Set ATS_CONCURRENT=0 to go back to running them last.
+ATS_CONCURRENT: bool = os.environ.get("ATS_CONCURRENT", "1") == "1"
+
 # Multiple search terms — scraper runs once per term and merges results.
 SEARCH_TERMS: list[str] = [
     "software engineer",
