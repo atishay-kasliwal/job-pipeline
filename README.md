@@ -278,3 +278,11 @@ a failing source never blocks the LinkedIn scrape.
 
 **Atishay Kasliwal** — Master's Student, Stony Brook University  
 [LinkedIn](https://linkedin.com/in/atishaykasliwal) · [Portfolio](https://atishaykasliwal.com) · [GitHub](https://github.com/atishay-kasliwal)
+
+## Faster scrapes
+
+Two settings (environment variables, both optional):
+
+- `ATS_CONCURRENT=1` (default): the Greenhouse / Lever / Ashby boards are polled while LinkedIn is being scraped, instead of afterwards. Set `0` to run them last again.
+- `LINKEDIN_WORKERS=1` (default, max 3): LinkedIn search terms run this many at a time. Keep it at 1 unless runs are slow; LinkedIn throttles heavy scraping, so raise it slowly and watch for empty results. When more than one runs, the Tor circuit is rotated once per run rather than per search.
+
