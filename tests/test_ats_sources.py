@@ -149,3 +149,26 @@ class LeverAshbySourceTests(unittest.TestCase):
     def test_repairs_linkedin_suffix_on_job_url_direct(self):
         self.assertEqual(parse_posting_identity("https://job-boards.greenhouse.io/acme/jobs/9&urlHash=Ab1&trk=x")["application_key"], "greenhouse:9")
         self.assertEqual(parse_posting_identity("https://boards.greenhouse.io/acme/jobs/9?gh_src=z&urlHash=Ab1")["application_key"], "greenhouse:9")
+
+
+class GreenhouseDetailFailureTest(unittest.TestCase):
+    def test_timeout_on_detail_only_drops_the_description(self):
+        import requests
+        from job_pipeline.sources import greenhouse
+
+        class Session:
+            def get(self, url, headers=None, timeout=None):
+                raise requests.exceptions.ReadTimeout("slow")
+
+        self.assertIsNone(greenhouse.job_detail(Session(), "acme", 1, 1))
+
+
+class BackfillCapTest(unittest.TestCase):
+    def test_keeps_each_companys_best_rows(self):
+        import pandas as pd
+        from job_pipeline.sources.backfill import cap_per_company
+
+        df = pd.DataFrame({"company": ["A", "A", "a", "B"], "score": [1, 3, 2, 5], "title": ["x", "y", "z", "w"]})
+        kept = cap_per_company(df, 2)
+        self.assertEqual(sorted(kept["title"]), ["w", "y", "z"])
+        self.assertEqual(len(cap_per_company(df, 0)), 4)
