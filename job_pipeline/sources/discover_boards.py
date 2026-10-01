@@ -16,6 +16,7 @@ import argparse
 import json
 import logging
 import re
+import time
 from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urlparse
 
@@ -54,25 +55,41 @@ def token_from_url(url: str, ats: str = "greenhouse") -> str | None:
     return first if _TOKEN.match(first) and first not in _NOT_BOARDS else None
 
 
-def from_commoncrawl(pages: int, session: requests.Session, ats: str = "greenhouse") -> set[str]:
-    latest = session.get(f"{CC_INDEX}/collinfo.json", timeout=30).json()[0]["id"]
+def _cc_get(session: requests.Session, url: str, params: dict, tries: int = 4) -> requests.Response | None:
+    """The index often answers 503/504 under load; retry with backoff instead of reading that as "no boards"."""
+    for attempt in range(tries):
+        try:
+            res = session.get(url, params=params, timeout=120)
+            if res.status_code == 200:
+                return res
+            logger.info("Common Crawl %s → %s (attempt %d)", params.get("url"), res.status_code, attempt + 1)
+        except requests.RequestException as exc:  # the index is large and occasionally drops connections
+            logger.info("Common Crawl %s: %s (attempt %d)", params.get("url"), exc, attempt + 1)
+        time.sleep(5 * 2 ** attempt)
+    return None
+
+
+def from_commoncrawl(pages: int, session: requests.Session, ats: str = "greenhouse", snapshots: int = 4) -> set[str]:
+    """Board tokens from the last `snapshots` crawls (each crawl sees different pages), up to `pages` index pages per host."""
+    ids = [c["id"] for c in session.get(f"{CC_INDEX}/collinfo.json", timeout=30).json()[:max(1, snapshots)]]
     tokens: set[str] = set()
-    for host in HOSTS[ats]:
-        for page in range(pages):
-            try:
-                res = session.get(f"{CC_INDEX}/{latest}-index", params={"url": f"{host}/*", "output": "json", "fl": "url", "page": page}, timeout=120)
-            except requests.RequestException as exc:  # the index is large and occasionally drops connections
-                logger.warning("Common Crawl %s page %d: %s", host, page, exc)
-                break
-            if res.status_code != 200:
-                break
-            for line in res.text.splitlines():
-                try:
-                    token = token_from_url(json.loads(line)["url"], ats)
-                except (ValueError, KeyError):
-                    continue
-                if token:
-                    tokens.add(token)
+    for cc_id in ids:
+        for host in HOSTS[ats]:
+            url = f"{CC_INDEX}/{cc_id}-index"
+            info = _cc_get(session, url, {"url": f"{host}/*", "output": "json", "showNumPages": "true"})
+            total = info.json().get("pages", pages) if info is not None else pages
+            for page in range(min(pages, total)):
+                res = _cc_get(session, url, {"url": f"{host}/*", "output": "json", "fl": "url", "page": page})
+                if res is None:
+                    break
+                for line in res.text.splitlines():
+                    try:
+                        token = token_from_url(json.loads(line)["url"], ats)
+                    except (ValueError, KeyError):
+                        continue
+                    if token:
+                        tokens.add(token)
+        logger.info("Common Crawl %s: %d %s tokens so far", cc_id, len(tokens), ats)
     return tokens
 
 
@@ -109,6 +126,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--ats", choices=sorted(HOSTS), default="greenhouse")
     parser.add_argument("--commoncrawl", type=int, default=0, metavar="PAGES")
+    parser.add_argument("--snapshots", type=int, default=4, help="Common Crawl snapshots to read (default 4)")
     parser.add_argument("--from-jobs", action="store_true")
     parser.add_argument("--tokens", default="")
     parser.add_argument("--write", action="store_true", help="save to Mongo ats_boards (default: dry run)")
@@ -117,15 +135,18 @@ def main() -> None:
     session = requests.Session()
     found: dict[str, set[str]] = {}
     if args.commoncrawl:
-        found["commoncrawl"] = from_commoncrawl(args.commoncrawl, session, args.ats)
+        found["commoncrawl"] = from_commoncrawl(args.commoncrawl, session, args.ats, snapshots=args.snapshots)
     if args.from_jobs:
         found["linkedin_apply_url"] = from_jobs(args.ats)
     if args.tokens:
         found["manual"] = {t.strip().lower() for t in args.tokens.split(",") if t.strip()}
     all_tokens = set().union(*found.values()) if found else set()
-    print(f"{len(all_tokens)} candidate tokens; validating…")
+    from job_pipeline.ats_boards import _col
+    known = {d["token"] for d in _col().find({"ats": args.ats}, {"token": 1})}
+    print(f"{len(all_tokens)} candidate tokens, {len(all_tokens - known)} not registered yet; validating those…")
+    all_tokens -= known
     valid = validate(all_tokens, session, ats=args.ats)
-    print(f"{len(valid)} valid {args.ats} boards")
+    print(f"{len(valid)} new valid {args.ats} boards")
     if not args.write:
         for token, name in list(valid.items())[:25]:
             print(f"  {token:<28} {name}")
@@ -136,7 +157,7 @@ def main() -> None:
         for token in tokens:
             if token in valid:
                 ats_boards.upsert_discovered(args.ats, token, valid[token], via)
-    print(f"Saved {len(valid)} boards to ats_boards.")
+    print(f"Saved {len(valid)} new boards to ats_boards.")
 
 
 if __name__ == "__main__":
