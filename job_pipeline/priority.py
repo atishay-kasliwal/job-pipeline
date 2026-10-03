@@ -10,11 +10,12 @@ which go first. Rules are compared in order, each beating everything below it:
   4. 1-2 years            minimum 1 year
   5. 2-5 years            minimum 2-5 years, or experience not stated
   6. 5+ years             minimum above 5 years
+  7. Internship           any intern title, whatever else it matches (always last)
 
 Ties: higher score_pct, then newer posting (consumers sort by
 ``(priority_group, -score_pct, -date_posted)``).
 
-``priority_group`` is 0 (best) .. 15; ``priority_tags`` lists why, e.g.
+``priority_group`` is 0 (best) .. 15, or 16 for internships; ``priority_tags`` lists why, e.g.
 ["Strong match", "Raleigh", "New grad"].
 """
 
@@ -23,7 +24,8 @@ from __future__ import annotations
 import math
 import re
 
-PRIORITY_VERSION = 1
+PRIORITY_VERSION = 2
+INTERNSHIP_GROUP = 16
 STRONG_MATCH_PCT = 70
 
 # (tag, patterns) checked against the lowercased location; the first match wins.
@@ -34,6 +36,8 @@ PREFERRED_LOCATIONS: list[tuple[str, list[str]]] = [
 ]
 
 NEW_GRAD = re.compile(r"\b(new[\s-]?grad(uate)?s?|recent grad(uate)?s?|university grad(uate)?|entry[\s-]level|early[\s-]career)\b", re.I)
+
+INTERNSHIP = re.compile(r"\b(intern|interns|internship|co-?op)\b", re.I)
 
 # Experience bands: (rank, tag). Lower rank = earlier.
 _EXP_0_1, _EXP_1_2, _EXP_2_5, _EXP_5_PLUS = 0, 1, 2, 3
@@ -81,4 +85,7 @@ def job_priority(score_pct, location: str | None, title: str | None, min_exp) ->
     exp_rank, exp_tag = experience_band(min_exp, title)
     group = (0 if strong else 8) + (0 if loc else 4) + exp_rank
     tags = (["Strong match"] if strong else []) + ([loc] if loc else []) + [exp_tag]
+    if INTERNSHIP.search(title or ""):
+        group = INTERNSHIP_GROUP
+        tags = tags + ["Internship"]
     return {"priority_group": group, "priority_tags": tags, "priority_version": PRIORITY_VERSION}

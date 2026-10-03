@@ -27,15 +27,24 @@ class PriorityOrderTest(unittest.TestCase):
 
     def test_best_and_worst(self):
         best = job_priority(85, "New York, NY", "Software Engineer, New Grad", None)
-        self.assertEqual(best, {"priority_group": 0, "priority_tags": ["Strong match", "New York", "New grad"], "priority_version": 1})
+        self.assertEqual(best, {"priority_group": 0, "priority_tags": ["Strong match", "New York", "New grad"], "priority_version": 2})
         worst = job_priority(10, "Remote", "Backend Engineer", 8)
         self.assertEqual(worst["priority_group"], 15)
         self.assertEqual(worst["priority_tags"], ["5+ yrs"])
 
+    def test_internships_come_last(self):
+        intern = job_priority(95, "New York, NY", "Software Engineering Intern, Summer 2027", 0)
+        self.assertEqual(intern["priority_group"], 16)
+        self.assertIn("Internship", intern["priority_tags"])
+        self.assertGreater(intern["priority_group"], job_priority(5, "Remote", "Backend Engineer", 9)["priority_group"])
+        for title in ["Data Science Internship", "Software Engineer Co-op", "SWE Interns 2027"]:
+            self.assertEqual(job_priority(80, None, title, None)["priority_group"], 16, title)
+        self.assertNotEqual(job_priority(80, None, "Internal Tools Engineer", None)["priority_group"], 16)
+
     def test_nothing_is_excluded(self):
         for args in [(0, None, None, None), (None, "", "", float("nan")), (100, "Apex, NC", "Entry Level Engineer", 0)]:
             p = job_priority(*args)
-            self.assertIn(p["priority_group"], range(16))
+            self.assertIn(p["priority_group"], range(17))
             self.assertTrue(p["priority_tags"])
 
 
