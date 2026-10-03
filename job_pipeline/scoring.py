@@ -23,6 +23,7 @@ from job_pipeline.config import (
     H1B_2026_CSV,
     TOP_500_COMPANIES_CSV,
 )
+from job_pipeline.priority import job_priority
 
 logger = logging.getLogger(__name__)
 
@@ -274,6 +275,13 @@ def apply_scores(df: pd.DataFrame) -> pd.DataFrame:
     df["score"]             = results["score"]
     df["score_pct"]         = results["score_pct"]
     df["competition_score"] = results["competition_score"]
+    # Application priority (job_pipeline/priority.py): the order to apply in, with tags saying why.
+    priority = df.apply(
+        lambda row: job_priority(row.get("score_pct"), row.get("location"), row.get("title"), row.get("min_exp")),
+        axis=1, result_type="expand",
+    ) if not df.empty else None
+    for col in ("priority_group", "priority_tags", "priority_version"):
+        df[col] = priority[col] if priority is not None else []
     df = df.sort_values("score", ascending=False).reset_index(drop=True)
 
     logger.info(
