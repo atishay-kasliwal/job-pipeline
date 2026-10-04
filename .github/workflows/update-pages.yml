@@ -36,9 +36,20 @@ jobs:
       - name: Install dependencies
         run: pip install "pymongo[srv]>=4.6.0" "pandas>=2.0.0" "python-dotenv>=1.0.0" "scikit-learn>=1.3.0"
 
+      - name: Connect privately to Oracle MongoDB
+        env:
+          ORACLE_DB_SSH_KEY: ${{ secrets.ORACLE_DB_SSH_KEY }}
+          ORACLE_DB_KNOWN_HOSTS: ${{ secrets.ORACLE_DB_KNOWN_HOSTS }}
+        run: |
+          umask 077
+          mkdir -p ~/.ssh
+          printf '%s\n' "$ORACLE_DB_SSH_KEY" > ~/.ssh/oracle-db
+          printf '%s\n' "$ORACLE_DB_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          ssh -fN -i ~/.ssh/oracle-db -o BatchMode=yes -o StrictHostKeyChecking=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -L 127.0.0.1:27027:127.0.0.1:27017 ubuntu@129.213.92.151
+
       - name: Export job data from MongoDB → docs/
         env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_URI: ${{ secrets.ORACLE_MONGO_URI }}
           RESUME_TEXT: ${{ inputs.resume_text }}
         run: python -m job_pipeline.export_static
 
@@ -79,7 +90,7 @@ jobs:
         # short summary. Non-fatal: a failure here must not block the data push.
         working-directory: atriveo-app
         env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
+          MONGO_URI: ${{ secrets.ORACLE_MONGO_URI }}
         run: |
           npm ci
           npm run jd:export || echo "jd:export failed (non-fatal) — buckets not refreshed this run"
