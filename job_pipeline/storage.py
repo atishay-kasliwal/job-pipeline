@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 import pandas as pd
 from pymongo import MongoClient, UpdateOne
 from pymongo.collection import Collection
@@ -432,6 +433,23 @@ def append_run_history(
     logger.info("run_history.json: appended run %s (%s).", sid, pipeline)
 
 
+def _mongo_value(value: Any) -> Any:
+    """Normalize containers before checking scalar missing values."""
+    if isinstance(value, np.ndarray):
+        return _mongo_value(value.tolist())
+    if isinstance(value, (list, tuple, set)):
+        return [_mongo_value(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _mongo_value(item) for key, item in value.items()}
+    if value is None or pd.isna(value):
+        return None
+    if isinstance(value, pd.Timestamp):
+        return value.to_pydatetime()
+    if isinstance(value, np.generic):
+        return _mongo_value(value.item())
+    return value
+
+
 def _df_to_records(
     df: pd.DataFrame,
     session_id: str,
@@ -448,12 +466,7 @@ def _df_to_records(
         }
         for col in df.columns:
             val = row[col]
-            if isinstance(val, pd.Timestamp):
-                val = val.to_pydatetime()
-            elif hasattr(val, "item"):          # numpy scalar → Python native
-                val = val.item()
-            elif val is not None and pd.isna(val):
-                val = None
+            val = _mongo_value(val)
             doc[col] = val
         records.append(doc)
     return records
