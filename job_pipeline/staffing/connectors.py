@@ -6,6 +6,33 @@ from job_pipeline.staffing.extract import ROLE
 
 MOTION_CATEGORIES = ['software-engineering', 'python', 'data-engineering', 'data-analyst', 'machine-learning-data-science']
 CONNECTORS = {
+    # These verified public boards currently reject server requests. Keep their
+    # daily access checks explicit; do not describe them as working adapters.
+    'yoh': {'kind':'access_check','hosts':['jobs.yoh.com'],'seeds':['https://jobs.yoh.com/'],'access_note':'Public job board returns HTTP 403 from the deployment server'},
+    'eliassen-group': {'kind':'access_check','hosts':['careers.eliassen.com'],'seeds':['https://careers.eliassen.com/all-jobs'],'access_note':'Public job board returns HTTP 403 from the deployment server'},
+    'dexian': {'kind':'access_check','hosts':['dexian.com'],'seeds':['https://dexian.com/jobs/'],'access_note':'Public job board returns HTTP 403 from the deployment server'},
+    'apollo-technical': {'kind':'access_check','hosts':['www.apollotechnical.com'],'seeds':['https://www.apollotechnical.com/careers-engineering-it/find-jobs/'],'access_note':'Public job board returns HTTP 403 from the deployment server'},
+    'consulting-solutions': {'kind':'access_check','hosts':['www.consultingsolutions.com'],'seeds':['https://www.consultingsolutions.com/careers/openings/'],'access_note':'Public job board returns HTTP 403 from the deployment server'},
+    'aquent': {'kind':'access_check','hosts':['aquent.com'],'seeds':['https://aquent.com/find-work'],'access_note':'Public job board returns HTTP 403 from the deployment server'},
+    'mondo': {'kind':'access_check','hosts':['mondo.com'],'seeds':['https://mondo.com/jobs/all-jobs'],'access_note':'Public job board returns HTTP 403 from the deployment server'},
+    'artech': {'kind':'jobdiva','hosts':['www1.jobdiva.com'],'seeds':['https://www1.jobdiva.com/candidates/myjobs/getportaljobs.jsp?a=kvjdnwtsxgckrpsoozx5qc0oueybw1005779v7x6soig8eyqqmzaubfdl9tcx21s&noofjobs=10000']},
+    'nesco-resource': {'kind':'jobdiva','hosts':['www2.jobdiva.com'],'seeds':['https://www2.jobdiva.com/candidates/myjobs/getportaljobs.jsp?a=3bjdnwaxpar6fqztzu6mhx5d0xyrn100fc3iv75z44r9e0v7xa2dz7r3fyz3ex0n&noofjobs=10000']},
+    'kellymitchell': {'kind':'sourceflow','hosts':['www.careers.kellymitchell.com'],'seeds':['https://www.careers.kellymitchell.com/jobs']},
+    'manpower': {'kind':'manpower','hosts':['www.manpower.com'],'seeds':['https://www.manpower.com/en/search']},
+    'adecco': {'kind':'job_sitemap','hosts':['www.adecco.com'],'seeds':['https://www.adecco.com/sitemap-jobs-unitedstates-en.xml'],'job_prefix':'/en-us/job-search/'},
+    'collabera': {'kind':'public_html','hosts':['www.collabera.com'],'seeds':['https://www.collabera.com/job-search/?keyword=software','https://www.collabera.com/job-search/?keyword=data'], 'detail_pattern':r'/job-description/\?post=\d+', 'pagination_pattern':r'/job-search/.*[&?]q=\d+'},
+    'ampcus': {'kind':'jobdiva','hosts':['www1.jobdiva.com'],'seeds':['https://ampcus.com/careers/current-openings/']},
+    'compunnel': {'kind':'compunnel','hosts':['stafflineapi.compunnel.com','staffline.compunnel.com'],'seeds':['https://www.compunnel.com/job-search/']},
+    'medix': {'kind':'medix','hosts':['jobs.medixteam.com','search.jobs.medixteam.com'],'seeds':['https://jobs.medixteam.com/jobs']},
+    'cybercoders': {'kind':'cyber','hosts':['www.cybercoders.com'],'seeds':['https://www.cybercoders.com/ccv5-jobs/search?keyword=software&buid=1','https://www.cybercoders.com/ccv5-jobs/search?keyword=data&buid=1']},
+    'randstad-digital': {'kind':'job_sitemap','hosts':['www.randstadusa.com'],'seeds':['https://www.randstadusa.com/sitemaps/us/sitemap-jobs.xml'],'job_prefix':'/jobs/4/'},
+    'robert-half': {'kind':'public_html','hosts':['www.roberthalf.com'],'seeds':['https://www.roberthalf.com/us/en/jobs?keywords=software','https://www.roberthalf.com/us/en/jobs?keywords=data'], 'detail_pattern':r'/us/en/job/[^/]+/[^/]+/[^/]+', 'pagination_pattern':r'/us/en/jobs.*page=\d+'},
+    'kelly': {'kind':'public_html','hosts':['www.mykelly.com'],'seeds':['https://www.mykelly.com/find-jobs/?_keyword=software','https://www.mykelly.com/find-jobs/?_keyword=data'], 'detail_pattern':r'/job/\d+-[^/]+', 'pagination_pattern':r'/find-jobs/.*_paged=\d+'},
+    'insight-global': {'kind':'insight','hosts':['insightglobal.com'],'seeds':['https://insightglobal.com/all/jobs?keyword=software&page=0&size=100','https://insightglobal.com/all/jobs?keyword=data&page=0&size=100']},
+    'genesis10': {'kind':'jobdiva','hosts':['www2.jobdiva.com'],'seeds':['https://www.genesis10.com/find-a-job']},
+    'the-judge-group': {'kind':'judge','hosts':['www.judge.com'],'seeds':['https://www.judge.com/jobs/']},
+    'beacon-hill': {'kind':'public_html','hosts':['bhsg.com'],'seeds':['https://bhsg.com/jobs/job-search/?_categories=technology'], 'detail_pattern':r'/jobs/job/[^/]+', 'pagination_pattern':r'/job-search/.*(?:paged|_paged|page)=\d+'},
+    'tundra-technical-solutions': {'kind':'public_html','hosts':['community.tundratechnical.ca'],'seeds':['https://community.tundratechnical.ca/jobs/'], 'detail_pattern':r'/jobs/[a-z0-9-]+-\d+/', 'pagination_pattern':r'/jobs/page/\d+'},
     "triangle-startups": {"kind": "triangle", "hosts": ["triangle-startups.com"], "seeds": ["https://triangle-startups.com/jobs"]},
     'kforce': {'kind': 'kforce_azure', 'hosts': ['kforcewebeast.azureedge.net', 'kforcewebeast.search.windows.net', 'www.kforce.com'], 'seeds': ['https://kforcewebeast.azureedge.net/scripts/dist/js/app.min.js']},
     'teksystems': {'kind': 'phenom', 'hosts': ['careers.teksystems.com'], 'seeds': ['https://careers.teksystems.com/us/en/c/developer-jobs/']},
@@ -32,6 +59,15 @@ def handle(spider, response, source):
     kind = config['kind']
     spider.counts[source['id']]['pages'] += 1
     spider.on_source(source['id'], {'connector': kind, 'pages': spider.counts[source['id']]['pages'], 'matching_jobs': spider.counts[source['id']]['matching_jobs'], 'detail': f'Checking dedicated job board: {spider.counts[source["id"]]["pages"]} pages'})
+    if kind == 'access_check':
+        for raw in response.css('script[type="application/ld+json"]::text').getall():
+            try: spider.accept(json.loads(raw), source, response.url)
+            except (ValueError,TypeError): pass
+        return
+    if kind in {'insight','jobdiva','judge','public_html','compunnel','medix','cyber','randstad','sourceflow','manpower','job_sitemap'}:
+        from job_pipeline.staffing.providers import handle
+        yield from handle(spider,response,source,config)
+        return
     if kind == 'triangle':
         from job_pipeline.staffing.triangle import crawl
         yield from crawl(spider, response, source)

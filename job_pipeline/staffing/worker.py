@@ -35,7 +35,9 @@ def main():
             raise RuntimeError('Crawler did not start successfully')
         published = publish_jobs(database, run_id)
         reason = crawler.stats.get_value('finish_reason')
-        database.staffing_runs.update_one({'_id': run_id}, {'$set': {**counts, 'status': 'done' if reason == 'finished' else 'partial', 'finish_reason': reason, 'published_jobs': published, 'finished_at': datetime.now(timezone.utc)}})
+        source_counts = list(crawler.spider.counts.values())
+        incomplete = reason != 'finished' or bool(crawler.stats.get_value('spider_exceptions/count', 0)) or any(c['errors'] or c['limited'] for c in source_counts)
+        database.staffing_runs.update_one({'_id': run_id}, {'$set': {**counts, 'status': 'partial' if incomplete else 'done', 'finish_reason': reason, 'published_jobs': published, 'finished_at': datetime.now(timezone.utc)}})
     except Exception as error:
         logging.exception('Staffing crawl failed')
         database.staffing_runs.update_one({'_id': run_id}, {'$set': {'status': 'failed', 'error': str(error)[:500], 'finished_at': datetime.now(timezone.utc)}})

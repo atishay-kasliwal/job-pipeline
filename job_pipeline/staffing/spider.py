@@ -12,15 +12,15 @@ ATS_HOSTS = {'boards.greenhouse.io', 'job-boards.greenhouse.io', 'boards-api.gre
 
 class StaffingSpider(scrapy.Spider):
     name = 'staffing_daily'
-    custom_settings = {'ROBOTSTXT_OBEY': True, 'USER_AGENT': 'AtriveoStaffingBot/1.0 (personal job search)', 'CONCURRENT_REQUESTS': 4, 'CONCURRENT_REQUESTS_PER_DOMAIN': 1, 'DOWNLOAD_DELAY': 1.5, 'AUTOTHROTTLE_ENABLED': True, 'AUTOTHROTTLE_START_DELAY': 2, 'AUTOTHROTTLE_MAX_DELAY': 20, 'DOWNLOAD_TIMEOUT': 25, 'RETRY_TIMES': 1, 'CLOSESPIDER_TIMEOUT': 1200, 'LOG_LEVEL': 'INFO', 'DEPTH_LIMIT': 4, 'DOWNLOAD_MAXSIZE': 5_000_000}
+    custom_settings = {'ROBOTSTXT_OBEY': True, 'USER_AGENT': 'AtriveoStaffingBot/1.0 (personal job search)', 'CONCURRENT_REQUESTS': 4, 'CONCURRENT_REQUESTS_PER_DOMAIN': 1, 'DOWNLOAD_DELAY': 1.5, 'AUTOTHROTTLE_ENABLED': True, 'AUTOTHROTTLE_START_DELAY': 2, 'AUTOTHROTTLE_MAX_DELAY': 20, 'DOWNLOAD_TIMEOUT': 25, 'RETRY_TIMES': 1, 'CLOSESPIDER_TIMEOUT': 1200, 'LOG_LEVEL': 'INFO', 'DEPTH_LIMIT': 0, 'DOWNLOAD_MAXSIZE': 20_000_000}
 
-    def __init__(self, sources, on_job, on_source, max_pages=40, **kwargs):
+    def __init__(self, sources, on_job, on_source, max_pages=150, **kwargs):
         super().__init__(**kwargs)
         self.sources = sources
         self.on_job = on_job
         self.on_source = on_source
         self.max_pages = max_pages
-        self.counts = defaultdict(lambda: {'pages': 0, 'structured_jobs': 0, 'matching_jobs': 0, 'errors': 0, 'scheduled': 0, 'blocked': 0})
+        self.counts = defaultdict(lambda: {'pages': 0, 'structured_jobs': 0, 'matching_jobs': 0, 'errors': 0, 'scheduled': 0, 'blocked': 0, 'limited': False, 'parse_errors': 0})
         self.seen = set()
 
     async def start(self):
@@ -46,8 +46,16 @@ class StaffingSpider(scrapy.Spider):
         if not (host == root or host.endswith('.' + root) or host in ATS_HOSTS or host in CONNECTORS.get(source['id'], {}).get('hosts', [])):
             return None
         key = (source['id'], url, hashlib.sha256(options.get('body', b'')).hexdigest())
-        if key in self.seen or self.counts[source['id']]['scheduled'] >= self.max_pages:
+        if key in self.seen:
             return None
+        budget = self.max_pages if source['id'] in CONNECTORS else min(self.max_pages, 40)
+        if self.counts[source['id']]['scheduled'] >= budget:
+            self.counts[source['id']]['limited'] = True
+            return None
+        if options.get('method') == 'POST':
+            headers = dict(options.get('headers') or {})
+            headers.setdefault('Accept', 'application/json')
+            options['headers'] = headers
         self.seen.add(key)
         self.counts[source['id']]['scheduled'] += 1
         return scrapy.Request(url, callback=callback, errback=self.failed, cb_kwargs={'source': source}, meta={'source_id': source['id']}, priority=(4 - source['tier']) * 100, dont_filter=True, **options)
@@ -56,7 +64,7 @@ class StaffingSpider(scrapy.Spider):
         sid = failure.request.meta['source_id']
         self.counts[sid]['errors'] += 1
         status = getattr(getattr(failure.value, 'response', None), 'status', None)
-        if status in {401, 403, 429} or 'robots' in str(failure.value).lower():
+        if status in {401, 403, 406, 429} or 'robots' in str(failure.value).lower():
             self.counts[sid]['blocked'] += 1
 
     def accept(self, data, source, url):
@@ -116,7 +124,12 @@ class StaffingSpider(scrapy.Spider):
                     yield req
 
     def parse_connector(self, response, source):
-        yield from handle_connector(self, response, source)
+        try:
+            yield from handle_connector(self, response, source)
+        except (ValueError, TypeError, KeyError, AttributeError) as error:
+            self.counts[source['id']]['errors'] += 1
+            self.counts[source['id']]['parse_errors'] += 1
+            self.on_source(source['id'], {'detail': 'Public board format changed: ' + type(error).__name__})
 
     def parse_api(self, response, source):
         self.counts[source['id']]['pages'] += 1
@@ -134,6 +147,16 @@ class StaffingSpider(scrapy.Spider):
     def closed(self, reason):
         for source in self.sources:
             c = self.counts[source['id']]
-            status = 'ready' if c['structured_jobs'] else 'blocked' if c['blocked'] else 'failed' if not c['pages'] else 'needs_connector'
+            status = 'ready' if c['structured_jobs'] else 'blocked' if c['blocked'] else 'failed' if not c['pages'] else 'failed' if c['parse_errors'] else 'access_pending' if CONNECTORS.get(source['id'], {}).get('kind') == 'access_check' else 'needs_connector'
             detail = f'{c["matching_jobs"]} matching jobs from {c["pages"]} pages' if c['structured_jobs'] else 'Job board needs a dedicated connector or renders jobs in JavaScript' if c['pages'] else 'No readable pages; check access or source URL'
+            if CONNECTORS.get(source['id'], {}).get('kind') == 'access_check' and not c['structured_jobs']:
+                detail = CONNECTORS[source['id']]['access_note'] if c['blocked'] else 'Board access changed; dedicated extraction needs verification'
+            if c['blocked']:
+                detail += '; public board denied access (HTTP 401/403/406/429 or robots.txt)'
+            if c['parse_errors']:
+                detail += '; parser errors: ' + str(c['parse_errors'])
+            if reason != 'finished':
+                c['limited'] = True
+            if c['limited']:
+                detail += '; incomplete: crawl limit reached'
             self.on_source(source['id'], {**c, 'status': status, 'detail': detail, 'finish_reason': reason})

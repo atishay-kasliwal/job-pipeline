@@ -18,8 +18,10 @@ def catalog():
 
 
 def initialize(database):
+    from job_pipeline.staffing.connectors import CONNECTORS
     for source in catalog():
-        database.staffing_sources.update_one({'_id': source['id']}, {'$set': {'name': source['name'], 'url': source['url'], 'tier': source['tier'], 'start_urls': source.get('start_urls', [])}, '$setOnInsert': {'enabled': True, 'status': 'not_checked', 'detail': 'Waiting for the first daily crawl'}}, upsert=True)
+        connector = CONNECTORS.get(source["id"], {})
+        database.staffing_sources.update_one({'_id': source['id']}, {'$set': {'name': source['name'], 'url': source['url'], 'tier': source['tier'], 'start_urls': source.get('start_urls', []), 'connector': connector.get('kind', 'structured_data'), 'connector_state': 'access_pending' if connector.get('kind') == 'access_check' else 'configured', 'access_note': connector.get('access_note', '')}, '$setOnInsert': {'enabled': True, 'status': 'not_checked', 'detail': 'Waiting for the first daily crawl'}}, upsert=True)
     database.staffing_jobs.create_index([('source_id', 1), ('observed_at', -1)])
     database.staffing_jobs.create_index('fingerprint')
     database.staffing_runs.create_index('started_at')

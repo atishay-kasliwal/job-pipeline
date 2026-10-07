@@ -1,5 +1,6 @@
 """Normalize public JobPosting structured data; never infer missing job descriptions."""
 import hashlib
+import html
 import re
 from datetime import datetime, timezone
 from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
@@ -28,10 +29,10 @@ def job_objects(value):
                 yield from job_objects(item)
 
 
-def plain_text(html):
-    if not html:
+def plain_text(value):
+    if not value:
         return ''
-    return ' '.join(Selector(text=str(html)).xpath('//text()[not(ancestor::script) and not(ancestor::style)]').getall()).strip()
+    return ' '.join(Selector(text=html.unescape(str(value))).xpath('//text()[not(ancestor::script) and not(ancestor::style)]').getall()).strip()
 
 
 def normalize_job(item, source, page_url):
@@ -55,4 +56,6 @@ def normalize_job(item, source, page_url):
     remote = str(item.get('jobLocationType', '')).upper() == 'TELECOMMUTE'
     location = '; '.join(filter(None, locations)) or ('Remote' if remote else '')
     fingerprint = hashlib.sha256(re.sub(r'\s+', ' ', f'{title.lower()}|{location.lower()}|{description.lower()}').encode()).hexdigest()
-    return {'_id': hashlib.sha256(f'{source["id"]}|{url}'.encode()).hexdigest(), 'source_id': source['id'], 'site': 'staffing', 'company': (item.get('hiringOrganization') or {}).get('name') or source['name'], 'title': title, 'job_url': url, 'job_url_direct': url, 'description': description, 'summary': description[:200], 'location': location, 'is_remote': remote, 'date_posted': item.get('datePosted'), 'valid_through': item.get('validThrough'), 'fingerprint': fingerprint, 'observed_at': datetime.now(timezone.utc), 'employment_type': item.get('employmentType')}
+    org = item.get('hiringOrganization') or {}
+    company = org.get('name') if isinstance(org, dict) else org if isinstance(org, str) else None
+    return {'_id': hashlib.sha256(f'{source["id"]}|{url}'.encode()).hexdigest(), 'source_id': source['id'], 'site': 'staffing', 'company': company or source['name'], 'title': title, 'job_url': url, 'job_url_direct': url, 'description': description, 'summary': description[:200], 'location': location, 'is_remote': remote, 'date_posted': item.get('datePosted'), 'valid_through': item.get('validThrough'), 'fingerprint': fingerprint, 'observed_at': datetime.now(timezone.utc), 'employment_type': item.get('employmentType')}

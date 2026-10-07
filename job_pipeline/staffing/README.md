@@ -1,6 +1,6 @@
 # Daily staffing sources
 
-Scrapy checks the 40 sources in `sources.json` daily at **07:00 America/New_York**.
+Scrapy checks the 41 sources in `sources.json` daily at **07:00 America/New_York**.
 The private service runs independently of the hourly LinkedIn/ATS collector. The
 server remains available for the UI while each crawl runs in a separate process.
 Runs have a database lease, a 20-minute crawl deadline, bounded pages per source,
@@ -11,7 +11,10 @@ The generic connector reads JobPosting JSON-LD, discovers public career/job link
 and job sitemaps, and supports discovered Greenhouse, Lever and Ashby boards.
 `needs_connector` means readable pages did not expose structured job data; it is
 not a claim that the company has no jobs. JS-only boards require dedicated APIs
-or selectors. `blocked` records robots/access restrictions. Source coverage and
+or selectors. Of the 31 originally unreadable staffing boards, 24 have extraction adapters;
+seven remain access checks because their public boards deny server
+requests. `blocked` records robots/access restrictions, and `access_pending`
+records a board awaiting provider access. Source coverage and
 request counts are shown in the Staffing page.
 
 `staffing_sources` contains enable flags and crawl status, `staffing_jobs` contains
@@ -47,7 +50,7 @@ requested at any time through the UI. Disabled sources are skipped.
 
 ```
 pip install -r requirements-dev.txt
-python -m pytest tests/test_staffing.py -q
+python -m pytest tests/test_staffing.py tests/test_staffing_connectors.py -q
 ```
 
 Triangle Startups is also checked daily from its public `/jobs` page. Its own
@@ -55,3 +58,10 @@ upstream employer-board cache may be several days old. The connector reads
 public server-rendered records, resolves shared employer/description references,
 and retains actual employers and original job URLs; it does not call restricted
 API paths. Relevant roles use the same eligibility rules as other sources.
+
+Adapters use verified public job feeds (JobDiva, Sourceflow, Azure search,
+DataFrenzy, Phenom, public search APIs), published job sitemaps, or exact job-detail
+links. Public search client query credentials are read at runtime and are never
+stored in source records. The default budget is 150 requests per source; exceeding
+that budget or encountering errors marks the run partial. The UI labels limited
+source crawls and access restrictions; a partial crawl does not imply zero jobs.
