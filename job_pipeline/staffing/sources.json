@@ -282,5 +282,12 @@
     "tier": 3,
     "url": "https://www.medixteam.com/",
     "enabled": true
+  },
+  {
+    "id": "triangle-startups",
+    "name": "Triangle Startups",
+    "tier": 3,
+    "url": "https://triangle-startups.com/jobs",
+    "enabled": true
   }
 ]

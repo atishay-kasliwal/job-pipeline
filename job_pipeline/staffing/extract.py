@@ -5,13 +5,14 @@ from datetime import datetime, timezone
 from urllib.parse import urlparse, urlunparse, parse_qsl, urlencode
 from parsel import Selector
 
-ROLE = re.compile(r'software|backend|full.?stack|\bpython\b|machine learning|\bml engineer|\bai engineer|data scientist|data analy|data engineer|applied scientist|forward.?deployed|cloud engineer', re.I)
+ROLE = re.compile(r'software|\bdeveloper\b|backend|full.?stack|\bpython\b|machine learning|\bml engineer|\bai engineer|data scientist|data analy|data engineer|applied scientist|forward.?deployed|cloud engineer', re.I)
 
 
 def canonical_url(url):
     p = urlparse(url)
     query = [(k, v) for k, v in parse_qsl(p.query) if not k.lower().startswith('utm_') and k.lower() not in {'source', 'ref', 'tracking'}]
-    return urlunparse((p.scheme, p.netloc.lower(), p.path.rstrip('/'), '', urlencode(sorted(query)), ''))
+    fragment = p.fragment if re.match(r'^/?(?:detail|job|jobs)/', p.fragment, re.I) else ''
+    return urlunparse((p.scheme, p.netloc.lower(), p.path.rstrip('/'), '', urlencode(sorted(query)), fragment))
 
 
 def job_objects(value):
@@ -54,4 +55,4 @@ def normalize_job(item, source, page_url):
     remote = str(item.get('jobLocationType', '')).upper() == 'TELECOMMUTE'
     location = '; '.join(filter(None, locations)) or ('Remote' if remote else '')
     fingerprint = hashlib.sha256(re.sub(r'\s+', ' ', f'{title.lower()}|{location.lower()}|{description.lower()}').encode()).hexdigest()
-    return {'_id': hashlib.sha256(f'{source["id"]}|{url}'.encode()).hexdigest(), 'source_id': source['id'], 'site': 'staffing', 'company': source['name'], 'title': title, 'job_url': url, 'job_url_direct': url, 'description': description, 'summary': description[:200], 'location': location, 'is_remote': remote, 'date_posted': item.get('datePosted'), 'valid_through': item.get('validThrough'), 'fingerprint': fingerprint, 'observed_at': datetime.now(timezone.utc), 'employment_type': item.get('employmentType')}
+    return {'_id': hashlib.sha256(f'{source["id"]}|{url}'.encode()).hexdigest(), 'source_id': source['id'], 'site': 'staffing', 'company': (item.get('hiringOrganization') or {}).get('name') or source['name'], 'title': title, 'job_url': url, 'job_url_direct': url, 'description': description, 'summary': description[:200], 'location': location, 'is_remote': remote, 'date_posted': item.get('datePosted'), 'valid_through': item.get('validThrough'), 'fingerprint': fingerprint, 'observed_at': datetime.now(timezone.utc), 'employment_type': item.get('employmentType')}

@@ -14,9 +14,9 @@ JOB = {'@type': 'JobPosting', 'title': 'Software Engineer', 'description': '<p>B
 
 def test_catalog():
     sources = catalog()
-    assert len(sources) == 40
-    assert len({s['id'] for s in sources}) == 40
-    assert [sum(s['tier'] == i for s in sources) for i in [1, 2, 3]] == [10, 15, 15]
+    assert len(sources) == 41
+    assert len({s['id'] for s in sources}) == 41
+    assert [sum(s['tier'] == i for s in sources) for i in [1, 2, 3]] == [10, 15, 16]
 
 
 def test_nested_job_and_normalization():
@@ -63,7 +63,7 @@ def test_storage_deduplicates_and_preserves_existing_resume():
     from job_pipeline.staffing.store import initialize, claim, save_job, publish_jobs
     database = mongomock.MongoClient().job_pipeline
     initialize(database)
-    assert len(list(database.staffing_sources.find())) == 40
+    assert len(list(database.staffing_sources.find())) == 41
     assert claim(database, 'run-1', ['kforce'])
     assert claim(database, 'run-2', ['kforce']) is None
     source = {**SOURCE, 'id': 'kforce', 'name': 'Kforce'}
@@ -101,7 +101,7 @@ def test_private_http_status_and_controls(monkeypatch):
     headers = {'X-Tailor-Token': 'fixture-token'}
     try:
         assert requests.get(root + '/status').status_code == 401
-        assert len(requests.get(root + '/status', headers=headers).json()['sources']) == 40
+        assert len(requests.get(root + '/status', headers=headers).json()['sources']) == 41
         assert requests.post(root + '/run', headers=headers, json={'sourceIds': ['unknown']}).status_code == 400
         assert requests.post(root + '/run', headers=headers, json={'sourceIds': ['kforce']}).status_code == 202
         assert requests.post(root + '/source', headers=headers, json={'sourceId': 'kforce', 'enabled': False}).status_code == 200

@@ -1,9 +1,11 @@
 import json
+import hashlib
 import re
 from collections import defaultdict
 from urllib.parse import urlparse
 import scrapy
 from job_pipeline.staffing.extract import job_objects, normalize_job
+from job_pipeline.staffing.connectors import CONNECTORS, handle as handle_connector
 
 ATS_HOSTS = {'boards.greenhouse.io', 'job-boards.greenhouse.io', 'boards-api.greenhouse.io', 'jobs.lever.co', 'api.lever.co', 'jobs.ashbyhq.com', 'api.ashbyhq.com'}
 
@@ -24,25 +26,31 @@ class StaffingSpider(scrapy.Spider):
     async def start(self):
         for source in sorted(self.sources, key=lambda x: x['tier']):
             self.on_source(source['id'], {'status': 'running', 'detail': 'Checking public job pages'})
+            if source['id'] in CONNECTORS:
+                for url in CONNECTORS[source['id']]['seeds']:
+                    request = self.request(url, source, self.parse_connector)
+                    if request:
+                        yield request
+                continue
             for url in [source['url'], f'https://{urlparse(source["url"]).netloc}/sitemap.xml', *source.get('start_urls', [])]:
                 request = self.request(url, source, self.parse)
                 if request:
                     yield request
 
-    def request(self, url, source, callback):
+    def request(self, url, source, callback, **options):
         parsed = urlparse(url)
         host = parsed.hostname or ''
         if re.search(r'\.(?:jpg|jpeg|png|gif|svg|webp|pdf|zip|mp4|woff2?)(?:$)', parsed.path, re.I):
             return None
         root = (urlparse(source['url']).hostname or '').removeprefix('www.')
-        if not (host == root or host.endswith('.' + root) or host in ATS_HOSTS):
+        if not (host == root or host.endswith('.' + root) or host in ATS_HOSTS or host in CONNECTORS.get(source['id'], {}).get('hosts', [])):
             return None
-        key = (source['id'], url)
+        key = (source['id'], url, hashlib.sha256(options.get('body', b'')).hexdigest())
         if key in self.seen or self.counts[source['id']]['scheduled'] >= self.max_pages:
             return None
         self.seen.add(key)
         self.counts[source['id']]['scheduled'] += 1
-        return scrapy.Request(url, callback=callback, errback=self.failed, cb_kwargs={'source': source}, meta={'source_id': source['id']}, priority=(4 - source['tier']) * 100, dont_filter=True)
+        return scrapy.Request(url, callback=callback, errback=self.failed, cb_kwargs={'source': source}, meta={'source_id': source['id']}, priority=(4 - source['tier']) * 100, dont_filter=True, **options)
 
     def failed(self, failure):
         sid = failure.request.meta['source_id']
@@ -106,6 +114,9 @@ class StaffingSpider(scrapy.Spider):
                 if req:
                     followed += 1
                     yield req
+
+    def parse_connector(self, response, source):
+        yield from handle_connector(self, response, source)
 
     def parse_api(self, response, source):
         self.counts[source['id']]['pages'] += 1

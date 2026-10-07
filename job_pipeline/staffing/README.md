@@ -49,3 +49,9 @@ requested at any time through the UI. Disabled sources are skipped.
 pip install -r requirements-dev.txt
 python -m pytest tests/test_staffing.py -q
 ```
+
+Triangle Startups is also checked daily from its public `/jobs` page. Its own
+upstream employer-board cache may be several days old. The connector reads
+public server-rendered records, resolves shared employer/description references,
+and retains actual employers and original job URLs; it does not call restricted
+API paths. Relevant roles use the same eligibility rules as other sources.
