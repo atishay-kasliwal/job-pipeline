@@ -27,7 +27,7 @@ def main():
         database.staffing_sources.update_one({'_id': sid}, {'$set': {**update, 'last_checked_at': datetime.now(timezone.utc), 'last_run_id': run_id}})
 
     try:
-        process = CrawlerProcess()
+        process = CrawlerProcess(settings={'LOG_LEVEL': 'INFO'})
         crawler = process.create_crawler(StaffingSpider)
         process.crawl(crawler, sources=sources, on_job=job, on_source=source)
         process.start()

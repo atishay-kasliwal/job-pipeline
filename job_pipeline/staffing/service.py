@@ -57,7 +57,7 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
     def send(self, status, body):
-        payload = json.dumps(body, default=lambda x: x.isoformat() if isinstance(x, datetime) else str(x)).encode()
+        payload = json.dumps(body, default=lambda x: (x.replace(tzinfo=timezone.utc) if x.tzinfo is None else x).isoformat() if isinstance(x, datetime) else str(x)).encode()
         self.send_response(status)
         self.send_header('Content-Type', 'application/json')
         self.send_header('Content-Length', str(len(payload)))

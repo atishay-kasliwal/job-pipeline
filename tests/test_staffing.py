@@ -80,3 +80,41 @@ def test_storage_deduplicates_and_preserves_existing_resume():
     assert stored['score_pct'] >= 0
     assert database.descriptions.find_one({'job_url': job['job_url']})['description'] == job['description']
     assert database.jobs.count_documents({}) == 1
+
+
+def test_private_http_status_and_controls(monkeypatch):
+    import threading
+    import requests
+    import mongomock
+    from http.server import ThreadingHTTPServer
+    from job_pipeline.staffing import service
+    from job_pipeline.staffing.store import initialize
+    database = mongomock.MongoClient().job_pipeline
+    initialize(database)
+    monkeypatch.setattr(service, 'DATABASE', database)
+    monkeypatch.setattr(service, 'TOKEN', 'fixture-token')
+    monkeypatch.setattr(service, 'launch', lambda *args, **kwargs: 'fixture-run')
+    server = ThreadingHTTPServer(('127.0.0.1', 0), service.Handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    root = f'http://127.0.0.1:{server.server_port}'
+    headers = {'X-Tailor-Token': 'fixture-token'}
+    try:
+        assert requests.get(root + '/status').status_code == 401
+        assert len(requests.get(root + '/status', headers=headers).json()['sources']) == 40
+        assert requests.post(root + '/run', headers=headers, json={'sourceIds': ['unknown']}).status_code == 400
+        assert requests.post(root + '/run', headers=headers, json={'sourceIds': ['kforce']}).status_code == 202
+        assert requests.post(root + '/source', headers=headers, json={'sourceId': 'kforce', 'enabled': False}).status_code == 200
+        assert database.staffing_sources.find_one({'_id': 'kforce'})['enabled'] is False
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+def test_sitemap_ignores_embedded_images_and_prioritizes_relevant_jobs():
+    from scrapy.http import XmlResponse
+    spider = StaffingSpider([SOURCE], lambda _: None, lambda *_: None)
+    xml = '<urlset xmlns:image="https://www.google.com/schemas/sitemap-image/1.1"><url><loc>https://acme.example/jobs/software-engineer</loc><image:image><image:loc>https://acme.example/images/jobs.jpg</image:loc></image:image></url></urlset>'
+    response = XmlResponse(url='https://acme.example/sitemap.xml', body=xml.encode(), encoding='utf-8')
+    assert [r.url for r in spider.parse(response, SOURCE)] == ['https://acme.example/jobs/software-engineer']
+    assert spider.request('https://acme.example/jobs.pdf', SOURCE, spider.parse) is None

@@ -30,7 +30,10 @@ class StaffingSpider(scrapy.Spider):
                     yield request
 
     def request(self, url, source, callback):
-        host = urlparse(url).hostname or ''
+        parsed = urlparse(url)
+        host = parsed.hostname or ''
+        if re.search(r'\.(?:jpg|jpeg|png|gif|svg|webp|pdf|zip|mp4|woff2?)(?:$)', parsed.path, re.I):
+            return None
         root = (urlparse(source['url']).hostname or '').removeprefix('www.')
         if not (host == root or host.endswith('.' + root) or host in ATS_HOSTS):
             return None
@@ -58,8 +61,12 @@ class StaffingSpider(scrapy.Spider):
 
     def parse(self, response, source):
         self.counts[source['id']]['pages'] += 1
+        self.on_source(source['id'], {'pages': self.counts[source['id']]['pages'], 'matching_jobs': self.counts[source['id']]['matching_jobs'], 'detail': f'Checking public pages: {self.counts[source["id"]]["pages"]} read'})
+        if not isinstance(response, scrapy.http.TextResponse):
+            return
         if 'xml' in response.headers.get('Content-Type', b'').decode() or response.url.endswith('.xml'):
-            urls = response.xpath('//*[local-name()="loc"]/text()').getall()
+            urls = response.xpath('//*[local-name()="url" or local-name()="sitemap"]/*[local-name()="loc"]/text()').getall()
+            urls.sort(key=lambda url: (bool(re.search(r'blog|resource|webinar|news', url, re.I)), not bool(re.search(r'software|data|developer|engineer|machine-learning', url, re.I))))
             for url in urls:
                 if re.search(r'job|career|vacanc|opportun', url, re.I):
                     req = self.request(url, source, self.parse)
@@ -71,7 +78,7 @@ class StaffingSpider(scrapy.Spider):
                 self.accept(json.loads(raw), source, response.url)
             except (ValueError, TypeError):
                 continue
-        links = response.css('a[href]')
+        links = sorted(response.css('a[href]'), key=lambda link: (bool(re.search(r'blog|resource|webinar|news', link.attrib['href'], re.I)), not bool(re.search(r'software|data|developer|engineer|machine-learning', link.attrib['href'], re.I))))
         for link in links:
             url = response.urljoin(link.attrib['href'])
             host = urlparse(url).hostname or ''
