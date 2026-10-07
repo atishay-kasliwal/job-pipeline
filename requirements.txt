@@ -23,3 +23,6 @@ anthropic>=0.40.0
 fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 pydantic>=2.7.0
+
+# Daily staffing-board crawler
+Scrapy>=2.13,<3

@@ -1,0 +1,282 @@
+[
+  {
+    "id": "teksystems",
+    "name": "TEKsystems",
+    "tier": 1,
+    "url": "https://www.teksystems.com/",
+    "enabled": true
+  },
+  {
+    "id": "insight-global",
+    "name": "Insight Global",
+    "tier": 1,
+    "url": "https://insightglobal.com/",
+    "enabled": true
+  },
+  {
+    "id": "randstad-digital",
+    "name": "Randstad Digital",
+    "tier": 1,
+    "url": "https://www.randstaddigital.com/",
+    "enabled": true
+  },
+  {
+    "id": "robert-half",
+    "name": "Robert Half",
+    "tier": 1,
+    "url": "https://www.roberthalf.com/",
+    "enabled": true
+  },
+  {
+    "id": "kforce",
+    "name": "Kforce",
+    "tier": 1,
+    "url": "https://www.kforce.com/",
+    "enabled": true
+  },
+  {
+    "id": "apex-systems",
+    "name": "Apex Systems",
+    "tier": 1,
+    "url": "https://www.apexsystems.com/",
+    "enabled": true
+  },
+  {
+    "id": "experis",
+    "name": "Experis",
+    "tier": 1,
+    "url": "https://www.experis.com/",
+    "enabled": true
+  },
+  {
+    "id": "motion-recruitment",
+    "name": "Motion Recruitment",
+    "tier": 1,
+    "url": "https://motionrecruitment.com/",
+    "enabled": true
+  },
+  {
+    "id": "akkodis",
+    "name": "Akkodis",
+    "tier": 1,
+    "url": "https://www.akkodis.com/",
+    "enabled": true
+  },
+  {
+    "id": "artech",
+    "name": "Artech",
+    "tier": 1,
+    "url": "https://www.artech.com/",
+    "enabled": true
+  },
+  {
+    "id": "cybercoders",
+    "name": "CyberCoders",
+    "tier": 2,
+    "url": "https://www.cybercoders.com/",
+    "enabled": true
+  },
+  {
+    "id": "brooksource",
+    "name": "Brooksource",
+    "tier": 2,
+    "url": "https://www.brooksource.com/",
+    "enabled": true
+  },
+  {
+    "id": "yoh",
+    "name": "Yoh",
+    "tier": 2,
+    "url": "https://www.yoh.com/",
+    "enabled": true
+  },
+  {
+    "id": "eliassen-group",
+    "name": "Eliassen Group",
+    "tier": 2,
+    "url": "https://www.eliassen.com/",
+    "enabled": true
+  },
+  {
+    "id": "collabera",
+    "name": "Collabera",
+    "tier": 2,
+    "url": "https://www.collabera.com/",
+    "enabled": true
+  },
+  {
+    "id": "dexian",
+    "name": "Dexian",
+    "tier": 2,
+    "url": "https://dexian.com/",
+    "enabled": true
+  },
+  {
+    "id": "beacon-hill",
+    "name": "Beacon Hill",
+    "tier": 2,
+    "url": "https://beaconhillstaffing.com/",
+    "enabled": true
+  },
+  {
+    "id": "the-judge-group",
+    "name": "The Judge Group",
+    "tier": 2,
+    "url": "https://www.judge.com/",
+    "enabled": true
+  },
+  {
+    "id": "vaco",
+    "name": "Vaco",
+    "tier": 2,
+    "url": "https://www.vaco.com/",
+    "enabled": true
+  },
+  {
+    "id": "kellymitchell",
+    "name": "KellyMitchell",
+    "tier": 2,
+    "url": "https://www.kellymitchell.com/",
+    "enabled": true
+  },
+  {
+    "id": "hays",
+    "name": "Hays",
+    "tier": 2,
+    "url": "https://www.hays.com/",
+    "enabled": true
+  },
+  {
+    "id": "pyramid-consulting",
+    "name": "Pyramid Consulting",
+    "tier": 2,
+    "url": "https://www.pyramidci.com/",
+    "enabled": true
+  },
+  {
+    "id": "compunnel",
+    "name": "Compunnel",
+    "tier": 2,
+    "url": "https://www.compunnel.com/",
+    "enabled": true
+  },
+  {
+    "id": "mastech-digital",
+    "name": "Mastech Digital",
+    "tier": 2,
+    "url": "https://mastechdigital.com/",
+    "enabled": true
+  },
+  {
+    "id": "genesis10",
+    "name": "Genesis10",
+    "tier": 2,
+    "url": "https://www.genesis10.com/",
+    "enabled": true
+  },
+  {
+    "id": "mondo",
+    "name": "Mondo",
+    "tier": 3,
+    "url": "https://mondo.com/",
+    "enabled": true
+  },
+  {
+    "id": "lasalle-network",
+    "name": "LaSalle Network",
+    "tier": 3,
+    "url": "https://www.thelasallenetwork.com/",
+    "enabled": true
+  },
+  {
+    "id": "tundra-technical-solutions",
+    "name": "Tundra Technical Solutions",
+    "tier": 3,
+    "url": "https://tundratechnical.com/",
+    "enabled": true
+  },
+  {
+    "id": "ampcus",
+    "name": "Ampcus",
+    "tier": 3,
+    "url": "https://www.ampcus.com/",
+    "enabled": true
+  },
+  {
+    "id": "nesco-resource",
+    "name": "Nesco Resource",
+    "tier": 3,
+    "url": "https://www.nescoresource.com/",
+    "enabled": true
+  },
+  {
+    "id": "aquent",
+    "name": "Aquent",
+    "tier": 3,
+    "url": "https://aquent.com/",
+    "enabled": true
+  },
+  {
+    "id": "inspyr-solutions",
+    "name": "INSPYR Solutions",
+    "tier": 3,
+    "url": "https://www.inspyrsolutions.com/",
+    "enabled": true
+  },
+  {
+    "id": "kore1",
+    "name": "KORE1",
+    "tier": 3,
+    "url": "https://www.kore1.com/",
+    "enabled": true
+  },
+  {
+    "id": "apollo-technical",
+    "name": "Apollo Technical",
+    "tier": 3,
+    "url": "https://www.apollotechnical.com/",
+    "enabled": true
+  },
+  {
+    "id": "matrix-resources",
+    "name": "MATRIX Resources",
+    "tier": 3,
+    "url": "https://www.matrixres.com/",
+    "enabled": true
+  },
+  {
+    "id": "consulting-solutions",
+    "name": "Consulting Solutions",
+    "tier": 3,
+    "url": "https://www.consultingsolutions.com/",
+    "enabled": true
+  },
+  {
+    "id": "kelly",
+    "name": "Kelly",
+    "tier": 3,
+    "url": "https://www.kellyservices.com/",
+    "enabled": true
+  },
+  {
+    "id": "adecco",
+    "name": "Adecco",
+    "tier": 3,
+    "url": "https://www.adecco.com/en-us",
+    "enabled": true
+  },
+  {
+    "id": "manpower",
+    "name": "Manpower",
+    "tier": 3,
+    "url": "https://www.manpower.com/",
+    "enabled": true
+  },
+  {
+    "id": "medix",
+    "name": "Medix",
+    "tier": 3,
+    "url": "https://www.medixteam.com/",
+    "enabled": true
+  }
+]
