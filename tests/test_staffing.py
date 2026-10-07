@@ -118,3 +118,23 @@ def test_sitemap_ignores_embedded_images_and_prioritizes_relevant_jobs():
     response = XmlResponse(url='https://acme.example/sitemap.xml', body=xml.encode(), encoding='utf-8')
     assert [r.url for r in spider.parse(response, SOURCE)] == ['https://acme.example/jobs/software-engineer']
     assert spider.request('https://acme.example/jobs.pdf', SOURCE, spider.parse) is None
+
+
+def test_publish_handles_mixed_iso_and_epoch_dates():
+    import mongomock
+    from job_pipeline.staffing.store import initialize, save_job, publish_jobs
+    from job_pipeline.staffing.extract import normalized_date
+    database = mongomock.MongoClient().job_pipeline
+    initialize(database)
+    for index, value in enumerate(['2026-10-07T12:00:00Z', 1791374400, 1791374400000]):
+        job = normalize_job(JOB, SOURCE, f'https://agency.example/jobs/{index}')
+        job['_id'] = f'dated-{index}'
+        job['job_url'] = f'https://agency.example/jobs/{index}'
+        job['fingerprint'] = f'dated-fingerprint-{index}'
+        # Exercise existing DB records created before numeric dates were normalized.
+        job['date_posted'] = value
+        save_job(database, job, 'mixed-dates')
+    assert publish_jobs(database, 'mixed-dates') == 3
+    assert database.jobs.count_documents({}) == 3
+    assert normalized_date(1791374400) == normalized_date(1791374400000)
+    assert normalized_date('not-a-date') is None

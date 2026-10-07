@@ -71,6 +71,10 @@ def publish_jobs(database, run_id):
     if not rows:
         return 0
     df = pd.DataFrame(rows)
+    from job_pipeline.staffing.extract import normalized_date
+    # Older crawls can contain numeric timestamps from public ATS feeds. Normalize
+    # before scoring so one provider cannot prevent the entire batch import.
+    df['date_posted'] = df['date_posted'].map(normalized_date)
     for filter_fn in [filter_by_company, filter_by_role, filter_by_location, filter_by_sponsorship, filter_by_experience, tag_level, extract_exp_range, apply_scores]:
         df = filter_fn(df)
         if df.empty:

@@ -12,7 +12,7 @@ ATS_HOSTS = {'boards.greenhouse.io', 'job-boards.greenhouse.io', 'boards-api.gre
 
 class StaffingSpider(scrapy.Spider):
     name = 'staffing_daily'
-    custom_settings = {'ROBOTSTXT_OBEY': True, 'USER_AGENT': 'AtriveoStaffingBot/1.0 (personal job search)', 'CONCURRENT_REQUESTS': 4, 'CONCURRENT_REQUESTS_PER_DOMAIN': 1, 'DOWNLOAD_DELAY': 1.5, 'AUTOTHROTTLE_ENABLED': True, 'AUTOTHROTTLE_START_DELAY': 2, 'AUTOTHROTTLE_MAX_DELAY': 20, 'DOWNLOAD_TIMEOUT': 25, 'RETRY_TIMES': 1, 'CLOSESPIDER_TIMEOUT': 1200, 'LOG_LEVEL': 'INFO', 'DEPTH_LIMIT': 0, 'DOWNLOAD_MAXSIZE': 20_000_000}
+    custom_settings = {'ROBOTSTXT_OBEY': True, 'DOWNLOAD_CLIENTCONTEXTFACTORY': 'scrapy.core.downloader.contextfactory.BrowserLikeContextFactory', 'USER_AGENT': 'AtriveoStaffingBot/1.0 (personal job search)', 'CONCURRENT_REQUESTS': 4, 'CONCURRENT_REQUESTS_PER_DOMAIN': 1, 'DOWNLOAD_DELAY': 1.5, 'AUTOTHROTTLE_ENABLED': True, 'AUTOTHROTTLE_START_DELAY': 2, 'AUTOTHROTTLE_MAX_DELAY': 20, 'DOWNLOAD_TIMEOUT': 25, 'RETRY_TIMES': 1, 'CLOSESPIDER_TIMEOUT': 1200, 'LOG_LEVEL': 'INFO', 'DEPTH_LIMIT': 0, 'DOWNLOAD_MAXSIZE': 20_000_000}
 
     def __init__(self, sources, on_job, on_source, max_pages=150, **kwargs):
         super().__init__(**kwargs)
@@ -91,7 +91,7 @@ class StaffingSpider(scrapy.Spider):
             return
         for raw in response.css('script[type="application/ld+json"]::text').getall():
             try:
-                self.accept(json.loads(raw), source, response.url)
+                self.accept(json.loads(raw, strict=False), source, response.url)
             except (ValueError, TypeError):
                 continue
         candidates = response.css('main a[href], [role="main"] a[href]') or response.css('a[href]')
@@ -147,10 +147,12 @@ class StaffingSpider(scrapy.Spider):
     def closed(self, reason):
         for source in self.sources:
             c = self.counts[source['id']]
-            status = 'ready' if c['structured_jobs'] else 'blocked' if c['blocked'] else 'failed' if not c['pages'] else 'failed' if c['parse_errors'] else 'access_pending' if CONNECTORS.get(source['id'], {}).get('kind') == 'access_check' else 'needs_connector'
+            status = 'ready' if c['structured_jobs'] else 'blocked' if c['blocked'] else 'access_pending' if CONNECTORS.get(source['id'], {}).get('kind') == 'access_check' else 'failed' if not c['pages'] or c['parse_errors'] else 'needs_connector'
             detail = f'{c["matching_jobs"]} matching jobs from {c["pages"]} pages' if c['structured_jobs'] else 'Job board needs a dedicated connector or renders jobs in JavaScript' if c['pages'] else 'No readable pages; check access or source URL'
             if CONNECTORS.get(source['id'], {}).get('kind') == 'access_check' and not c['structured_jobs']:
-                detail = CONNECTORS[source['id']]['access_note'] if c['blocked'] else 'Board access changed; dedicated extraction needs verification'
+                detail = CONNECTORS[source['id']]['access_note']
+            if CONNECTORS.get(source['id'], {}).get('scope_note'):
+                detail += '; ' + CONNECTORS[source['id']]['scope_note']
             if c['blocked']:
                 detail += '; public board denied access (HTTP 401/403/406/429 or robots.txt)'
             if c['parse_errors']:

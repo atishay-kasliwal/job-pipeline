@@ -6,6 +6,10 @@ from job_pipeline.staffing.extract import ROLE
 
 MOTION_CATEGORIES = ['software-engineering', 'python', 'data-engineering', 'data-analyst', 'machine-learning-data-science']
 CONNECTORS = {
+    'apex-systems': {'kind':'access_check','hosts':['joblistings.apexsystems.com'],'seeds':['https://joblistings.apexsystems.com/'],'access_note':'Published job board has a TLS certificate-chain error; awaiting provider repair'},
+    'experis': {'kind':'access_check','hosts':['www.experis.com'],'seeds':['https://www.experis.com/en/search'],'access_note':'robots.txt disallows this crawler; a permitted provider feed is required'},
+    'hays': {'kind':'public_html','hosts':['www.hays.com'],'seeds':['https://www.hays.com/en-US/job-search/in-miami-us?q=software','https://www.hays.com/en-US/job-search/in-miami-us?q=data','https://www.hays.com/en-US/job-search/in-miami-us?q=developer'],'detail_pattern':r'/en-US/job-detail/[^/?]+','scope_note':'Uses location search pages explicitly permitted by robots.txt'},
+    'lasalle-network': {'kind':'public_html','hosts':['www.thelasallenetwork.com'],'seeds':['https://www.thelasallenetwork.com/jobs/'],'detail_pattern':r'/jobs/[a-z0-9-]+-\d+/','pagination_pattern':r'/jobs/page/\d+/'},
     # These verified public boards currently reject server requests. Keep their
     # daily access checks explicit; do not describe them as working adapters.
     'yoh': {'kind':'access_check','hosts':['jobs.yoh.com'],'seeds':['https://jobs.yoh.com/'],'access_note':'Public job board returns HTTP 403 from the deployment server'},
@@ -61,7 +65,7 @@ def handle(spider, response, source):
     spider.on_source(source['id'], {'connector': kind, 'pages': spider.counts[source['id']]['pages'], 'matching_jobs': spider.counts[source['id']]['matching_jobs'], 'detail': f'Checking dedicated job board: {spider.counts[source["id"]]["pages"]} pages'})
     if kind == 'access_check':
         for raw in response.css('script[type="application/ld+json"]::text').getall():
-            try: spider.accept(json.loads(raw), source, response.url)
+            try: spider.accept(json.loads(raw, strict=False), source, response.url)
             except (ValueError,TypeError): pass
         return
     if kind in {'insight','jobdiva','judge','public_html','compunnel','medix','cyber','randstad','sourceflow','manpower','job_sitemap'}:
@@ -128,7 +132,7 @@ def handle(spider, response, source):
     # Details use the board's own JobPosting data, with the actual detail URL as fallback.
     for raw in response.css('script[type="application/ld+json"]::text').getall():
         try:
-            spider.accept(json.loads(raw), source, response.url)
+            spider.accept(json.loads(raw, strict=False), source, response.url)
         except ValueError:
             continue
     if kind == 'sprockets' and re.search(r'/jobs/[a-f0-9-]{36}', response.url):

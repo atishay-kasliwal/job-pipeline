@@ -52,3 +52,23 @@ Adecco uses its US English job sitemap and the original linked job details.
 Artech and Nesco use public JobDiva feeds for the tenants linked by their official
 candidate portals. Ampcus discovers its public JobDiva tenant from the embedded
 job board. Feed reads do not access candidate or employee account data.
+
+## Four initially blocked sources
+
+Further checks found two additional usable boards:
+
+- LaSalle Network: its public WordPress `/jobs/` pages contain JobPosting data
+  with literal newlines inside JSON strings. Parsing those control characters
+  safely returned 14 matching full records in a 35-request live validation.
+- Hays: general job-search routes are excluded by robots.txt, but the published
+  location-page allowance permits `/en-US/job-search/in-miami-us`. Three keyword
+  searches under that allowed route returned two matching full records. The
+  adapter follows original job-detail links and reports its route scope.
+- Experis: robots.txt disallows this crawler. Its accessible public search API
+  is not used because the same robots restriction applies.
+- Apex Systems: its published job-board endpoint failed TLS certificate-chain
+  verification. TLS verification remains enabled; provider repair is required.
+
+ISO timestamps, epoch seconds, and epoch milliseconds are normalized before
+scoring, including records already stored by an earlier crawl. This prevents one
+provider's timestamp format from interrupting the entire job-feed import.

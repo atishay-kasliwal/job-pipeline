@@ -154,3 +154,11 @@ def test_original_31_sources_all_have_adapter_or_documented_access_check():
     assert len(remaining)==31
     assert remaining <= CONNECTORS.keys()
     assert sum(CONNECTORS[s]['kind']=='access_check' for s in remaining)==7
+
+
+def test_jobposting_tolerates_literal_newlines_from_public_wordpress_board():
+    jobs=[];sid='lasalle-network';spider=StaffingSpider([source(sid)],jobs.append,lambda *_:None)
+    raw=json.dumps({'@type':'JobPosting','title':'Software Engineer','description':DESCRIPTION+'\nMaintain reliable production infrastructure.'}).replace('\\n','\n')
+    response=HtmlResponse(url='https://www.thelasallenetwork.com/jobs/software-engineer-42/',body=('<script type="application/ld+json">'+raw+'</script>').encode(),encoding='utf-8')
+    assert list(spider.parse_connector(response,source(sid))) == []
+    assert len(jobs)==1 and 'Maintain reliable' in jobs[0]['description']

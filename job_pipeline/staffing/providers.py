@@ -37,7 +37,7 @@ def handle(spider, response, source, config):
         if '/api/services/Jobs/' not in response.url:
             for term in ['software','data','python']:
                 body={'sf':True,'filter':{'offset':0,'totalCount':0,'limit':100,'searchkeyword':term,'haslocation':False,'language':'en'}}
-                yield from follow(spider,'https://www.manpower.com/api/services/Jobs/searchjobs',source,method='POST',body=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
+                yield from follow(spider,config.get('api_origin','https://www.manpower.com')+'/api/services/Jobs/searchjobs',source,method='POST',body=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
         else:
             data=response.json();rows=data.get('jobsItems',[])
             for row in rows:
@@ -59,7 +59,7 @@ def handle(spider, response, source, config):
                     yield from follow(spider,url,source)
         else:
             for raw in response.css('script[type="application/ld+json"]::text').getall():
-                try:spider.accept(json.loads(raw),source,response.url)
+                try:spider.accept(json.loads(raw, strict=False),source,response.url)
                 except (ValueError,TypeError):pass
         return
     if kind == 'compunnel':
@@ -191,7 +191,7 @@ def handle(spider, response, source, config):
         return
     # Exact public-board links, rather than the site's marketing navigation.
     for raw in response.css('script[type="application/ld+json"]::text').getall():
-        try: spider.accept(json.loads(raw),source,response.url)
+        try: spider.accept(json.loads(raw, strict=False),source,response.url)
         except (ValueError,TypeError): pass
     for link in response.css(config.get('links','a[href]')):
         url=response.urljoin(link.attrib.get('href',''))

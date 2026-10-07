@@ -9,6 +9,25 @@ from parsel import Selector
 ROLE = re.compile(r'software|\bdeveloper\b|backend|full.?stack|\bpython\b|machine learning|\bml engineer|\bai engineer|data scientist|data analy|data engineer|applied scientist|forward.?deployed|cloud engineer', re.I)
 
 
+def normalized_date(value):
+    """Use UTC ISO dates for ISO, epoch-second and epoch-millisecond feeds."""
+    try:
+        if isinstance(value, bool) or value is None:
+            return None
+        if isinstance(value, (int, float)) or isinstance(value, str) and re.fullmatch(r'\d{10,13}', value):
+            seconds = float(value)
+            if abs(seconds) > 10_000_000_000:
+                seconds /= 1000
+            result = datetime.fromtimestamp(seconds, timezone.utc)
+        elif isinstance(value, datetime):
+            result = value
+        else:
+            result = datetime.fromisoformat(str(value).replace('Z', '+00:00'))
+        return (result.replace(tzinfo=timezone.utc) if result.tzinfo is None else result.astimezone(timezone.utc)).isoformat()
+    except (ValueError, TypeError, OverflowError, OSError):
+        return None
+
+
 def canonical_url(url):
     p = urlparse(url)
     query = [(k, v) for k, v in parse_qsl(p.query) if not k.lower().startswith('utm_') and k.lower() not in {'source', 'ref', 'tracking'}]
@@ -58,4 +77,4 @@ def normalize_job(item, source, page_url):
     fingerprint = hashlib.sha256(re.sub(r'\s+', ' ', f'{title.lower()}|{location.lower()}|{description.lower()}').encode()).hexdigest()
     org = item.get('hiringOrganization') or {}
     company = org.get('name') if isinstance(org, dict) else org if isinstance(org, str) else None
-    return {'_id': hashlib.sha256(f'{source["id"]}|{url}'.encode()).hexdigest(), 'source_id': source['id'], 'site': 'staffing', 'company': company or source['name'], 'title': title, 'job_url': url, 'job_url_direct': url, 'description': description, 'summary': description[:200], 'location': location, 'is_remote': remote, 'date_posted': item.get('datePosted'), 'valid_through': item.get('validThrough'), 'fingerprint': fingerprint, 'observed_at': datetime.now(timezone.utc), 'employment_type': item.get('employmentType')}
+    return {'_id': hashlib.sha256(f'{source["id"]}|{url}'.encode()).hexdigest(), 'source_id': source['id'], 'site': 'staffing', 'company': company or source['name'], 'title': title, 'job_url': url, 'job_url_direct': url, 'description': description, 'summary': description[:200], 'location': location, 'is_remote': remote, 'date_posted': normalized_date(item.get('datePosted')), 'valid_through': normalized_date(item.get('validThrough')), 'fingerprint': fingerprint, 'observed_at': datetime.now(timezone.utc), 'employment_type': item.get('employmentType')}
