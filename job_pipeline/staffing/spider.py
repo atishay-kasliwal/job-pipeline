@@ -24,7 +24,7 @@ class StaffingSpider(scrapy.Spider):
     async def start(self):
         for source in sorted(self.sources, key=lambda x: x['tier']):
             self.on_source(source['id'], {'status': 'running', 'detail': 'Checking public job pages'})
-            for url in [source['url'], f'https://{urlparse(source["url"]).netloc}/sitemap.xml']:
+            for url in [source['url'], f'https://{urlparse(source["url"]).netloc}/sitemap.xml', *source.get('start_urls', [])]:
                 request = self.request(url, source, self.parse)
                 if request:
                     yield request
@@ -42,7 +42,7 @@ class StaffingSpider(scrapy.Spider):
             return None
         self.seen.add(key)
         self.counts[source['id']]['scheduled'] += 1
-        return scrapy.Request(url, callback=callback, errback=self.failed, cb_kwargs={'source': source}, meta={'source_id': source['id']}, dont_filter=True)
+        return scrapy.Request(url, callback=callback, errback=self.failed, cb_kwargs={'source': source}, meta={'source_id': source['id']}, priority=(4 - source['tier']) * 100, dont_filter=True)
 
     def failed(self, failure):
         sid = failure.request.meta['source_id']
@@ -78,8 +78,12 @@ class StaffingSpider(scrapy.Spider):
                 self.accept(json.loads(raw), source, response.url)
             except (ValueError, TypeError):
                 continue
-        links = sorted(response.css('a[href]'), key=lambda link: (bool(re.search(r'blog|resource|webinar|news', link.attrib['href'], re.I)), not bool(re.search(r'software|data|developer|engineer|machine-learning', link.attrib['href'], re.I))))
+        candidates = response.css('main a[href], [role="main"] a[href]') or response.css('a[href]')
+        links = sorted(candidates, key=lambda link: (bool(re.search(r'blog|resource|webinar|news', link.attrib['href'], re.I)), not bool(re.search(r'software|data|developer|engineer|machine-learning', link.attrib['href'], re.I))))
+        followed = 0
         for link in links:
+            if followed >= 10:
+                break
             url = response.urljoin(link.attrib['href'])
             host = urlparse(url).hostname or ''
             if host in ATS_HOSTS:
@@ -95,10 +99,12 @@ class StaffingSpider(scrapy.Spider):
                     endpoint = f'https://api.ashbyhq.com/posting-api/job-board/{token}'
                 req = self.request(endpoint, source, self.parse_api)
                 if req:
+                    followed += 1
                     yield req
             if re.search(r'job|career|vacanc|opportun|next|page=', url + ' ' + ' '.join(link.css('::text').getall()), re.I):
                 req = self.request(url, source, self.parse)
                 if req:
+                    followed += 1
                     yield req
 
     def parse_api(self, response, source):

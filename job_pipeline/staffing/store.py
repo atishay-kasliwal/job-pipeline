@@ -19,7 +19,7 @@ def catalog():
 
 def initialize(database):
     for source in catalog():
-        database.staffing_sources.update_one({'_id': source['id']}, {'$set': {'name': source['name'], 'url': source['url'], 'tier': source['tier']}, '$setOnInsert': {'enabled': True, 'status': 'not_checked', 'detail': 'Waiting for the first daily crawl'}}, upsert=True)
+        database.staffing_sources.update_one({'_id': source['id']}, {'$set': {'name': source['name'], 'url': source['url'], 'tier': source['tier'], 'start_urls': source.get('start_urls', [])}, '$setOnInsert': {'enabled': True, 'status': 'not_checked', 'detail': 'Waiting for the first daily crawl'}}, upsert=True)
     database.staffing_jobs.create_index([('source_id', 1), ('observed_at', -1)])
     database.staffing_jobs.create_index('fingerprint')
     database.staffing_runs.create_index('started_at')
