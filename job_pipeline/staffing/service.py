@@ -78,7 +78,7 @@ class Handler(BaseHTTPRequestHandler):
             runs = list(DATABASE.staffing_runs.find().sort('started_at', -1).limit(10))
             self.send(200, {'ok': True, 'sources': sources, 'runs': runs, 'schedule': {'label': 'Daily at 7:00 a.m. Eastern', 'next_at': next_run()}, 'total_jobs': DATABASE.staffing_jobs.count_documents({'duplicate_of': None, 'expired': False})})
         elif self.path == '/jobs':
-            jobs = list(DATABASE.staffing_jobs.find({'duplicate_of': None, 'expired': False}, {'description': 0}).sort('observed_at', -1).limit(200))
+            jobs = list(DATABASE.staffing_jobs.find({'duplicate_of': None, 'expired': False}, {'description': 0}).sort([('observed_at', -1), ('_id', 1)]))
             self.send(200, {'ok': True, 'jobs': jobs})
         else:
             self.send(404, {'ok': False, 'error': 'Not found'})
