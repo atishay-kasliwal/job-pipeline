@@ -48,8 +48,9 @@ def _serialise(obj: Any) -> Any:
     return obj
 
 
-def _write_json(path: Path, data: Any) -> None:
-    path.write_text(json.dumps(data, indent=2, default=str))
+def _write_json(path: Path, data: Any, compact: bool = False) -> None:
+    # Compact for the biggest file (no indentation: about a quarter smaller); the browser reads both the same.
+    path.write_text(json.dumps(data, separators=(",", ":"), default=str) if compact else json.dumps(data, indent=2, default=str))
     logger.info("Wrote %s", path)
 
 
@@ -163,6 +164,16 @@ def export_yesterday_jobs() -> list[dict]:
     return [_serialise(j) for j in unique]
 
 
+# Data scientist and data analyst roles are left out of the weekly file: they are not applied to from the job feed, and with them the
+# file outgrew Cloudflare Pages' 25 MiB per-file limit (27.7 MB on 2026-10-28), which stopped every deploy of the feed.
+_WEEK_SKIP = re.compile(r"\bdata\s+(scien|analy)", re.I)
+
+
+def skip_in_week(job: dict) -> bool:
+    """True for a data scientist or data analyst role, by what was searched for or by its title."""
+    return bool(_WEEK_SKIP.search(job.get("search_term") or "") or _WEEK_SKIP.search(job.get("title") or ""))
+
+
 def export_week_jobs() -> list[dict]:
     """
     Fetch all standard-pipeline jobs from the last 7 days across all sessions.
@@ -206,6 +217,8 @@ def export_week_jobs() -> list[dict]:
     seen: set[str] = set()
     unique: list[dict] = []
     for j in jobs:
+        if skip_in_week(j):
+            continue
         key = j.get("job_url") or f"{j.get('title')}-{j.get('company')}"
         if key not in seen:
             seen.add(key)
@@ -505,7 +518,7 @@ def run_export() -> None:
     _write_json(DOCS_DIR / "important_jobs.json",   important_jobs)
     _write_json(DOCS_DIR / "today_jobs.json",       today_jobs)
     _write_json(DOCS_DIR / "yesterday_jobs.json",   yesterday_jobs)
-    _write_json(DOCS_DIR / "week_jobs.json",        week_jobs)
+    _write_json(DOCS_DIR / "week_jobs.json",        week_jobs, compact=True)
     _write_json(DOCS_DIR / "run_history.json",      run_history)
     _write_json(DOCS_DIR / "metadata.json",         metadata)
     _write_json(DOCS_DIR / "skills_summary.json",   skills_summary)
