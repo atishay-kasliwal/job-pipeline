@@ -54,6 +54,47 @@ def _write_json(path: Path, data: Any, compact: bool = False) -> None:
     logger.info("Wrote %s", path)
 
 
+# The job feed (application.atriveo.com) shows a job's own fields and its fit_score. A job document also carries the console's full
+# fit breakdown (the requirement ledger, what was lost, knockouts) and the record of the resume built for it (the resume object, the
+# cover letter, paths); together they were nine tenths of week_jobs.json and pushed it past Cloudflare Pages' 25 MiB per file.
+# The console reads them from Mongo, so the feed keeps only their headline.
+_FIT_KEEP = ("score", "confidence", "as_of")
+_RESUME_KEEP = ("status", "updated_at")
+
+
+def slim_job(job: dict) -> dict:
+    """A job as the feed needs it: the fit and resume records reduced to their headline fields."""
+    out = dict(job)
+    if isinstance(out.get("fit"), dict):
+        out["fit"] = {k: out["fit"][k] for k in _FIT_KEEP if k in out["fit"]}
+    if isinstance(out.get("resume"), dict):
+        out["resume"] = {k: out["resume"][k] for k in _RESUME_KEEP if k in out["resume"]}
+    return out
+
+
+# Cloudflare Pages refuses any file over 25 MiB and then the whole site fails to build. Stay well under it.
+MAX_FEED_BYTES = 20 * 1024 * 1024
+
+
+def cap_size(jobs: list[dict], name: str, limit: int = MAX_FEED_BYTES) -> list[dict]:
+    """
+    The jobs that fit in ``limit`` bytes once written compact. When a file would be bigger, the oldest jobs (by batch_time, then
+    date_posted) are left out until it fits, with a warning; the order of the rest is kept. Normally nothing is dropped.
+    """
+    sizes = [len(json.dumps(j, separators=(",", ":"), default=str)) + 1 for j in jobs]
+    total = sum(sizes) + 2
+    if total <= limit:
+        return jobs
+    when = lambda i: str(jobs[i].get("batch_time") or jobs[i].get("date_posted") or "")  # noqa: E731
+    drop: set[int] = set()
+    for i in sorted(range(len(jobs)), key=when):
+        if total <= limit:
+            break
+        drop.add(i); total -= sizes[i]
+    logger.warning("%s would be over %d MB: left out the %d oldest jobs", name, limit // (1024 * 1024), len(drop))
+    return [j for i, j in enumerate(jobs) if i not in drop]
+
+
 def _local_day_bounds_utc(days_ago: int) -> tuple[datetime, datetime]:
     """
     Return [start_utc, end_utc) for a local calendar day in ``DASHBOARD_TZ``.
@@ -514,10 +555,17 @@ def run_export() -> None:
         "dashboard_tz":    _tz_name,
     }
 
+    # Slimmed at the end, so a week file reused from cache (EXPORT_QUICK) is slimmed too; then no file can outgrow Cloudflare.
+    standard_jobs, important_jobs, today_jobs, yesterday_jobs, week_jobs = (
+        cap_size([slim_job(j) for j in jobs], name) for jobs, name in (
+            (standard_jobs, "jobs.json"), (important_jobs, "important_jobs.json"), (today_jobs, "today_jobs.json"),
+            (yesterday_jobs, "yesterday_jobs.json"), (week_jobs, "week_jobs.json")))
+    metadata["week_count"] = len(week_jobs)
+
     _write_json(DOCS_DIR / "jobs.json",             standard_jobs)
     _write_json(DOCS_DIR / "important_jobs.json",   important_jobs)
-    _write_json(DOCS_DIR / "today_jobs.json",       today_jobs)
-    _write_json(DOCS_DIR / "yesterday_jobs.json",   yesterday_jobs)
+    _write_json(DOCS_DIR / "today_jobs.json",       today_jobs, compact=True)
+    _write_json(DOCS_DIR / "yesterday_jobs.json",   yesterday_jobs, compact=True)
     _write_json(DOCS_DIR / "week_jobs.json",        week_jobs, compact=True)
     _write_json(DOCS_DIR / "run_history.json",      run_history)
     _write_json(DOCS_DIR / "metadata.json",         metadata)
