@@ -340,6 +340,27 @@ LOCATION_BONUSES: list[tuple[list[str], int]] = [
     (["seattle", ", wa"],          80),   # Seattle / Washington
 ]
 
+# ── Scoring: approved skills inventory ───────────────────────────────────────
+# data/skill_inventory.json, exported by atriveo-app (scripts/sync-skill-inventory.mjs
+# --pipeline-dir). Only skills with merged, approved PR evidence are in its "skills" list.
+SKILL_INVENTORY_JSON = DATA_DIR / "skill_inventory.json"
+
+# Points per approved skill a JD mentions, by inventory category. Skills already in
+# PERSONAL_STACK score there instead, never twice. Capped so long JDs can't pile up points.
+APPROVED_SKILL_WEIGHTS: dict[str, int] = {
+    "Languages": 6,
+    "Backend Frameworks": 4,
+    "Systems Libraries": 4,
+    "Cloud & DevOps": 3,
+}
+APPROVED_SKILL_DEFAULT_WEIGHT: int = 2
+APPROVED_SKILL_SCORE_CAP: int = 24
+
+# Approved skills that count as core-stack overlap, so should_skip() keeps e.g. a
+# Go or Rust role that never says "java", "python", "backend" or "api".
+# Each one counts only while the inventory approves it.
+STACK_ANCHOR_SKILLS: tuple[str, ...] = ("Go", "Rust", "TypeScript", "gRPC", "Kubernetes", "Tokio")
+
 # Practical maximum raw score used for % normalisation.
 # Calibrated to match the frontend's MAX_RAW_SCORE constant (jobPresentation.ts).
 SCORE_MAX_RAW: int = 250

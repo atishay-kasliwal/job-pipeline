@@ -1,0 +1,2758 @@
+{
+  "version": 1,
+  "evidence_snapshot": "2026-11-16",
+  "skills": [
+    {
+      "name": "Go",
+      "category": "Languages",
+      "terms": [
+        "Go",
+        "golang"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/numaproj/numaflow/pull/3761",
+        "https://github.com/numaproj/numaflow/pull/3767",
+        "https://github.com/redhat-developer/mapt/pull/967",
+        "https://github.com/redhat-developer/mapt/pull/960",
+        "https://github.com/redhat-developer/mapt/pull/959",
+        "https://github.com/redhat-developer/mapt/pull/956"
+      ]
+    },
+    {
+      "name": "Rust",
+      "category": "Languages",
+      "terms": [
+        "Rust"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-rs/pull/187",
+        "https://github.com/numaproj/numaflow-rs/pull/191",
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/mezmo/aura/pull/868",
+        "https://github.com/mezmo/aura/pull/888",
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/863",
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/aura/pull/890",
+        "https://github.com/mezmo/aura/pull/864",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/489"
+      ]
+    },
+    {
+      "name": "Python",
+      "category": "Languages",
+      "terms": [
+        "Python"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-python/pull/390",
+        "https://github.com/The-PR-Agent/pr-agent/pull/4706",
+        "https://github.com/Seagey/couch-tv/pull/60"
+      ]
+    },
+    {
+      "name": "TypeScript",
+      "category": "Languages",
+      "terms": [
+        "TypeScript"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780",
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910",
+        "https://github.com/EthanHenrickson/math-mcp/pull/9"
+      ]
+    },
+    {
+      "name": "JavaScript",
+      "category": "Languages",
+      "terms": [
+        "JavaScript"
+      ],
+      "sources": [
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "CSS",
+      "category": "Languages",
+      "terms": [
+        "CSS"
+      ],
+      "sources": [
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910"
+      ]
+    },
+    {
+      "name": "Shell Scripting",
+      "category": "Languages",
+      "terms": [
+        "Shell Scripting",
+        "bash",
+        "shell scripting"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/867",
+        "https://github.com/redhat-developer/mapt/pull/958"
+      ]
+    },
+    {
+      "name": "gRPC",
+      "category": "Backend Frameworks",
+      "terms": [
+        "gRPC"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-python/pull/390",
+        "https://github.com/numaproj/numaflow-rs/pull/191"
+      ]
+    },
+    {
+      "name": "Server-Sent Events",
+      "category": "Backend Frameworks",
+      "terms": [
+        "Server-Sent Events",
+        "sse"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/862"
+      ]
+    },
+    {
+      "name": "Cobra",
+      "category": "Backend Frameworks",
+      "terms": [
+        "Cobra"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675"
+      ]
+    },
+    {
+      "name": "Asynchronous Programming",
+      "category": "Software Engineering",
+      "terms": [
+        "Asynchronous Programming"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-python/pull/390",
+        "https://github.com/mezmo/aura/pull/904"
+      ]
+    },
+    {
+      "name": "Concurrency",
+      "category": "Software Engineering",
+      "terms": [
+        "Concurrency"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/904"
+      ]
+    },
+    {
+      "name": "Deadlock Diagnosis",
+      "category": "Software Engineering",
+      "terms": [
+        "Deadlock Diagnosis"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/904"
+      ]
+    },
+    {
+      "name": "Context Cancellation",
+      "category": "Software Engineering",
+      "terms": [
+        "Context Cancellation"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/kiali/kiali/pull/10514"
+      ]
+    },
+    {
+      "name": "Timeout Handling",
+      "category": "Software Engineering",
+      "terms": [
+        "Timeout Handling"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/mezmo/aura/pull/867"
+      ]
+    },
+    {
+      "name": "Failure Recovery",
+      "category": "Software Engineering",
+      "terms": [
+        "Failure Recovery"
+      ],
+      "sources": [
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/mezmo/aura/pull/868",
+        "https://github.com/mezmo/aura/pull/888",
+        "https://github.com/mezmo/aura/pull/867"
+      ]
+    },
+    {
+      "name": "Protocol Compatibility",
+      "category": "Software Engineering",
+      "terms": [
+        "Protocol Compatibility"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/868",
+        "https://github.com/mezmo/aura/pull/888",
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/aura/pull/890"
+      ]
+    },
+    {
+      "name": "Dynamic Dispatch",
+      "category": "Software Engineering",
+      "terms": [
+        "Dynamic Dispatch"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/865"
+      ]
+    },
+    {
+      "name": "Dependency Graphs",
+      "category": "Software Engineering",
+      "terms": [
+        "Dependency Graphs"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481"
+      ]
+    },
+    {
+      "name": "Release Engineering",
+      "category": "Software Engineering",
+      "terms": [
+        "Release Engineering"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481"
+      ]
+    },
+    {
+      "name": "CLI Development",
+      "category": "Software Engineering",
+      "terms": [
+        "CLI Development"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675"
+      ]
+    },
+    {
+      "name": "Deterministic Output",
+      "category": "Software Engineering",
+      "terms": [
+        "Deterministic Output"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675"
+      ]
+    },
+    {
+      "name": "Argument Validation",
+      "category": "Software Engineering",
+      "terms": [
+        "Argument Validation"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/numaproj/numaflow/pull/3767",
+        "https://github.com/redhat-developer/mapt/pull/959",
+        "https://github.com/redhat-developer/mapt/pull/956"
+      ]
+    },
+    {
+      "name": "Numeric Correctness",
+      "category": "Software Engineering",
+      "terms": [
+        "Numeric Correctness"
+      ],
+      "sources": [
+        "https://github.com/EthanHenrickson/math-mcp/pull/9"
+      ]
+    },
+    {
+      "name": "Non-Mutating Transformations",
+      "category": "Software Engineering",
+      "terms": [
+        "Non-Mutating Transformations"
+      ],
+      "sources": [
+        "https://github.com/EthanHenrickson/math-mcp/pull/9"
+      ]
+    },
+    {
+      "name": "Distributed Systems",
+      "category": "Software Engineering",
+      "terms": [
+        "Distributed Systems"
+      ],
+      "sources": [
+        "https://github.com/kiali/kiali/pull/10514"
+      ]
+    },
+    {
+      "name": "API Design",
+      "category": "Software Engineering",
+      "terms": [
+        "API Design"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/mezmo/aura/pull/863"
+      ]
+    },
+    {
+      "name": "Code Review",
+      "category": "Software Engineering",
+      "terms": [
+        "Code Review"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/873",
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/489",
+        "https://github.com/The-PR-Agent/pr-agent/pull/4706"
+      ]
+    },
+    {
+      "name": "MCP",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "MCP"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/aura/pull/890",
+        "https://github.com/EthanHenrickson/math-mcp/pull/9"
+      ]
+    },
+    {
+      "name": "Agent Systems",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Agent Systems",
+        "ai agents",
+        "agent orchestration",
+        "multi-agent systems"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/mezmo/aura/pull/868",
+        "https://github.com/mezmo/aura/pull/888",
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/863",
+        "https://github.com/mezmo/aura/pull/864"
+      ]
+    },
+    {
+      "name": "Function Calling",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Function Calling",
+        "tool calling"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/863"
+      ]
+    },
+    {
+      "name": "Event-Time Watermarks",
+      "category": "Data Engineering",
+      "terms": [
+        "Event-Time Watermarks"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3761"
+      ]
+    },
+    {
+      "name": "Ingestion Verification",
+      "category": "Data Engineering",
+      "terms": [
+        "Ingestion Verification"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/867"
+      ]
+    },
+    {
+      "name": "Stream Processing",
+      "category": "Data Engineering",
+      "terms": [
+        "Stream Processing",
+        "stream processing"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3761",
+        "https://github.com/numaproj/numaflow-python/pull/390",
+        "https://github.com/numaproj/numaflow-rs/pull/187",
+        "https://github.com/numaproj/numaflow-rs/pull/191"
+      ]
+    },
+    {
+      "name": "Kubernetes Informers",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Kubernetes Informers",
+        "informer caches"
+      ],
+      "sources": [
+        "https://github.com/kiali/kiali/pull/10514"
+      ]
+    },
+    {
+      "name": "controller-runtime",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "controller-runtime"
+      ],
+      "sources": [
+        "https://github.com/kiali/kiali/pull/10514"
+      ]
+    },
+    {
+      "name": "Kubernetes Admission Webhooks",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Kubernetes Admission Webhooks",
+        "admission webhooks"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3767"
+      ]
+    },
+    {
+      "name": "Structured Logging",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Structured Logging"
+      ],
+      "sources": [
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/numaproj/numaflow/pull/3761"
+      ]
+    },
+    {
+      "name": "OCI Artifacts",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "OCI Artifacts"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481"
+      ]
+    },
+    {
+      "name": "cloud-init",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "cloud-init"
+      ],
+      "sources": [
+        "https://github.com/redhat-developer/mapt/pull/958"
+      ]
+    },
+    {
+      "name": "CI Runner Configuration",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "CI Runner Configuration"
+      ],
+      "sources": [
+        "https://github.com/redhat-developer/mapt/pull/967"
+      ]
+    },
+    {
+      "name": "Provisioning Preflight",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Provisioning Preflight"
+      ],
+      "sources": [
+        "https://github.com/redhat-developer/mapt/pull/960"
+      ]
+    },
+    {
+      "name": "Jenkins",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Jenkins"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/873"
+      ]
+    },
+    {
+      "name": "Git",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Git"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675"
+      ]
+    },
+    {
+      "name": "Docker",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Docker"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-python/pull/390"
+      ]
+    },
+    {
+      "name": "Kubernetes",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Kubernetes",
+        "k8s"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/numaproj/numaflow/pull/3761",
+        "https://github.com/numaproj/numaflow/pull/3767"
+      ]
+    },
+    {
+      "name": "CI/CD",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "CI/CD"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/873"
+      ]
+    },
+    {
+      "name": "Linux",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Linux"
+      ],
+      "sources": [
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/redhat-developer/mapt/pull/958"
+      ]
+    },
+    {
+      "name": "Prometheus",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Prometheus"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3761"
+      ]
+    },
+    {
+      "name": "Observability",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Observability"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3761"
+      ]
+    },
+    {
+      "name": "Web Accessibility",
+      "category": "Frontend",
+      "terms": [
+        "Web Accessibility",
+        "a11y"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780",
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "Accessible Names",
+      "category": "Frontend",
+      "terms": [
+        "Accessible Names"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780"
+      ]
+    },
+    {
+      "name": "Internationalization",
+      "category": "Frontend",
+      "terms": [
+        "Internationalization",
+        "i18n",
+        "localization"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780"
+      ]
+    },
+    {
+      "name": "Keyboard Focus Management",
+      "category": "Frontend",
+      "terms": [
+        "Keyboard Focus Management"
+      ],
+      "sources": [
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "Content Security Policy",
+      "category": "Frontend",
+      "terms": [
+        "Content Security Policy",
+        "csp"
+      ],
+      "sources": [
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910"
+      ]
+    },
+    {
+      "name": "xterm.js",
+      "category": "Frontend",
+      "terms": [
+        "xterm.js"
+      ],
+      "sources": [
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910"
+      ]
+    },
+    {
+      "name": "React",
+      "category": "Frontend",
+      "terms": [
+        "React"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780"
+      ]
+    },
+    {
+      "name": "pytest",
+      "category": "Testing & Quality",
+      "terms": [
+        "pytest"
+      ],
+      "sources": [
+        "https://github.com/The-PR-Agent/pr-agent/pull/4706"
+      ]
+    },
+    {
+      "name": "JUnit",
+      "category": "Testing & Quality",
+      "terms": [
+        "JUnit"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/873"
+      ]
+    },
+    {
+      "name": "Playwright",
+      "category": "Testing & Quality",
+      "terms": [
+        "Playwright"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "Integration Testing",
+      "category": "Testing & Quality",
+      "terms": [
+        "Integration Testing"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/numaproj/numaflow/pull/3761",
+        "https://github.com/numaproj/numaflow/pull/3767",
+        "https://github.com/numaproj/numaflow-python/pull/390",
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/489",
+        "https://github.com/Seagey/couch-tv/pull/60"
+      ]
+    },
+    {
+      "name": "Regression Testing",
+      "category": "Testing & Quality",
+      "terms": [
+        "Regression Testing"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/numaproj/numaflow/pull/3761",
+        "https://github.com/numaproj/numaflow/pull/3767",
+        "https://github.com/numaproj/numaflow-rs/pull/187",
+        "https://github.com/numaproj/numaflow-rs/pull/191",
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/mezmo/aura/pull/868",
+        "https://github.com/mezmo/aura/pull/888",
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/863",
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/aura/pull/890",
+        "https://github.com/mezmo/aura/pull/864",
+        "https://github.com/mezmo/aura/pull/867",
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483",
+        "https://github.com/redhat-developer/mapt/pull/967",
+        "https://github.com/redhat-developer/mapt/pull/960",
+        "https://github.com/redhat-developer/mapt/pull/959",
+        "https://github.com/redhat-developer/mapt/pull/956",
+        "https://github.com/redhat-developer/mapt/pull/958",
+        "https://github.com/EthanHenrickson/math-mcp/pull/9",
+        "https://github.com/The-PR-Agent/pr-agent/pull/4706",
+        "https://github.com/Seagey/couch-tv/pull/60"
+      ]
+    },
+    {
+      "name": "Failure Injection",
+      "category": "Testing & Quality",
+      "terms": [
+        "Failure Injection"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-rs/pull/191",
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/redhat-developer/mapt/pull/960"
+      ]
+    },
+    {
+      "name": "Concurrency Testing",
+      "category": "Testing & Quality",
+      "terms": [
+        "Concurrency Testing"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/904"
+      ]
+    },
+    {
+      "name": "Table-Driven Testing",
+      "category": "Testing & Quality",
+      "terms": [
+        "Table-Driven Testing"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/redhat-developer/mapt/pull/967"
+      ]
+    },
+    {
+      "name": "Cross-Browser Testing",
+      "category": "Testing & Quality",
+      "terms": [
+        "Cross-Browser Testing"
+      ],
+      "sources": [
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "Tokio",
+      "category": "Systems Libraries",
+      "terms": [
+        "Tokio"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/904"
+      ]
+    },
+    {
+      "name": "Serde",
+      "category": "Systems Libraries",
+      "terms": [
+        "Serde"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/aura/pull/890"
+      ]
+    }
+  ],
+  "vocabulary": [
+    {
+      "name": "Go",
+      "category": "Languages",
+      "terms": [
+        "Go",
+        "golang"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/numaproj/numaflow/pull/3761",
+        "https://github.com/numaproj/numaflow/pull/3767",
+        "https://github.com/redhat-developer/mapt/pull/967",
+        "https://github.com/redhat-developer/mapt/pull/960",
+        "https://github.com/redhat-developer/mapt/pull/959",
+        "https://github.com/redhat-developer/mapt/pull/956"
+      ]
+    },
+    {
+      "name": "Rust",
+      "category": "Languages",
+      "terms": [
+        "Rust"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-rs/pull/187",
+        "https://github.com/numaproj/numaflow-rs/pull/191",
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/mezmo/aura/pull/868",
+        "https://github.com/mezmo/aura/pull/888",
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/863",
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/aura/pull/890",
+        "https://github.com/mezmo/aura/pull/864",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/489"
+      ]
+    },
+    {
+      "name": "Python",
+      "category": "Languages",
+      "terms": [
+        "Python"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-python/pull/390",
+        "https://github.com/The-PR-Agent/pr-agent/pull/4706",
+        "https://github.com/Seagey/couch-tv/pull/60"
+      ]
+    },
+    {
+      "name": "Java",
+      "category": "Languages",
+      "terms": [
+        "Java"
+      ],
+      "sources": []
+    },
+    {
+      "name": "TypeScript",
+      "category": "Languages",
+      "terms": [
+        "TypeScript"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780",
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910",
+        "https://github.com/EthanHenrickson/math-mcp/pull/9"
+      ]
+    },
+    {
+      "name": "JavaScript",
+      "category": "Languages",
+      "terms": [
+        "JavaScript"
+      ],
+      "sources": [
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "SQL",
+      "category": "Languages",
+      "terms": [
+        "SQL"
+      ],
+      "sources": []
+    },
+    {
+      "name": "HTML",
+      "category": "Languages",
+      "terms": [
+        "HTML"
+      ],
+      "sources": []
+    },
+    {
+      "name": "CSS",
+      "category": "Languages",
+      "terms": [
+        "CSS"
+      ],
+      "sources": [
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910"
+      ]
+    },
+    {
+      "name": "Shell Scripting",
+      "category": "Languages",
+      "terms": [
+        "Shell Scripting",
+        "bash",
+        "shell scripting"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/867",
+        "https://github.com/redhat-developer/mapt/pull/958"
+      ]
+    },
+    {
+      "name": "JSON",
+      "category": "Languages",
+      "terms": [
+        "JSON"
+      ],
+      "sources": []
+    },
+    {
+      "name": "GraphQL",
+      "category": "Languages",
+      "terms": [
+        "GraphQL"
+      ],
+      "sources": []
+    },
+    {
+      "name": "gRPC",
+      "category": "Backend Frameworks",
+      "terms": [
+        "gRPC"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-python/pull/390",
+        "https://github.com/numaproj/numaflow-rs/pull/191"
+      ]
+    },
+    {
+      "name": "Server-Sent Events",
+      "category": "Backend Frameworks",
+      "terms": [
+        "Server-Sent Events",
+        "sse"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/862"
+      ]
+    },
+    {
+      "name": "Cobra",
+      "category": "Backend Frameworks",
+      "terms": [
+        "Cobra"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675"
+      ]
+    },
+    {
+      "name": "FastAPI",
+      "category": "Backend Frameworks",
+      "terms": [
+        "FastAPI"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Spring Boot",
+      "category": "Backend Frameworks",
+      "terms": [
+        "Spring Boot"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Node.js",
+      "category": "Backend Frameworks",
+      "terms": [
+        "Node.js"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Express.js",
+      "category": "Backend Frameworks",
+      "terms": [
+        "Express.js"
+      ],
+      "sources": []
+    },
+    {
+      "name": "NestJS",
+      "category": "Backend Frameworks",
+      "terms": [
+        "NestJS"
+      ],
+      "sources": []
+    },
+    {
+      "name": "REST APIs",
+      "category": "Backend Frameworks",
+      "terms": [
+        "REST APIs",
+        "rest api"
+      ],
+      "sources": []
+    },
+    {
+      "name": "GraphQL APIs",
+      "category": "Backend Frameworks",
+      "terms": [
+        "GraphQL APIs"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Kafka",
+      "category": "Backend Frameworks",
+      "terms": [
+        "Kafka"
+      ],
+      "sources": []
+    },
+    {
+      "name": "API Gateway",
+      "category": "Backend Frameworks",
+      "terms": [
+        "API Gateway"
+      ],
+      "sources": []
+    },
+    {
+      "name": "OpenAPI",
+      "category": "Backend Frameworks",
+      "terms": [
+        "OpenAPI"
+      ],
+      "sources": []
+    },
+    {
+      "name": "OAuth",
+      "category": "Backend Frameworks",
+      "terms": [
+        "OAuth"
+      ],
+      "sources": []
+    },
+    {
+      "name": "JWT",
+      "category": "Backend Frameworks",
+      "terms": [
+        "JWT"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Rate Limiting",
+      "category": "Backend Frameworks",
+      "terms": [
+        "Rate Limiting"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Authentication",
+      "category": "Backend Frameworks",
+      "terms": [
+        "Authentication"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Asynchronous Programming",
+      "category": "Software Engineering",
+      "terms": [
+        "Asynchronous Programming"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-python/pull/390",
+        "https://github.com/mezmo/aura/pull/904"
+      ]
+    },
+    {
+      "name": "Concurrency",
+      "category": "Software Engineering",
+      "terms": [
+        "Concurrency"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/904"
+      ]
+    },
+    {
+      "name": "Deadlock Diagnosis",
+      "category": "Software Engineering",
+      "terms": [
+        "Deadlock Diagnosis"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/904"
+      ]
+    },
+    {
+      "name": "Context Cancellation",
+      "category": "Software Engineering",
+      "terms": [
+        "Context Cancellation"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/kiali/kiali/pull/10514"
+      ]
+    },
+    {
+      "name": "Timeout Handling",
+      "category": "Software Engineering",
+      "terms": [
+        "Timeout Handling"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/mezmo/aura/pull/867"
+      ]
+    },
+    {
+      "name": "Failure Recovery",
+      "category": "Software Engineering",
+      "terms": [
+        "Failure Recovery"
+      ],
+      "sources": [
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/mezmo/aura/pull/868",
+        "https://github.com/mezmo/aura/pull/888",
+        "https://github.com/mezmo/aura/pull/867"
+      ]
+    },
+    {
+      "name": "Protocol Compatibility",
+      "category": "Software Engineering",
+      "terms": [
+        "Protocol Compatibility"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/868",
+        "https://github.com/mezmo/aura/pull/888",
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/aura/pull/890"
+      ]
+    },
+    {
+      "name": "Dynamic Dispatch",
+      "category": "Software Engineering",
+      "terms": [
+        "Dynamic Dispatch"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/865"
+      ]
+    },
+    {
+      "name": "Dependency Graphs",
+      "category": "Software Engineering",
+      "terms": [
+        "Dependency Graphs"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481"
+      ]
+    },
+    {
+      "name": "Release Engineering",
+      "category": "Software Engineering",
+      "terms": [
+        "Release Engineering"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481"
+      ]
+    },
+    {
+      "name": "CLI Development",
+      "category": "Software Engineering",
+      "terms": [
+        "CLI Development"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675"
+      ]
+    },
+    {
+      "name": "Deterministic Output",
+      "category": "Software Engineering",
+      "terms": [
+        "Deterministic Output"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675"
+      ]
+    },
+    {
+      "name": "Argument Validation",
+      "category": "Software Engineering",
+      "terms": [
+        "Argument Validation"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/numaproj/numaflow/pull/3767",
+        "https://github.com/redhat-developer/mapt/pull/959",
+        "https://github.com/redhat-developer/mapt/pull/956"
+      ]
+    },
+    {
+      "name": "Numeric Correctness",
+      "category": "Software Engineering",
+      "terms": [
+        "Numeric Correctness"
+      ],
+      "sources": [
+        "https://github.com/EthanHenrickson/math-mcp/pull/9"
+      ]
+    },
+    {
+      "name": "Non-Mutating Transformations",
+      "category": "Software Engineering",
+      "terms": [
+        "Non-Mutating Transformations"
+      ],
+      "sources": [
+        "https://github.com/EthanHenrickson/math-mcp/pull/9"
+      ]
+    },
+    {
+      "name": "Scalability",
+      "category": "Software Engineering",
+      "terms": [
+        "Scalability"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Distributed Systems",
+      "category": "Software Engineering",
+      "terms": [
+        "Distributed Systems"
+      ],
+      "sources": [
+        "https://github.com/kiali/kiali/pull/10514"
+      ]
+    },
+    {
+      "name": "Microservices",
+      "category": "Software Engineering",
+      "terms": [
+        "Microservices"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Event-Driven Architecture",
+      "category": "Software Engineering",
+      "terms": [
+        "Event-Driven Architecture"
+      ],
+      "sources": []
+    },
+    {
+      "name": "API Design",
+      "category": "Software Engineering",
+      "terms": [
+        "API Design"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/mezmo/aura/pull/863"
+      ]
+    },
+    {
+      "name": "Performance Optimization",
+      "category": "Software Engineering",
+      "terms": [
+        "Performance Optimization"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Code Review",
+      "category": "Software Engineering",
+      "terms": [
+        "Code Review"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/873",
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/489",
+        "https://github.com/The-PR-Agent/pr-agent/pull/4706"
+      ]
+    },
+    {
+      "name": "Cross-Functional Collaboration",
+      "category": "Software Engineering",
+      "terms": [
+        "Cross-Functional Collaboration"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Mentorship",
+      "category": "Software Engineering",
+      "terms": [
+        "Mentorship"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Agile/Scrum",
+      "category": "Software Engineering",
+      "terms": [
+        "Agile/Scrum"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Agent Evaluation",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Agent Evaluation"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Deterministic Mocking",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Deterministic Mocking"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Seeded Randomness",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Seeded Randomness"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Injectable Clocks",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Injectable Clocks"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Early Stopping",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Early Stopping"
+      ],
+      "sources": []
+    },
+    {
+      "name": "LLMs",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "LLMs"
+      ],
+      "sources": []
+    },
+    {
+      "name": "RAG",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "RAG"
+      ],
+      "sources": []
+    },
+    {
+      "name": "MCP",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "MCP"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/aura/pull/890",
+        "https://github.com/EthanHenrickson/math-mcp/pull/9"
+      ]
+    },
+    {
+      "name": "NLP",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "NLP"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Reinforcement Learning",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Reinforcement Learning"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Agent Systems",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Agent Systems",
+        "ai agents",
+        "agent orchestration",
+        "multi-agent systems"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/mezmo/aura/pull/868",
+        "https://github.com/mezmo/aura/pull/888",
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/863",
+        "https://github.com/mezmo/aura/pull/864"
+      ]
+    },
+    {
+      "name": "Prompt Engineering",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Prompt Engineering"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Feature Engineering",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Feature Engineering"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Machine Learning",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Machine Learning"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Generative AI",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Generative AI"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Deep Learning",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Deep Learning"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Function Calling",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Function Calling",
+        "tool calling"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/863"
+      ]
+    },
+    {
+      "name": "MLOps",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "MLOps"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Healthcare AI",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Healthcare AI"
+      ],
+      "sources": []
+    },
+    {
+      "name": "GraphSAGE",
+      "category": "ML Frameworks",
+      "terms": [
+        "GraphSAGE",
+        "graph sage"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Gemini",
+      "category": "ML Frameworks",
+      "terms": [
+        "Gemini"
+      ],
+      "sources": []
+    },
+    {
+      "name": "LangChain",
+      "category": "ML Frameworks",
+      "terms": [
+        "LangChain"
+      ],
+      "sources": []
+    },
+    {
+      "name": "LangGraph",
+      "category": "ML Frameworks",
+      "terms": [
+        "LangGraph"
+      ],
+      "sources": []
+    },
+    {
+      "name": "PyTorch",
+      "category": "ML Frameworks",
+      "terms": [
+        "PyTorch"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Transformers",
+      "category": "ML Frameworks",
+      "terms": [
+        "Transformers"
+      ],
+      "sources": []
+    },
+    {
+      "name": "TensorFlow",
+      "category": "ML Frameworks",
+      "terms": [
+        "TensorFlow"
+      ],
+      "sources": []
+    },
+    {
+      "name": "scikit-learn",
+      "category": "ML Frameworks",
+      "terms": [
+        "scikit-learn"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Hugging Face",
+      "category": "ML Frameworks",
+      "terms": [
+        "Hugging Face"
+      ],
+      "sources": []
+    },
+    {
+      "name": "OpenAI",
+      "category": "ML Frameworks",
+      "terms": [
+        "OpenAI"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Anthropic",
+      "category": "ML Frameworks",
+      "terms": [
+        "Anthropic"
+      ],
+      "sources": []
+    },
+    {
+      "name": "MLflow",
+      "category": "ML Frameworks",
+      "terms": [
+        "MLflow"
+      ],
+      "sources": []
+    },
+    {
+      "name": "GitHub Copilot",
+      "category": "ML Frameworks",
+      "terms": [
+        "GitHub Copilot"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Event-Time Watermarks",
+      "category": "Data Engineering",
+      "terms": [
+        "Event-Time Watermarks"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3761"
+      ]
+    },
+    {
+      "name": "Ingestion Verification",
+      "category": "Data Engineering",
+      "terms": [
+        "Ingestion Verification"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/867"
+      ]
+    },
+    {
+      "name": "NATS JetStream",
+      "category": "Data Engineering",
+      "terms": [
+        "NATS JetStream",
+        "jetstream"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Apache Pulsar",
+      "category": "Data Engineering",
+      "terms": [
+        "Apache Pulsar",
+        "pulsar"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Data Serialization",
+      "category": "Data Engineering",
+      "terms": [
+        "Data Serialization"
+      ],
+      "sources": []
+    },
+    {
+      "name": "ETL Pipelines",
+      "category": "Data Engineering",
+      "terms": [
+        "ETL Pipelines"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Data Ingestion",
+      "category": "Data Engineering",
+      "terms": [
+        "Data Ingestion"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Stream Processing",
+      "category": "Data Engineering",
+      "terms": [
+        "Stream Processing",
+        "stream processing"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3761",
+        "https://github.com/numaproj/numaflow-python/pull/390",
+        "https://github.com/numaproj/numaflow-rs/pull/187",
+        "https://github.com/numaproj/numaflow-rs/pull/191"
+      ]
+    },
+    {
+      "name": "Apache Kafka",
+      "category": "Data Engineering",
+      "terms": [
+        "Apache Kafka"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Workflow Automation",
+      "category": "Data Engineering",
+      "terms": [
+        "Workflow Automation"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Data Preprocessing",
+      "category": "Data Engineering",
+      "terms": [
+        "Data Preprocessing"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Feature Pipelines",
+      "category": "Data Engineering",
+      "terms": [
+        "Feature Pipelines"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Event Pipelines",
+      "category": "Data Engineering",
+      "terms": [
+        "Event Pipelines"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Batch Processing",
+      "category": "Data Engineering",
+      "terms": [
+        "Batch Processing"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Data Validation",
+      "category": "Data Engineering",
+      "terms": [
+        "Data Validation"
+      ],
+      "sources": []
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "Databases",
+      "terms": [
+        "PostgreSQL"
+      ],
+      "sources": []
+    },
+    {
+      "name": "MongoDB",
+      "category": "Databases",
+      "terms": [
+        "MongoDB"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Redis",
+      "category": "Databases",
+      "terms": [
+        "Redis"
+      ],
+      "sources": []
+    },
+    {
+      "name": "NoSQL",
+      "category": "Databases",
+      "terms": [
+        "NoSQL"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Relational Databases",
+      "category": "Databases",
+      "terms": [
+        "Relational Databases"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Data Modeling",
+      "category": "Databases",
+      "terms": [
+        "Data Modeling"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Caching",
+      "category": "Databases",
+      "terms": [
+        "Caching"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Database Optimization",
+      "category": "Databases",
+      "terms": [
+        "Database Optimization"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Elasticsearch",
+      "category": "Search & Vector",
+      "terms": [
+        "Elasticsearch"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Vector Databases",
+      "category": "Search & Vector",
+      "terms": [
+        "Vector Databases"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Vector Retrieval",
+      "category": "Search & Vector",
+      "terms": [
+        "Vector Retrieval"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Embeddings",
+      "category": "Search & Vector",
+      "terms": [
+        "Embeddings"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Semantic Search",
+      "category": "Search & Vector",
+      "terms": [
+        "Semantic Search"
+      ],
+      "sources": []
+    },
+    {
+      "name": "FAISS",
+      "category": "Search & Vector",
+      "terms": [
+        "FAISS"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Pinecone",
+      "category": "Search & Vector",
+      "terms": [
+        "Pinecone"
+      ],
+      "sources": []
+    },
+    {
+      "name": "ChromaDB",
+      "category": "Search & Vector",
+      "terms": [
+        "ChromaDB"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Kubernetes Informers",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Kubernetes Informers",
+        "informer caches"
+      ],
+      "sources": [
+        "https://github.com/kiali/kiali/pull/10514"
+      ]
+    },
+    {
+      "name": "controller-runtime",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "controller-runtime"
+      ],
+      "sources": [
+        "https://github.com/kiali/kiali/pull/10514"
+      ]
+    },
+    {
+      "name": "Kubernetes Admission Webhooks",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Kubernetes Admission Webhooks",
+        "admission webhooks"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3767"
+      ]
+    },
+    {
+      "name": "Structured Logging",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Structured Logging"
+      ],
+      "sources": [
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/numaproj/numaflow/pull/3761"
+      ]
+    },
+    {
+      "name": "OCI Artifacts",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "OCI Artifacts"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481"
+      ]
+    },
+    {
+      "name": "cloud-init",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "cloud-init"
+      ],
+      "sources": [
+        "https://github.com/redhat-developer/mapt/pull/958"
+      ]
+    },
+    {
+      "name": "CI Runner Configuration",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "CI Runner Configuration"
+      ],
+      "sources": [
+        "https://github.com/redhat-developer/mapt/pull/967"
+      ]
+    },
+    {
+      "name": "Provisioning Preflight",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Provisioning Preflight"
+      ],
+      "sources": [
+        "https://github.com/redhat-developer/mapt/pull/960"
+      ]
+    },
+    {
+      "name": "Jenkins",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Jenkins"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/873"
+      ]
+    },
+    {
+      "name": "Kustomize",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Kustomize"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Kubernetes Operators",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Kubernetes Operators"
+      ],
+      "sources": []
+    },
+    {
+      "name": "RBAC",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "RBAC"
+      ],
+      "sources": []
+    },
+    {
+      "name": "TLS",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "TLS"
+      ],
+      "sources": []
+    },
+    {
+      "name": "DPU Infrastructure",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "DPU Infrastructure"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Git",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Git"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675"
+      ]
+    },
+    {
+      "name": "AWS",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "AWS"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Docker",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Docker"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-python/pull/390"
+      ]
+    },
+    {
+      "name": "Kubernetes",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Kubernetes",
+        "k8s"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/numaproj/numaflow/pull/3761",
+        "https://github.com/numaproj/numaflow/pull/3767"
+      ]
+    },
+    {
+      "name": "Lambda",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Lambda"
+      ],
+      "sources": []
+    },
+    {
+      "name": "EC2",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "EC2"
+      ],
+      "sources": []
+    },
+    {
+      "name": "S3",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "S3"
+      ],
+      "sources": []
+    },
+    {
+      "name": "ECS",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "ECS"
+      ],
+      "sources": []
+    },
+    {
+      "name": "CI/CD",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "CI/CD"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/873"
+      ]
+    },
+    {
+      "name": "GitHub Actions",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "GitHub Actions"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Serverless",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Serverless"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Firebase",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Firebase"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Linux",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Linux"
+      ],
+      "sources": [
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/redhat-developer/mapt/pull/958"
+      ]
+    },
+    {
+      "name": "Infrastructure as Code",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Infrastructure as Code"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Prometheus",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Prometheus"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3761"
+      ]
+    },
+    {
+      "name": "Observability",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Observability"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3761"
+      ]
+    },
+    {
+      "name": "Production Deployment",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Production Deployment"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Azure",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Azure"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Azure OpenAI",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Azure OpenAI"
+      ],
+      "sources": []
+    },
+    {
+      "name": "GCP",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "GCP"
+      ],
+      "sources": []
+    },
+    {
+      "name": "BigQuery",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "BigQuery"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Cloud Run",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Cloud Run"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Web Accessibility",
+      "category": "Frontend",
+      "terms": [
+        "Web Accessibility",
+        "a11y"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780",
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "Accessible Names",
+      "category": "Frontend",
+      "terms": [
+        "Accessible Names"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780"
+      ]
+    },
+    {
+      "name": "Internationalization",
+      "category": "Frontend",
+      "terms": [
+        "Internationalization",
+        "i18n",
+        "localization"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780"
+      ]
+    },
+    {
+      "name": "Keyboard Focus Management",
+      "category": "Frontend",
+      "terms": [
+        "Keyboard Focus Management"
+      ],
+      "sources": [
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "Content Security Policy",
+      "category": "Frontend",
+      "terms": [
+        "Content Security Policy",
+        "csp"
+      ],
+      "sources": [
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910"
+      ]
+    },
+    {
+      "name": "xterm.js",
+      "category": "Frontend",
+      "terms": [
+        "xterm.js"
+      ],
+      "sources": [
+        "https://github.com/cockpit-project/cockpit/pull/23897",
+        "https://github.com/cockpit-project/cockpit/pull/23910"
+      ]
+    },
+    {
+      "name": "Svelte",
+      "category": "Frontend",
+      "terms": [
+        "Svelte"
+      ],
+      "sources": []
+    },
+    {
+      "name": "React",
+      "category": "Frontend",
+      "terms": [
+        "React"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780"
+      ]
+    },
+    {
+      "name": "HTML/CSS",
+      "category": "Frontend",
+      "terms": [
+        "HTML/CSS"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Tailwind CSS",
+      "category": "Frontend",
+      "terms": [
+        "Tailwind CSS"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Vite",
+      "category": "Frontend",
+      "terms": [
+        "Vite"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Chrome Extensions",
+      "category": "Frontend",
+      "terms": [
+        "Chrome Extensions"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Dashboard UI",
+      "category": "Frontend",
+      "terms": [
+        "Dashboard UI"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Component Design",
+      "category": "Frontend",
+      "terms": [
+        "Component Design"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Responsive Design",
+      "category": "Frontend",
+      "terms": [
+        "Responsive Design"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Full Stack",
+      "category": "Frontend",
+      "terms": [
+        "Full Stack"
+      ],
+      "sources": []
+    },
+    {
+      "name": "pytest",
+      "category": "Testing & Quality",
+      "terms": [
+        "pytest"
+      ],
+      "sources": [
+        "https://github.com/The-PR-Agent/pr-agent/pull/4706"
+      ]
+    },
+    {
+      "name": "JUnit",
+      "category": "Testing & Quality",
+      "terms": [
+        "JUnit"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/873"
+      ]
+    },
+    {
+      "name": "Playwright",
+      "category": "Testing & Quality",
+      "terms": [
+        "Playwright"
+      ],
+      "sources": [
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "Integration Testing",
+      "category": "Testing & Quality",
+      "terms": [
+        "Integration Testing"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/numaproj/numaflow/pull/3761",
+        "https://github.com/numaproj/numaflow/pull/3767",
+        "https://github.com/numaproj/numaflow-python/pull/390",
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/489",
+        "https://github.com/Seagey/couch-tv/pull/60"
+      ]
+    },
+    {
+      "name": "Regression Testing",
+      "category": "Testing & Quality",
+      "terms": [
+        "Regression Testing"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvkr/pull/453",
+        "https://github.com/dsx-ai-factory/nvkr/pull/460",
+        "https://github.com/dsx-ai-factory/nvkr/pull/469",
+        "https://github.com/dsx-ai-factory/nvkr/pull/470",
+        "https://github.com/dsx-ai-factory/nvkr/pull/481",
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/kiali/kiali/pull/10514",
+        "https://github.com/numaproj/numaflow/pull/3761",
+        "https://github.com/numaproj/numaflow/pull/3767",
+        "https://github.com/numaproj/numaflow-rs/pull/187",
+        "https://github.com/numaproj/numaflow-rs/pull/191",
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/mezmo/aura/pull/868",
+        "https://github.com/mezmo/aura/pull/888",
+        "https://github.com/mezmo/aura/pull/865",
+        "https://github.com/mezmo/aura/pull/863",
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/aura/pull/890",
+        "https://github.com/mezmo/aura/pull/864",
+        "https://github.com/mezmo/aura/pull/867",
+        "https://github.com/keycloak/keycloak/pull/54773",
+        "https://github.com/keycloak/keycloak/pull/54780",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483",
+        "https://github.com/redhat-developer/mapt/pull/967",
+        "https://github.com/redhat-developer/mapt/pull/960",
+        "https://github.com/redhat-developer/mapt/pull/959",
+        "https://github.com/redhat-developer/mapt/pull/956",
+        "https://github.com/redhat-developer/mapt/pull/958",
+        "https://github.com/EthanHenrickson/math-mcp/pull/9",
+        "https://github.com/The-PR-Agent/pr-agent/pull/4706",
+        "https://github.com/Seagey/couch-tv/pull/60"
+      ]
+    },
+    {
+      "name": "Failure Injection",
+      "category": "Testing & Quality",
+      "terms": [
+        "Failure Injection"
+      ],
+      "sources": [
+        "https://github.com/numaproj/numaflow-rs/pull/191",
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
+        "https://github.com/redhat-developer/mapt/pull/960"
+      ]
+    },
+    {
+      "name": "Concurrency Testing",
+      "category": "Testing & Quality",
+      "terms": [
+        "Concurrency Testing"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/904"
+      ]
+    },
+    {
+      "name": "Table-Driven Testing",
+      "category": "Testing & Quality",
+      "terms": [
+        "Table-Driven Testing"
+      ],
+      "sources": [
+        "https://github.com/dsx-ai-factory/workload-map/pull/668",
+        "https://github.com/dsx-ai-factory/workload-map/pull/674",
+        "https://github.com/dsx-ai-factory/workload-map/pull/675",
+        "https://github.com/redhat-developer/mapt/pull/967"
+      ]
+    },
+    {
+      "name": "Cross-Browser Testing",
+      "category": "Testing & Quality",
+      "terms": [
+        "Cross-Browser Testing"
+      ],
+      "sources": [
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "pytest-xdist",
+      "category": "Testing & Quality",
+      "terms": [
+        "pytest-xdist"
+      ],
+      "sources": []
+    },
+    {
+      "name": "ML Test Infrastructure",
+      "category": "Testing & Quality",
+      "terms": [
+        "ML Test Infrastructure"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Ansible",
+      "category": "Developer Tooling",
+      "terms": [
+        "Ansible"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Jinja",
+      "category": "Developer Tooling",
+      "terms": [
+        "Jinja"
+      ],
+      "sources": []
+    },
+    {
+      "name": "ESLint",
+      "category": "Developer Tooling",
+      "terms": [
+        "ESLint"
+      ],
+      "sources": []
+    },
+    {
+      "name": "TypeScript Compiler API",
+      "category": "Developer Tooling",
+      "terms": [
+        "TypeScript Compiler API"
+      ],
+      "sources": []
+    },
+    {
+      "name": "libdnf5",
+      "category": "Developer Tooling",
+      "terms": [
+        "libdnf5"
+      ],
+      "sources": []
+    },
+    {
+      "name": "psutil",
+      "category": "Developer Tooling",
+      "terms": [
+        "psutil"
+      ],
+      "sources": []
+    },
+    {
+      "name": "wgpu",
+      "category": "Developer Tooling",
+      "terms": [
+        "wgpu"
+      ],
+      "sources": []
+    },
+    {
+      "name": "Tokio",
+      "category": "Systems Libraries",
+      "terms": [
+        "Tokio"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/904"
+      ]
+    },
+    {
+      "name": "Serde",
+      "category": "Systems Libraries",
+      "terms": [
+        "Serde"
+      ],
+      "sources": [
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/aura/pull/890"
+      ]
+    }
+  ]
+}

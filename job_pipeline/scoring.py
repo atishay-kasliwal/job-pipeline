@@ -1,5 +1,5 @@
 """
-Scoring engine — personal stack matching, synergy bonuses, experience fit,
+Scoring engine — personal stack + approved skills inventory matching, synergy bonuses, experience fit,
 recency, and H1B signal.
 
 calculate_score()   — all signals → raw int + score_pct (0-100) + competition
@@ -12,7 +12,11 @@ from datetime import date, datetime, timezone
 import pandas as pd
 
 from job_pipeline.config import (
+    APPROVED_SKILL_DEFAULT_WEIGHT,
+    APPROVED_SKILL_SCORE_CAP,
+    APPROVED_SKILL_WEIGHTS,
     BIG_TECH_COMPANIES,
+    STACK_ANCHOR_SKILLS,
     H1B_SCORE_BONUS,
     LOCATION_BONUSES,
     TOP500_SCORE_BONUS,
@@ -24,6 +28,7 @@ from job_pipeline.config import (
     TOP_500_COMPANIES_CSV,
 )
 from job_pipeline.priority import job_priority
+from job_pipeline.skill_inventory import approved_hits
 
 logger = logging.getLogger(__name__)
 
@@ -127,6 +132,24 @@ def keyword_score(text: str) -> int:
     return score
 
 
+_PERSONAL_KEYWORDS = {k for category in PERSONAL_STACK.values() for k in category}
+
+
+def approved_skill_score(text: str) -> int:
+    """Points for approved-inventory skills the JD names that PERSONAL_STACK doesn't already score."""
+    total = 0
+    for skill in approved_hits(text):
+        if any(term.lower() in _PERSONAL_KEYWORDS for term in skill["terms"]):
+            continue
+        total += APPROVED_SKILL_WEIGHTS.get(skill["category"], APPROVED_SKILL_DEFAULT_WEIGHT)
+    return min(total, APPROVED_SKILL_SCORE_CAP)
+
+
+def has_approved_anchor(text: str) -> bool:
+    """Whether the JD names an approved core-stack skill (Go, Rust, ...)."""
+    return any(skill["name"] in STACK_ANCHOR_SKILLS for skill in approved_hits(text))
+
+
 def synergy_bonus(text: str) -> int:
     """Extra points when a full tech combo appears together."""
     bonus = 0
@@ -198,13 +221,14 @@ def location_score(location: str) -> int:
 def should_skip(text: str) -> bool:
     """
     Hard discard: senior-only roles, extreme experience requirements,
-    or no overlap with the target stack at all.
+    or no overlap with the target stack at all. The target stack includes the
+    approved core skills in STACK_ANCHOR_SKILLS (e.g. Go, Rust).
     """
     if "staff" in text or "principal" in text:
         return True
     if any(f"{n}+ years" in text for n in range(4, 20)):
         return True
-    if not any(k in text for k in ("java", "python", "backend", "api")):
+    if not any(k in text for k in ("java", "python", "backend", "api")) and not has_approved_anchor(text):
         return True
     return False
 
@@ -226,6 +250,7 @@ def calculate_score(row: pd.Series) -> dict:
         return {"score": 0, "score_pct": 0, "competition_score": 0}
 
     ks = keyword_score(text)
+    aks = approved_skill_score(text)
     sb = synergy_bonus(text)
     es = experience_score(
         _to_int_or_none(row.get("min_exp")),
@@ -244,6 +269,7 @@ def calculate_score(row: pd.Series) -> dict:
 
     raw = (
         ks
+        + aks
         + sb
         + es
         + ls
