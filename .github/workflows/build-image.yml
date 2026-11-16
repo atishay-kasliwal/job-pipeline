@@ -6,6 +6,8 @@ on:
     paths:
       - "job_pipeline/**"
       - "api/**"
+      # data/skill_inventory.json (approved skills, exported by atriveo-app) ships in the image.
+      - "data/**"
       - "requirements.txt"
       - "Dockerfile"
   workflow_dispatch:

@@ -28,6 +28,7 @@ from pathlib import Path
 import pandas as pd
 
 from job_pipeline import config
+from job_pipeline.skill_inventory import skills_context_for_jd
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +50,9 @@ Rules:
 - Prioritize the top 3-5 most impactful changes
 - Be specific: quote the exact existing bullet and show the rewritten version
 - Keep language concise and actionable
+- An APPROVED SKILLS BANK block may follow the resume: skills backed by merged open-source \
+PRs that are NOT in the resume. Never count them in the Before score or treat them as present; \
+you may suggest them as Skills-section additions only, never as employer bullets
 
 Output format (use exactly these headers):
 ## ATS Score Estimate
@@ -109,6 +113,7 @@ def _analyze_one(client, resume: str, job: dict, description: str) -> str:
         f"Pipeline Match Score: {score_pct}%\n\n"
         f"--- JOB DESCRIPTION ---\n{description}\n\n"
         f"--- MY RESUME ---\n{resume}\n"
+        f"{skills_context_for_jd(description)}"
     )
 
     response = client.messages.create(
