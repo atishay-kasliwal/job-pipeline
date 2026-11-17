@@ -3,9 +3,11 @@ Approved skills inventory, exported by atriveo-app:
 
     node scripts/sync-skill-inventory.mjs --pipeline-dir ~/job-pipeline
 
-Only the export's ``skills`` list is read here: skills Atishay approved with merged
-open-source PR evidence. Pending (OPEN) PRs never reach that list, and the wider
-``vocabulary`` list is the app's matching dictionary, not a claim of experience.
+Only the export's ``skills`` list is read here: skills Atishay approved with open-source
+PR evidence. Since 2026-11-16 that includes open PRs (the work was done); each skill
+says whether merged evidence backs it (``merged``), and merged evidence comes first.
+A closed PR never reaches the list. The wider ``vocabulary`` list is the app's matching
+dictionary, not a claim of experience.
 
 Used for job search (which roles to keep and how to rank them) and for ATS advice.
 It never counts toward a resume's ATS keyword score: that compares the JD with the
@@ -59,6 +61,8 @@ def _load(path: str) -> tuple[dict, ...]:
             skills.append({
                 "name": skill["name"],
                 "category": skill.get("category", ""),
+                # Older exports were merged-only and had no flag.
+                "merged": skill.get("merged", True),
                 "terms": terms,
                 "sources": sources,
                 "patterns": [_term_regex(t) for t in terms],

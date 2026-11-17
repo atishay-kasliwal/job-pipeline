@@ -355,6 +355,8 @@ APPROVED_SKILL_WEIGHTS: dict[str, int] = {
 }
 APPROVED_SKILL_DEFAULT_WEIGHT: int = 2
 APPROVED_SKILL_SCORE_CAP: int = 24
+# A skill backed only by open PRs earns this share of its weight (merged evidence comes first).
+APPROVED_SKILL_OPEN_FACTOR: float = 0.5
 
 # Approved skills that count as core-stack overlap, so should_skip() keeps e.g. a
 # Go or Rust role that never says "java", "python", "backend" or "api".
