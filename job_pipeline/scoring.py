@@ -13,6 +13,7 @@ import pandas as pd
 
 from job_pipeline.config import (
     APPROVED_SKILL_DEFAULT_WEIGHT,
+    APPROVED_SKILL_OPEN_FACTOR,
     APPROVED_SKILL_SCORE_CAP,
     APPROVED_SKILL_WEIGHTS,
     BIG_TECH_COMPANIES,
@@ -137,17 +138,18 @@ _PERSONAL_KEYWORDS = {k for category in PERSONAL_STACK.values() for k in categor
 
 def approved_skill_score(text: str) -> int:
     """Points for approved-inventory skills the JD names that PERSONAL_STACK doesn't already score."""
-    total = 0
+    total = 0.0
     for skill in approved_hits(text):
         if any(term.lower() in _PERSONAL_KEYWORDS for term in skill["terms"]):
             continue
-        total += APPROVED_SKILL_WEIGHTS.get(skill["category"], APPROVED_SKILL_DEFAULT_WEIGHT)
-    return min(total, APPROVED_SKILL_SCORE_CAP)
+        weight = APPROVED_SKILL_WEIGHTS.get(skill["category"], APPROVED_SKILL_DEFAULT_WEIGHT)
+        total += weight if skill.get("merged", True) else weight * APPROVED_SKILL_OPEN_FACTOR
+    return min(int(round(total)), APPROVED_SKILL_SCORE_CAP)
 
 
 def has_approved_anchor(text: str) -> bool:
-    """Whether the JD names an approved core-stack skill (Go, Rust, ...)."""
-    return any(skill["name"] in STACK_ANCHOR_SKILLS for skill in approved_hits(text))
+    """Whether the JD names an approved core-stack skill (Go, Rust, ...) backed by merged work."""
+    return any(skill["name"] in STACK_ANCHOR_SKILLS and skill.get("merged", True) for skill in approved_hits(text))
 
 
 def synergy_bonus(text: str) -> int:

@@ -18,8 +18,10 @@ def _inventory(path: Path) -> Path:
             {"name": "Rust", "category": "Languages", "terms": ["Rust"], "sources": ["https://github.com/o/r/pull/2"]},
             {"name": "Tokio", "category": "Systems Libraries", "terms": ["Tokio"], "sources": ["https://github.com/o/r/pull/3"]},
             {"name": "Python", "category": "Languages", "terms": ["Python"], "sources": ["https://github.com/o/r/pull/4"]},
-            # No merged sources: pending exposure must never count.
+            # No sources at all: never counts.
             {"name": "Svelte", "category": "Frontend", "terms": ["Svelte"], "sources": []},
+            # Open PR evidence only: counts at half weight (merged first).
+            {"name": "Kustomize", "category": "Cloud & DevOps", "terms": ["Kustomize"], "merged": False, "sources": ["https://github.com/o/r/pull/5"]},
         ],
         # The vocabulary is a matching dictionary, never approved evidence.
         "vocabulary": [{"name": "Haskell", "category": "Languages", "terms": ["Haskell"], "sources": []}],
@@ -74,6 +76,10 @@ class ApprovedScoringTest(_InventoryFixture):
         with mock.patch.object(scoring, "_is_top500", return_value=False):
             self.assertFalse(scoring.should_skip(text))
             self.assertTrue(scoring.should_skip("marketing manager\nown our go-to-market plan."))
+
+    def test_open_only_skill_counts_at_half_weight(self):
+        # Cloud & DevOps weight 3, open only: 1.5 rounds to 2.
+        self.assertEqual(scoring.approved_skill_score("kustomize overlays"), 2)
 
     def test_approved_points_skip_personal_stack_and_cap(self):
         # Python is already scored by PERSONAL_STACK; Rust (6) + Tokio (4) are new.

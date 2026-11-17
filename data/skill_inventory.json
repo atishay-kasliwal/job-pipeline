@@ -9,6 +9,7 @@
         "Go",
         "golang"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -24,7 +25,16 @@
         "https://github.com/redhat-developer/mapt/pull/967",
         "https://github.com/redhat-developer/mapt/pull/960",
         "https://github.com/redhat-developer/mapt/pull/959",
-        "https://github.com/redhat-developer/mapt/pull/956"
+        "https://github.com/redhat-developer/mapt/pull/956",
+        "https://github.com/numaproj/numaflow/pull/3759",
+        "https://github.com/NVIDIA/nodewright/pull/1048",
+        "https://github.com/dsx-ai-factory/nvke/pull/2336",
+        "https://github.com/dsx-ai-factory/nvke/pull/2288",
+        "https://github.com/dsx-ai-factory/nvke/pull/2246",
+        "https://github.com/redhat-developer/gitops-operator/pull/1563",
+        "https://github.com/redhat-developer/mapt/pull/971",
+        "https://github.com/redhat-developer/mapt/pull/966",
+        "https://github.com/redhat-developer/mapt/pull/962"
       ]
     },
     {
@@ -33,6 +43,7 @@
       "terms": [
         "Rust"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-rs/pull/187",
         "https://github.com/numaproj/numaflow-rs/pull/191",
@@ -45,7 +56,15 @@
         "https://github.com/mezmo/aura/pull/890",
         "https://github.com/mezmo/aura/pull/864",
         "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
-        "https://github.com/anefzaoui/misterdownloadmanager/pull/489"
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/489",
+        "https://github.com/mezmo/rig/pull/19",
+        "https://github.com/mezmo/rig/pull/20",
+        "https://github.com/numaproj/numaflow/pull/3756",
+        "https://github.com/numaproj/numaflow/pull/3760",
+        "https://github.com/numaproj/numaflow/pull/3787",
+        "https://github.com/dsx-ai-factory/infra-controller/pull/9248",
+        "https://github.com/emilk/egui/pull/8895",
+        "https://github.com/emilk/egui/pull/8892"
       ]
     },
     {
@@ -54,10 +73,30 @@
       "terms": [
         "Python"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-python/pull/390",
         "https://github.com/The-PR-Agent/pr-agent/pull/4706",
-        "https://github.com/Seagey/couch-tv/pull/60"
+        "https://github.com/Seagey/couch-tv/pull/60",
+        "https://github.com/intuit/stunt-double/pull/95",
+        "https://github.com/intuit/stunt-double/pull/94",
+        "https://github.com/intuit/stunt-double/pull/93",
+        "https://github.com/opensearch-project/opensearch-py-ml/pull/625",
+        "https://github.com/ansible/ansible-lint/pull/5250",
+        "https://github.com/ansible/ansible-lint/pull/5253",
+        "https://github.com/ansible/molecule/pull/4734",
+        "https://github.com/FrostyX/tracer/pull/233"
+      ]
+    },
+    {
+      "name": "Java",
+      "category": "Languages",
+      "terms": [
+        "Java"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/neo4j/graph-data-science/pull/379"
       ]
     },
     {
@@ -66,12 +105,16 @@
       "terms": [
         "TypeScript"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780",
         "https://github.com/cockpit-project/cockpit/pull/23897",
         "https://github.com/cockpit-project/cockpit/pull/23910",
-        "https://github.com/EthanHenrickson/math-mcp/pull/9"
+        "https://github.com/EthanHenrickson/math-mcp/pull/9",
+        "https://github.com/ansible/vscode-ansible/pull/3287",
+        "https://github.com/ustaxes/UsTaxes/pull/2650",
+        "https://github.com/tonl-dev/tonl/pull/35"
       ]
     },
     {
@@ -80,6 +123,7 @@
       "terms": [
         "JavaScript"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
       ]
@@ -90,9 +134,12 @@
       "terms": [
         "CSS"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/cockpit-project/cockpit/pull/23897",
-        "https://github.com/cockpit-project/cockpit/pull/23910"
+        "https://github.com/cockpit-project/cockpit/pull/23910",
+        "https://github.com/podman-desktop/podman-desktop/pull/20128",
+        "https://github.com/podman-desktop/podman-desktop/pull/20152"
       ]
     },
     {
@@ -103,9 +150,11 @@
         "bash",
         "shell scripting"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/867",
-        "https://github.com/redhat-developer/mapt/pull/958"
+        "https://github.com/redhat-developer/mapt/pull/958",
+        "https://github.com/dsx-ai-factory/nvke/pull/2337"
       ]
     },
     {
@@ -114,9 +163,11 @@
       "terms": [
         "gRPC"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-python/pull/390",
-        "https://github.com/numaproj/numaflow-rs/pull/191"
+        "https://github.com/numaproj/numaflow-rs/pull/191",
+        "https://github.com/dsx-ai-factory/nvke/pull/2336"
       ]
     },
     {
@@ -126,8 +177,10 @@
         "Server-Sent Events",
         "sse"
       ],
+      "merged": true,
       "sources": [
-        "https://github.com/mezmo/aura/pull/862"
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/rig/pull/19"
       ]
     },
     {
@@ -136,6 +189,7 @@
       "terms": [
         "Cobra"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/workload-map/pull/668",
         "https://github.com/dsx-ai-factory/workload-map/pull/674",
@@ -148,6 +202,7 @@
       "terms": [
         "Asynchronous Programming"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-python/pull/390",
         "https://github.com/mezmo/aura/pull/904"
@@ -159,6 +214,7 @@
       "terms": [
         "Concurrency"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/904"
       ]
@@ -169,6 +225,7 @@
       "terms": [
         "Deadlock Diagnosis"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/904"
       ]
@@ -179,6 +236,7 @@
       "terms": [
         "Context Cancellation"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -194,6 +252,7 @@
       "terms": [
         "Timeout Handling"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -210,12 +269,16 @@
       "terms": [
         "Failure Recovery"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/kiali/kiali/pull/10514",
         "https://github.com/mezmo/aura/pull/904",
         "https://github.com/mezmo/aura/pull/868",
         "https://github.com/mezmo/aura/pull/888",
-        "https://github.com/mezmo/aura/pull/867"
+        "https://github.com/mezmo/aura/pull/867",
+        "https://github.com/numaproj/numaflow/pull/3760",
+        "https://github.com/numaproj/numaflow/pull/3787",
+        "https://github.com/dsx-ai-factory/infra-controller/pull/9248"
       ]
     },
     {
@@ -224,6 +287,7 @@
       "terms": [
         "Protocol Compatibility"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/868",
         "https://github.com/mezmo/aura/pull/888",
@@ -237,6 +301,7 @@
       "terms": [
         "Dynamic Dispatch"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/865"
       ]
@@ -247,6 +312,7 @@
       "terms": [
         "Dependency Graphs"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -261,6 +327,7 @@
       "terms": [
         "Release Engineering"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -275,6 +342,7 @@
       "terms": [
         "CLI Development"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -292,6 +360,7 @@
       "terms": [
         "Deterministic Output"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -309,6 +378,7 @@
       "terms": [
         "Argument Validation"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -329,6 +399,7 @@
       "terms": [
         "Numeric Correctness"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/EthanHenrickson/math-mcp/pull/9"
       ]
@@ -339,6 +410,7 @@
       "terms": [
         "Non-Mutating Transformations"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/EthanHenrickson/math-mcp/pull/9"
       ]
@@ -349,6 +421,7 @@
       "terms": [
         "Distributed Systems"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/kiali/kiali/pull/10514"
       ]
@@ -359,6 +432,7 @@
       "terms": [
         "API Design"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -374,6 +448,7 @@
       "terms": [
         "Code Review"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/workload-map/pull/668",
         "https://github.com/dsx-ai-factory/workload-map/pull/674",
@@ -389,11 +464,67 @@
       ]
     },
     {
+      "name": "Agent Evaluation",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Agent Evaluation"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/95"
+      ]
+    },
+    {
+      "name": "Deterministic Mocking",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Deterministic Mocking"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/95"
+      ]
+    },
+    {
+      "name": "Seeded Randomness",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Seeded Randomness"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/95"
+      ]
+    },
+    {
+      "name": "Injectable Clocks",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Injectable Clocks"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/95"
+      ]
+    },
+    {
+      "name": "Early Stopping",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Early Stopping"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/neo4j/graph-data-science/pull/379"
+      ]
+    },
+    {
       "name": "MCP",
       "category": "AI & Machine Learning",
       "terms": [
         "MCP"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/865",
         "https://github.com/mezmo/aura/pull/862",
@@ -410,6 +541,7 @@
         "agent orchestration",
         "multi-agent systems"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/904",
         "https://github.com/mezmo/aura/pull/868",
@@ -426,9 +558,69 @@
         "Function Calling",
         "tool calling"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/865",
-        "https://github.com/mezmo/aura/pull/863"
+        "https://github.com/mezmo/aura/pull/863",
+        "https://github.com/intuit/stunt-double/pull/94",
+        "https://github.com/mezmo/rig/pull/19"
+      ]
+    },
+    {
+      "name": "GraphSAGE",
+      "category": "ML Frameworks",
+      "terms": [
+        "GraphSAGE",
+        "graph sage"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/neo4j/graph-data-science/pull/379"
+      ]
+    },
+    {
+      "name": "Gemini",
+      "category": "ML Frameworks",
+      "terms": [
+        "Gemini"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/mezmo/rig/pull/20"
+      ]
+    },
+    {
+      "name": "LangChain",
+      "category": "ML Frameworks",
+      "terms": [
+        "LangChain"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/94"
+      ]
+    },
+    {
+      "name": "LangGraph",
+      "category": "ML Frameworks",
+      "terms": [
+        "LangGraph"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/95",
+        "https://github.com/intuit/stunt-double/pull/94"
+      ]
+    },
+    {
+      "name": "Anthropic",
+      "category": "ML Frameworks",
+      "terms": [
+        "Anthropic"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/mezmo/rig/pull/19"
       ]
     },
     {
@@ -437,6 +629,7 @@
       "terms": [
         "Event-Time Watermarks"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow/pull/3761"
       ]
@@ -447,8 +640,46 @@
       "terms": [
         "Ingestion Verification"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/867"
+      ]
+    },
+    {
+      "name": "NATS JetStream",
+      "category": "Data Engineering",
+      "terms": [
+        "NATS JetStream",
+        "jetstream"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3756",
+        "https://github.com/numaproj/numaflow/pull/3759",
+        "https://github.com/numaproj/numaflow/pull/3760"
+      ]
+    },
+    {
+      "name": "Apache Pulsar",
+      "category": "Data Engineering",
+      "terms": [
+        "Apache Pulsar",
+        "pulsar"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3787"
+      ]
+    },
+    {
+      "name": "Data Serialization",
+      "category": "Data Engineering",
+      "terms": [
+        "Data Serialization"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/tonl-dev/tonl/pull/35"
       ]
     },
     {
@@ -458,11 +689,15 @@
         "Stream Processing",
         "stream processing"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow/pull/3761",
         "https://github.com/numaproj/numaflow-python/pull/390",
         "https://github.com/numaproj/numaflow-rs/pull/187",
-        "https://github.com/numaproj/numaflow-rs/pull/191"
+        "https://github.com/numaproj/numaflow-rs/pull/191",
+        "https://github.com/numaproj/numaflow/pull/3759",
+        "https://github.com/numaproj/numaflow/pull/3760",
+        "https://github.com/numaproj/numaflow/pull/3787"
       ]
     },
     {
@@ -472,6 +707,7 @@
         "Kubernetes Informers",
         "informer caches"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/kiali/kiali/pull/10514"
       ]
@@ -482,6 +718,7 @@
       "terms": [
         "controller-runtime"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/kiali/kiali/pull/10514"
       ]
@@ -493,6 +730,7 @@
         "Kubernetes Admission Webhooks",
         "admission webhooks"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow/pull/3767"
       ]
@@ -503,6 +741,7 @@
       "terms": [
         "Structured Logging"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/kiali/kiali/pull/10514",
         "https://github.com/numaproj/numaflow/pull/3761"
@@ -514,6 +753,7 @@
       "terms": [
         "OCI Artifacts"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -528,6 +768,7 @@
       "terms": [
         "cloud-init"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/redhat-developer/mapt/pull/958"
       ]
@@ -538,8 +779,11 @@
       "terms": [
         "CI Runner Configuration"
       ],
+      "merged": true,
       "sources": [
-        "https://github.com/redhat-developer/mapt/pull/967"
+        "https://github.com/redhat-developer/mapt/pull/967",
+        "https://github.com/redhat-developer/mapt/pull/971",
+        "https://github.com/redhat-developer/mapt/pull/966"
       ]
     },
     {
@@ -548,6 +792,7 @@
       "terms": [
         "Provisioning Preflight"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/redhat-developer/mapt/pull/960"
       ]
@@ -558,8 +803,68 @@
       "terms": [
         "Jenkins"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/873"
+      ]
+    },
+    {
+      "name": "Kustomize",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Kustomize"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/NVIDIA/nodewright/pull/1047"
+      ]
+    },
+    {
+      "name": "Kubernetes Operators",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Kubernetes Operators"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/NVIDIA/nodewright/pull/1048",
+        "https://github.com/dsx-ai-factory/nvke/pull/2336",
+        "https://github.com/dsx-ai-factory/nvke/pull/2288",
+        "https://github.com/redhat-developer/gitops-operator/pull/1563"
+      ]
+    },
+    {
+      "name": "RBAC",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "RBAC"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/NVIDIA/nodewright/pull/1047",
+        "https://github.com/redhat-developer/gitops-operator/pull/1563"
+      ]
+    },
+    {
+      "name": "TLS",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "TLS"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvke/pull/2336"
+      ]
+    },
+    {
+      "name": "DPU Infrastructure",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "DPU Infrastructure"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/dsx-ai-factory/infra-controller/pull/9248"
       ]
     },
     {
@@ -568,6 +873,7 @@
       "terms": [
         "Git"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/workload-map/pull/668",
         "https://github.com/dsx-ai-factory/workload-map/pull/674",
@@ -580,6 +886,7 @@
       "terms": [
         "Docker"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-python/pull/390"
       ]
@@ -591,6 +898,7 @@
         "Kubernetes",
         "k8s"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/workload-map/pull/668",
         "https://github.com/dsx-ai-factory/workload-map/pull/674",
@@ -606,8 +914,22 @@
       "terms": [
         "CI/CD"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/873"
+      ]
+    },
+    {
+      "name": "GitHub Actions",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "GitHub Actions"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/ansible/ansible-lint/pull/5250",
+        "https://github.com/ansible/ansible-lint/pull/5253",
+        "https://github.com/redhat-developer/mapt/pull/971"
       ]
     },
     {
@@ -616,11 +938,14 @@
       "terms": [
         "Linux"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/cockpit-project/cockpit/pull/23897",
         "https://github.com/cockpit-project/cockpit/pull/23910",
         "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
-        "https://github.com/redhat-developer/mapt/pull/958"
+        "https://github.com/redhat-developer/mapt/pull/958",
+        "https://github.com/PackageKit/PackageKit/pull/1035",
+        "https://github.com/FrostyX/tracer/pull/233"
       ]
     },
     {
@@ -629,6 +954,7 @@
       "terms": [
         "Prometheus"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow/pull/3761"
       ]
@@ -639,6 +965,7 @@
       "terms": [
         "Observability"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow/pull/3761"
       ]
@@ -650,6 +977,7 @@
         "Web Accessibility",
         "a11y"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780",
@@ -664,6 +992,7 @@
       "terms": [
         "Accessible Names"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780"
@@ -677,6 +1006,7 @@
         "i18n",
         "localization"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780"
@@ -688,6 +1018,7 @@
       "terms": [
         "Keyboard Focus Management"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
       ]
@@ -699,6 +1030,7 @@
         "Content Security Policy",
         "csp"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/cockpit-project/cockpit/pull/23897",
         "https://github.com/cockpit-project/cockpit/pull/23910"
@@ -710,9 +1042,22 @@
       "terms": [
         "xterm.js"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/cockpit-project/cockpit/pull/23897",
         "https://github.com/cockpit-project/cockpit/pull/23910"
+      ]
+    },
+    {
+      "name": "Svelte",
+      "category": "Frontend",
+      "terms": [
+        "Svelte"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/podman-desktop/podman-desktop/pull/20128",
+        "https://github.com/podman-desktop/podman-desktop/pull/20152"
       ]
     },
     {
@@ -721,6 +1066,7 @@
       "terms": [
         "React"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780"
@@ -732,8 +1078,10 @@
       "terms": [
         "pytest"
       ],
+      "merged": true,
       "sources": [
-        "https://github.com/The-PR-Agent/pr-agent/pull/4706"
+        "https://github.com/The-PR-Agent/pr-agent/pull/4706",
+        "https://github.com/opensearch-project/opensearch-py-ml/pull/625"
       ]
     },
     {
@@ -742,6 +1090,7 @@
       "terms": [
         "JUnit"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/873"
       ]
@@ -752,6 +1101,7 @@
       "terms": [
         "Playwright"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780",
@@ -764,6 +1114,7 @@
       "terms": [
         "Integration Testing"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -778,7 +1129,14 @@
         "https://github.com/keycloak/keycloak/pull/54780",
         "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
         "https://github.com/anefzaoui/misterdownloadmanager/pull/489",
-        "https://github.com/Seagey/couch-tv/pull/60"
+        "https://github.com/Seagey/couch-tv/pull/60",
+        "https://github.com/numaproj/numaflow/pull/3756",
+        "https://github.com/numaproj/numaflow/pull/3759",
+        "https://github.com/numaproj/numaflow/pull/3760",
+        "https://github.com/numaproj/numaflow/pull/3787",
+        "https://github.com/opensearch-project/opensearch-py-ml/pull/625",
+        "https://github.com/ansible/molecule/pull/4734",
+        "https://github.com/PackageKit/PackageKit/pull/1035"
       ]
     },
     {
@@ -787,6 +1145,7 @@
       "terms": [
         "Regression Testing"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -821,7 +1180,35 @@
         "https://github.com/redhat-developer/mapt/pull/958",
         "https://github.com/EthanHenrickson/math-mcp/pull/9",
         "https://github.com/The-PR-Agent/pr-agent/pull/4706",
-        "https://github.com/Seagey/couch-tv/pull/60"
+        "https://github.com/Seagey/couch-tv/pull/60",
+        "https://github.com/neo4j/graph-data-science/pull/379",
+        "https://github.com/intuit/stunt-double/pull/94",
+        "https://github.com/intuit/stunt-double/pull/93",
+        "https://github.com/mezmo/rig/pull/19",
+        "https://github.com/mezmo/rig/pull/20",
+        "https://github.com/numaproj/numaflow/pull/3756",
+        "https://github.com/NVIDIA/nodewright/pull/1048",
+        "https://github.com/dsx-ai-factory/nvke/pull/2336",
+        "https://github.com/dsx-ai-factory/nvke/pull/2288",
+        "https://github.com/dsx-ai-factory/nvke/pull/2337",
+        "https://github.com/dsx-ai-factory/nvke/pull/2246",
+        "https://github.com/dsx-ai-factory/infra-controller/pull/9248",
+        "https://github.com/ansible/ansible-lint/pull/5250",
+        "https://github.com/ansible/ansible-lint/pull/5253",
+        "https://github.com/ansible/vscode-ansible/pull/3287",
+        "https://github.com/ansible/molecule/pull/4734",
+        "https://github.com/ustaxes/UsTaxes/pull/2650",
+        "https://github.com/podman-desktop/podman-desktop/pull/20128",
+        "https://github.com/podman-desktop/podman-desktop/pull/20152",
+        "https://github.com/PackageKit/PackageKit/pull/1035",
+        "https://github.com/FrostyX/tracer/pull/233",
+        "https://github.com/emilk/egui/pull/8895",
+        "https://github.com/emilk/egui/pull/8892",
+        "https://github.com/tonl-dev/tonl/pull/35",
+        "https://github.com/redhat-developer/gitops-operator/pull/1563",
+        "https://github.com/redhat-developer/mapt/pull/971",
+        "https://github.com/redhat-developer/mapt/pull/966",
+        "https://github.com/redhat-developer/mapt/pull/962"
       ]
     },
     {
@@ -830,11 +1217,13 @@
       "terms": [
         "Failure Injection"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-rs/pull/191",
         "https://github.com/mezmo/aura/pull/904",
         "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
-        "https://github.com/redhat-developer/mapt/pull/960"
+        "https://github.com/redhat-developer/mapt/pull/960",
+        "https://github.com/dsx-ai-factory/nvke/pull/2337"
       ]
     },
     {
@@ -843,8 +1232,10 @@
       "terms": [
         "Concurrency Testing"
       ],
+      "merged": true,
       "sources": [
-        "https://github.com/mezmo/aura/pull/904"
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/intuit/stunt-double/pull/95"
       ]
     },
     {
@@ -853,6 +1244,7 @@
       "terms": [
         "Table-Driven Testing"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/workload-map/pull/668",
         "https://github.com/dsx-ai-factory/workload-map/pull/674",
@@ -866,8 +1258,115 @@
       "terms": [
         "Cross-Browser Testing"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
+      ]
+    },
+    {
+      "name": "pytest-xdist",
+      "category": "Testing & Quality",
+      "terms": [
+        "pytest-xdist"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/opensearch-project/opensearch-py-ml/pull/625"
+      ]
+    },
+    {
+      "name": "ML Test Infrastructure",
+      "category": "Testing & Quality",
+      "terms": [
+        "ML Test Infrastructure"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/opensearch-project/opensearch-py-ml/pull/625"
+      ]
+    },
+    {
+      "name": "Ansible",
+      "category": "Developer Tooling",
+      "terms": [
+        "Ansible"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/ansible/ansible-lint/pull/5250",
+        "https://github.com/ansible/ansible-lint/pull/5253",
+        "https://github.com/ansible/vscode-ansible/pull/3287",
+        "https://github.com/ansible/molecule/pull/4734"
+      ]
+    },
+    {
+      "name": "Jinja",
+      "category": "Developer Tooling",
+      "terms": [
+        "Jinja"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/ansible/ansible-lint/pull/5250",
+        "https://github.com/ansible/ansible-lint/pull/5253"
+      ]
+    },
+    {
+      "name": "ESLint",
+      "category": "Developer Tooling",
+      "terms": [
+        "ESLint"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/ustaxes/UsTaxes/pull/2650",
+        "https://github.com/podman-desktop/podman-desktop/pull/20128",
+        "https://github.com/podman-desktop/podman-desktop/pull/20152"
+      ]
+    },
+    {
+      "name": "TypeScript Compiler API",
+      "category": "Developer Tooling",
+      "terms": [
+        "TypeScript Compiler API"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/ustaxes/UsTaxes/pull/2650"
+      ]
+    },
+    {
+      "name": "libdnf5",
+      "category": "Developer Tooling",
+      "terms": [
+        "libdnf5"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/PackageKit/PackageKit/pull/1035"
+      ]
+    },
+    {
+      "name": "psutil",
+      "category": "Developer Tooling",
+      "terms": [
+        "psutil"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/FrostyX/tracer/pull/233"
+      ]
+    },
+    {
+      "name": "wgpu",
+      "category": "Developer Tooling",
+      "terms": [
+        "wgpu"
+      ],
+      "merged": false,
+      "sources": [
+        "https://github.com/emilk/egui/pull/8895",
+        "https://github.com/emilk/egui/pull/8892"
       ]
     },
     {
@@ -876,6 +1375,7 @@
       "terms": [
         "Tokio"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/904"
       ]
@@ -886,6 +1386,7 @@
       "terms": [
         "Serde"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/862",
         "https://github.com/mezmo/aura/pull/890"
@@ -894,12 +1395,22 @@
   ],
   "vocabulary": [
     {
+      "name": "C++",
+      "category": "Languages",
+      "terms": [
+        "C++"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
       "name": "Go",
       "category": "Languages",
       "terms": [
         "Go",
         "golang"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -915,7 +1426,16 @@
         "https://github.com/redhat-developer/mapt/pull/967",
         "https://github.com/redhat-developer/mapt/pull/960",
         "https://github.com/redhat-developer/mapt/pull/959",
-        "https://github.com/redhat-developer/mapt/pull/956"
+        "https://github.com/redhat-developer/mapt/pull/956",
+        "https://github.com/numaproj/numaflow/pull/3759",
+        "https://github.com/NVIDIA/nodewright/pull/1048",
+        "https://github.com/dsx-ai-factory/nvke/pull/2336",
+        "https://github.com/dsx-ai-factory/nvke/pull/2288",
+        "https://github.com/dsx-ai-factory/nvke/pull/2246",
+        "https://github.com/redhat-developer/gitops-operator/pull/1563",
+        "https://github.com/redhat-developer/mapt/pull/971",
+        "https://github.com/redhat-developer/mapt/pull/966",
+        "https://github.com/redhat-developer/mapt/pull/962"
       ]
     },
     {
@@ -924,6 +1444,7 @@
       "terms": [
         "Rust"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-rs/pull/187",
         "https://github.com/numaproj/numaflow-rs/pull/191",
@@ -936,7 +1457,15 @@
         "https://github.com/mezmo/aura/pull/890",
         "https://github.com/mezmo/aura/pull/864",
         "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
-        "https://github.com/anefzaoui/misterdownloadmanager/pull/489"
+        "https://github.com/anefzaoui/misterdownloadmanager/pull/489",
+        "https://github.com/mezmo/rig/pull/19",
+        "https://github.com/mezmo/rig/pull/20",
+        "https://github.com/numaproj/numaflow/pull/3756",
+        "https://github.com/numaproj/numaflow/pull/3760",
+        "https://github.com/numaproj/numaflow/pull/3787",
+        "https://github.com/dsx-ai-factory/infra-controller/pull/9248",
+        "https://github.com/emilk/egui/pull/8895",
+        "https://github.com/emilk/egui/pull/8892"
       ]
     },
     {
@@ -945,10 +1474,19 @@
       "terms": [
         "Python"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-python/pull/390",
         "https://github.com/The-PR-Agent/pr-agent/pull/4706",
-        "https://github.com/Seagey/couch-tv/pull/60"
+        "https://github.com/Seagey/couch-tv/pull/60",
+        "https://github.com/intuit/stunt-double/pull/95",
+        "https://github.com/intuit/stunt-double/pull/94",
+        "https://github.com/intuit/stunt-double/pull/93",
+        "https://github.com/opensearch-project/opensearch-py-ml/pull/625",
+        "https://github.com/ansible/ansible-lint/pull/5250",
+        "https://github.com/ansible/ansible-lint/pull/5253",
+        "https://github.com/ansible/molecule/pull/4734",
+        "https://github.com/FrostyX/tracer/pull/233"
       ]
     },
     {
@@ -957,7 +1495,10 @@
       "terms": [
         "Java"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/neo4j/graph-data-science/pull/379"
+      ]
     },
     {
       "name": "TypeScript",
@@ -965,12 +1506,16 @@
       "terms": [
         "TypeScript"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780",
         "https://github.com/cockpit-project/cockpit/pull/23897",
         "https://github.com/cockpit-project/cockpit/pull/23910",
-        "https://github.com/EthanHenrickson/math-mcp/pull/9"
+        "https://github.com/EthanHenrickson/math-mcp/pull/9",
+        "https://github.com/ansible/vscode-ansible/pull/3287",
+        "https://github.com/ustaxes/UsTaxes/pull/2650",
+        "https://github.com/tonl-dev/tonl/pull/35"
       ]
     },
     {
@@ -979,6 +1524,7 @@
       "terms": [
         "JavaScript"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
       ]
@@ -989,6 +1535,7 @@
       "terms": [
         "SQL"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -997,6 +1544,7 @@
       "terms": [
         "HTML"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1005,9 +1553,12 @@
       "terms": [
         "CSS"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/cockpit-project/cockpit/pull/23897",
-        "https://github.com/cockpit-project/cockpit/pull/23910"
+        "https://github.com/cockpit-project/cockpit/pull/23910",
+        "https://github.com/podman-desktop/podman-desktop/pull/20128",
+        "https://github.com/podman-desktop/podman-desktop/pull/20152"
       ]
     },
     {
@@ -1018,9 +1569,11 @@
         "bash",
         "shell scripting"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/867",
-        "https://github.com/redhat-developer/mapt/pull/958"
+        "https://github.com/redhat-developer/mapt/pull/958",
+        "https://github.com/dsx-ai-factory/nvke/pull/2337"
       ]
     },
     {
@@ -1029,6 +1582,7 @@
       "terms": [
         "JSON"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1037,6 +1591,16 @@
       "terms": [
         "GraphQL"
       ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": ".NET",
+      "category": "Backend Frameworks",
+      "terms": [
+        ".NET"
+      ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1045,9 +1609,11 @@
       "terms": [
         "gRPC"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-python/pull/390",
-        "https://github.com/numaproj/numaflow-rs/pull/191"
+        "https://github.com/numaproj/numaflow-rs/pull/191",
+        "https://github.com/dsx-ai-factory/nvke/pull/2336"
       ]
     },
     {
@@ -1057,8 +1623,10 @@
         "Server-Sent Events",
         "sse"
       ],
+      "merged": true,
       "sources": [
-        "https://github.com/mezmo/aura/pull/862"
+        "https://github.com/mezmo/aura/pull/862",
+        "https://github.com/mezmo/rig/pull/19"
       ]
     },
     {
@@ -1067,6 +1635,7 @@
       "terms": [
         "Cobra"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/workload-map/pull/668",
         "https://github.com/dsx-ai-factory/workload-map/pull/674",
@@ -1079,6 +1648,7 @@
       "terms": [
         "FastAPI"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1087,6 +1657,7 @@
       "terms": [
         "Spring Boot"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1095,6 +1666,7 @@
       "terms": [
         "Node.js"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1103,6 +1675,7 @@
       "terms": [
         "Express.js"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1111,6 +1684,7 @@
       "terms": [
         "NestJS"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1120,6 +1694,7 @@
         "REST APIs",
         "rest api"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1128,6 +1703,7 @@
       "terms": [
         "GraphQL APIs"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1136,6 +1712,7 @@
       "terms": [
         "Kafka"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1144,6 +1721,7 @@
       "terms": [
         "API Gateway"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1152,6 +1730,7 @@
       "terms": [
         "OpenAPI"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1160,6 +1739,7 @@
       "terms": [
         "OAuth"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1168,6 +1748,7 @@
       "terms": [
         "JWT"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1176,6 +1757,7 @@
       "terms": [
         "Rate Limiting"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1184,6 +1766,61 @@
       "terms": [
         "Authentication"
       ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Cursor",
+      "category": "Software Engineering",
+      "terms": [
+        "Cursor"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Agile",
+      "category": "Software Engineering",
+      "terms": [
+        "Agile"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Scrum",
+      "category": "Software Engineering",
+      "terms": [
+        "Scrum"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "HIPAA",
+      "category": "Software Engineering",
+      "terms": [
+        "HIPAA"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Jira",
+      "category": "Software Engineering",
+      "terms": [
+        "Jira"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Salesforce",
+      "category": "Software Engineering",
+      "terms": [
+        "Salesforce"
+      ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1192,6 +1829,7 @@
       "terms": [
         "Asynchronous Programming"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-python/pull/390",
         "https://github.com/mezmo/aura/pull/904"
@@ -1203,6 +1841,7 @@
       "terms": [
         "Concurrency"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/904"
       ]
@@ -1213,6 +1852,7 @@
       "terms": [
         "Deadlock Diagnosis"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/904"
       ]
@@ -1223,6 +1863,7 @@
       "terms": [
         "Context Cancellation"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -1238,6 +1879,7 @@
       "terms": [
         "Timeout Handling"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -1254,12 +1896,16 @@
       "terms": [
         "Failure Recovery"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/kiali/kiali/pull/10514",
         "https://github.com/mezmo/aura/pull/904",
         "https://github.com/mezmo/aura/pull/868",
         "https://github.com/mezmo/aura/pull/888",
-        "https://github.com/mezmo/aura/pull/867"
+        "https://github.com/mezmo/aura/pull/867",
+        "https://github.com/numaproj/numaflow/pull/3760",
+        "https://github.com/numaproj/numaflow/pull/3787",
+        "https://github.com/dsx-ai-factory/infra-controller/pull/9248"
       ]
     },
     {
@@ -1268,6 +1914,7 @@
       "terms": [
         "Protocol Compatibility"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/868",
         "https://github.com/mezmo/aura/pull/888",
@@ -1281,6 +1928,7 @@
       "terms": [
         "Dynamic Dispatch"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/865"
       ]
@@ -1291,6 +1939,7 @@
       "terms": [
         "Dependency Graphs"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -1305,6 +1954,7 @@
       "terms": [
         "Release Engineering"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -1319,6 +1969,7 @@
       "terms": [
         "CLI Development"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -1336,6 +1987,7 @@
       "terms": [
         "Deterministic Output"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -1353,6 +2005,7 @@
       "terms": [
         "Argument Validation"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -1373,6 +2026,7 @@
       "terms": [
         "Numeric Correctness"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/EthanHenrickson/math-mcp/pull/9"
       ]
@@ -1383,6 +2037,7 @@
       "terms": [
         "Non-Mutating Transformations"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/EthanHenrickson/math-mcp/pull/9"
       ]
@@ -1393,6 +2048,7 @@
       "terms": [
         "Scalability"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1401,6 +2057,7 @@
       "terms": [
         "Distributed Systems"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/kiali/kiali/pull/10514"
       ]
@@ -1411,6 +2068,7 @@
       "terms": [
         "Microservices"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1419,6 +2077,7 @@
       "terms": [
         "Event-Driven Architecture"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1427,6 +2086,7 @@
       "terms": [
         "API Design"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -1442,6 +2102,7 @@
       "terms": [
         "Performance Optimization"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1450,6 +2111,7 @@
       "terms": [
         "Code Review"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/workload-map/pull/668",
         "https://github.com/dsx-ai-factory/workload-map/pull/674",
@@ -1470,6 +2132,7 @@
       "terms": [
         "Cross-Functional Collaboration"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1478,6 +2141,7 @@
       "terms": [
         "Mentorship"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1486,6 +2150,16 @@
       "terms": [
         "Agile/Scrum"
       ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Claude",
+      "category": "AI & Machine Learning",
+      "terms": [
+        "Claude"
+      ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1494,7 +2168,10 @@
       "terms": [
         "Agent Evaluation"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/95"
+      ]
     },
     {
       "name": "Deterministic Mocking",
@@ -1502,7 +2179,10 @@
       "terms": [
         "Deterministic Mocking"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/95"
+      ]
     },
     {
       "name": "Seeded Randomness",
@@ -1510,7 +2190,10 @@
       "terms": [
         "Seeded Randomness"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/95"
+      ]
     },
     {
       "name": "Injectable Clocks",
@@ -1518,7 +2201,10 @@
       "terms": [
         "Injectable Clocks"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/95"
+      ]
     },
     {
       "name": "Early Stopping",
@@ -1526,7 +2212,10 @@
       "terms": [
         "Early Stopping"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/neo4j/graph-data-science/pull/379"
+      ]
     },
     {
       "name": "LLMs",
@@ -1534,6 +2223,7 @@
       "terms": [
         "LLMs"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1542,6 +2232,7 @@
       "terms": [
         "RAG"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1550,6 +2241,7 @@
       "terms": [
         "MCP"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/865",
         "https://github.com/mezmo/aura/pull/862",
@@ -1563,6 +2255,7 @@
       "terms": [
         "NLP"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1571,6 +2264,7 @@
       "terms": [
         "Reinforcement Learning"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1582,6 +2276,7 @@
         "agent orchestration",
         "multi-agent systems"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/904",
         "https://github.com/mezmo/aura/pull/868",
@@ -1597,6 +2292,7 @@
       "terms": [
         "Prompt Engineering"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1605,6 +2301,7 @@
       "terms": [
         "Feature Engineering"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1613,6 +2310,7 @@
       "terms": [
         "Machine Learning"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1621,6 +2319,7 @@
       "terms": [
         "Generative AI"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1629,6 +2328,7 @@
       "terms": [
         "Deep Learning"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1638,9 +2338,12 @@
         "Function Calling",
         "tool calling"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/865",
-        "https://github.com/mezmo/aura/pull/863"
+        "https://github.com/mezmo/aura/pull/863",
+        "https://github.com/intuit/stunt-double/pull/94",
+        "https://github.com/mezmo/rig/pull/19"
       ]
     },
     {
@@ -1649,6 +2352,7 @@
       "terms": [
         "MLOps"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1657,6 +2361,7 @@
       "terms": [
         "Healthcare AI"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1666,7 +2371,10 @@
         "GraphSAGE",
         "graph sage"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/neo4j/graph-data-science/pull/379"
+      ]
     },
     {
       "name": "Gemini",
@@ -1674,7 +2382,10 @@
       "terms": [
         "Gemini"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/mezmo/rig/pull/20"
+      ]
     },
     {
       "name": "LangChain",
@@ -1682,7 +2393,10 @@
       "terms": [
         "LangChain"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/94"
+      ]
     },
     {
       "name": "LangGraph",
@@ -1690,7 +2404,11 @@
       "terms": [
         "LangGraph"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/intuit/stunt-double/pull/95",
+        "https://github.com/intuit/stunt-double/pull/94"
+      ]
     },
     {
       "name": "PyTorch",
@@ -1698,6 +2416,7 @@
       "terms": [
         "PyTorch"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1706,6 +2425,7 @@
       "terms": [
         "Transformers"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1714,6 +2434,7 @@
       "terms": [
         "TensorFlow"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1722,6 +2443,7 @@
       "terms": [
         "scikit-learn"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1730,6 +2452,7 @@
       "terms": [
         "Hugging Face"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1738,6 +2461,7 @@
       "terms": [
         "OpenAI"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1746,7 +2470,10 @@
       "terms": [
         "Anthropic"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/mezmo/rig/pull/19"
+      ]
     },
     {
       "name": "MLflow",
@@ -1754,6 +2481,7 @@
       "terms": [
         "MLflow"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1762,6 +2490,43 @@
       "terms": [
         "GitHub Copilot"
       ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Databricks",
+      "category": "Data Engineering",
+      "terms": [
+        "Databricks"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Hadoop",
+      "category": "Data Engineering",
+      "terms": [
+        "Hadoop"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Airflow",
+      "category": "Data Engineering",
+      "terms": [
+        "Airflow"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "dbt",
+      "category": "Data Engineering",
+      "terms": [
+        "dbt"
+      ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1770,6 +2535,7 @@
       "terms": [
         "Event-Time Watermarks"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow/pull/3761"
       ]
@@ -1780,6 +2546,7 @@
       "terms": [
         "Ingestion Verification"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/867"
       ]
@@ -1791,7 +2558,12 @@
         "NATS JetStream",
         "jetstream"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3756",
+        "https://github.com/numaproj/numaflow/pull/3759",
+        "https://github.com/numaproj/numaflow/pull/3760"
+      ]
     },
     {
       "name": "Apache Pulsar",
@@ -1800,7 +2572,10 @@
         "Apache Pulsar",
         "pulsar"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/numaproj/numaflow/pull/3787"
+      ]
     },
     {
       "name": "Data Serialization",
@@ -1808,7 +2583,10 @@
       "terms": [
         "Data Serialization"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/tonl-dev/tonl/pull/35"
+      ]
     },
     {
       "name": "ETL Pipelines",
@@ -1816,6 +2594,7 @@
       "terms": [
         "ETL Pipelines"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1824,6 +2603,7 @@
       "terms": [
         "Data Ingestion"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1833,11 +2613,15 @@
         "Stream Processing",
         "stream processing"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow/pull/3761",
         "https://github.com/numaproj/numaflow-python/pull/390",
         "https://github.com/numaproj/numaflow-rs/pull/187",
-        "https://github.com/numaproj/numaflow-rs/pull/191"
+        "https://github.com/numaproj/numaflow-rs/pull/191",
+        "https://github.com/numaproj/numaflow/pull/3759",
+        "https://github.com/numaproj/numaflow/pull/3760",
+        "https://github.com/numaproj/numaflow/pull/3787"
       ]
     },
     {
@@ -1846,6 +2630,7 @@
       "terms": [
         "Apache Kafka"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1854,6 +2639,7 @@
       "terms": [
         "Workflow Automation"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1862,6 +2648,7 @@
       "terms": [
         "Data Preprocessing"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1870,6 +2657,7 @@
       "terms": [
         "Feature Pipelines"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1878,6 +2666,7 @@
       "terms": [
         "Event Pipelines"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1886,6 +2675,7 @@
       "terms": [
         "Batch Processing"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1894,6 +2684,52 @@
       "terms": [
         "Data Validation"
       ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Cassandra",
+      "category": "Databases",
+      "terms": [
+        "Cassandra"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "MySQL",
+      "category": "Databases",
+      "terms": [
+        "MySQL"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "SQL Server",
+      "category": "Databases",
+      "terms": [
+        "SQL Server"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Snowflake",
+      "category": "Databases",
+      "terms": [
+        "Snowflake"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Redshift",
+      "category": "Databases",
+      "terms": [
+        "Redshift"
+      ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1902,6 +2738,7 @@
       "terms": [
         "PostgreSQL"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1910,6 +2747,7 @@
       "terms": [
         "MongoDB"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1918,6 +2756,7 @@
       "terms": [
         "Redis"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1926,6 +2765,7 @@
       "terms": [
         "NoSQL"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1934,6 +2774,7 @@
       "terms": [
         "Relational Databases"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1942,6 +2783,7 @@
       "terms": [
         "Data Modeling"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1950,6 +2792,7 @@
       "terms": [
         "Caching"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1958,6 +2801,7 @@
       "terms": [
         "Database Optimization"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1966,6 +2810,7 @@
       "terms": [
         "Elasticsearch"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1974,6 +2819,7 @@
       "terms": [
         "Vector Databases"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1982,6 +2828,7 @@
       "terms": [
         "Vector Retrieval"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1990,6 +2837,7 @@
       "terms": [
         "Embeddings"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -1998,6 +2846,7 @@
       "terms": [
         "Semantic Search"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2006,6 +2855,7 @@
       "terms": [
         "FAISS"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2014,6 +2864,7 @@
       "terms": [
         "Pinecone"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2022,6 +2873,43 @@
       "terms": [
         "ChromaDB"
       ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "AWS IAM",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "AWS IAM"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "CloudWatch",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "CloudWatch"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "DevOps",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "DevOps"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Terraform",
+      "category": "Cloud & DevOps",
+      "terms": [
+        "Terraform"
+      ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2031,6 +2919,7 @@
         "Kubernetes Informers",
         "informer caches"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/kiali/kiali/pull/10514"
       ]
@@ -2041,6 +2930,7 @@
       "terms": [
         "controller-runtime"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/kiali/kiali/pull/10514"
       ]
@@ -2052,6 +2942,7 @@
         "Kubernetes Admission Webhooks",
         "admission webhooks"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow/pull/3767"
       ]
@@ -2062,6 +2953,7 @@
       "terms": [
         "Structured Logging"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/kiali/kiali/pull/10514",
         "https://github.com/numaproj/numaflow/pull/3761"
@@ -2073,6 +2965,7 @@
       "terms": [
         "OCI Artifacts"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -2087,6 +2980,7 @@
       "terms": [
         "cloud-init"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/redhat-developer/mapt/pull/958"
       ]
@@ -2097,8 +2991,11 @@
       "terms": [
         "CI Runner Configuration"
       ],
+      "merged": true,
       "sources": [
-        "https://github.com/redhat-developer/mapt/pull/967"
+        "https://github.com/redhat-developer/mapt/pull/967",
+        "https://github.com/redhat-developer/mapt/pull/971",
+        "https://github.com/redhat-developer/mapt/pull/966"
       ]
     },
     {
@@ -2107,6 +3004,7 @@
       "terms": [
         "Provisioning Preflight"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/redhat-developer/mapt/pull/960"
       ]
@@ -2117,6 +3015,7 @@
       "terms": [
         "Jenkins"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/873"
       ]
@@ -2127,7 +3026,10 @@
       "terms": [
         "Kustomize"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/NVIDIA/nodewright/pull/1047"
+      ]
     },
     {
       "name": "Kubernetes Operators",
@@ -2135,7 +3037,13 @@
       "terms": [
         "Kubernetes Operators"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/NVIDIA/nodewright/pull/1048",
+        "https://github.com/dsx-ai-factory/nvke/pull/2336",
+        "https://github.com/dsx-ai-factory/nvke/pull/2288",
+        "https://github.com/redhat-developer/gitops-operator/pull/1563"
+      ]
     },
     {
       "name": "RBAC",
@@ -2143,7 +3051,11 @@
       "terms": [
         "RBAC"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/NVIDIA/nodewright/pull/1047",
+        "https://github.com/redhat-developer/gitops-operator/pull/1563"
+      ]
     },
     {
       "name": "TLS",
@@ -2151,7 +3063,10 @@
       "terms": [
         "TLS"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/dsx-ai-factory/nvke/pull/2336"
+      ]
     },
     {
       "name": "DPU Infrastructure",
@@ -2159,7 +3074,10 @@
       "terms": [
         "DPU Infrastructure"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/dsx-ai-factory/infra-controller/pull/9248"
+      ]
     },
     {
       "name": "Git",
@@ -2167,6 +3085,7 @@
       "terms": [
         "Git"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/workload-map/pull/668",
         "https://github.com/dsx-ai-factory/workload-map/pull/674",
@@ -2179,6 +3098,7 @@
       "terms": [
         "AWS"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2187,6 +3107,7 @@
       "terms": [
         "Docker"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-python/pull/390"
       ]
@@ -2198,6 +3119,7 @@
         "Kubernetes",
         "k8s"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/workload-map/pull/668",
         "https://github.com/dsx-ai-factory/workload-map/pull/674",
@@ -2213,6 +3135,7 @@
       "terms": [
         "Lambda"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2221,6 +3144,7 @@
       "terms": [
         "EC2"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2229,6 +3153,7 @@
       "terms": [
         "S3"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2237,6 +3162,7 @@
       "terms": [
         "ECS"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2245,6 +3171,7 @@
       "terms": [
         "CI/CD"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/873"
       ]
@@ -2255,7 +3182,12 @@
       "terms": [
         "GitHub Actions"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/ansible/ansible-lint/pull/5250",
+        "https://github.com/ansible/ansible-lint/pull/5253",
+        "https://github.com/redhat-developer/mapt/pull/971"
+      ]
     },
     {
       "name": "Serverless",
@@ -2263,6 +3195,7 @@
       "terms": [
         "Serverless"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2271,6 +3204,7 @@
       "terms": [
         "Firebase"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2279,11 +3213,14 @@
       "terms": [
         "Linux"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/cockpit-project/cockpit/pull/23897",
         "https://github.com/cockpit-project/cockpit/pull/23910",
         "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
-        "https://github.com/redhat-developer/mapt/pull/958"
+        "https://github.com/redhat-developer/mapt/pull/958",
+        "https://github.com/PackageKit/PackageKit/pull/1035",
+        "https://github.com/FrostyX/tracer/pull/233"
       ]
     },
     {
@@ -2292,6 +3229,7 @@
       "terms": [
         "Infrastructure as Code"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2300,6 +3238,7 @@
       "terms": [
         "Prometheus"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow/pull/3761"
       ]
@@ -2310,6 +3249,7 @@
       "terms": [
         "Observability"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow/pull/3761"
       ]
@@ -2320,6 +3260,7 @@
       "terms": [
         "Production Deployment"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2328,6 +3269,7 @@
       "terms": [
         "Azure"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2336,6 +3278,7 @@
       "terms": [
         "Azure OpenAI"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2344,6 +3287,7 @@
       "terms": [
         "GCP"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2352,6 +3296,7 @@
       "terms": [
         "BigQuery"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2360,6 +3305,232 @@
       "terms": [
         "Cloud Run"
       ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "SAS",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "SAS"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "MATLAB",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "MATLAB"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "R",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "R"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Statistical Analysis",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "Statistical Analysis"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "A/B Testing",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "A/B Testing"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Hypothesis Testing",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "Hypothesis Testing"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Regression",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "Regression"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Predictive Modeling",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "Predictive Modeling"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Time Series Forecasting",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "Time Series Forecasting"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Model Evaluation",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "Model Evaluation"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "XGBoost",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "XGBoost"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "LightGBM",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "LightGBM"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Pandas",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "Pandas"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "NumPy",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "NumPy"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Spark",
+      "category": "Data Science & Statistics",
+      "terms": [
+        "Spark"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "PowerPoint",
+      "category": "Visualization & BI",
+      "terms": [
+        "PowerPoint"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Tableau",
+      "category": "Visualization & BI",
+      "terms": [
+        "Tableau"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Power BI",
+      "category": "Visualization & BI",
+      "terms": [
+        "Power BI"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Excel",
+      "category": "Visualization & BI",
+      "terms": [
+        "Excel"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Dashboards",
+      "category": "Visualization & BI",
+      "terms": [
+        "Dashboards"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "R Shiny",
+      "category": "Visualization & BI",
+      "terms": [
+        "R Shiny"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "ggplot2",
+      "category": "Visualization & BI",
+      "terms": [
+        "ggplot2"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Plotly",
+      "category": "Visualization & BI",
+      "terms": [
+        "Plotly"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Data Visualization",
+      "category": "Visualization & BI",
+      "terms": [
+        "Data Visualization"
+      ],
+      "merged": false,
+      "sources": []
+    },
+    {
+      "name": "Angular",
+      "category": "Frontend",
+      "terms": [
+        "Angular"
+      ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2369,6 +3540,7 @@
         "Web Accessibility",
         "a11y"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780",
@@ -2383,6 +3555,7 @@
       "terms": [
         "Accessible Names"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780"
@@ -2396,6 +3569,7 @@
         "i18n",
         "localization"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780"
@@ -2407,6 +3581,7 @@
       "terms": [
         "Keyboard Focus Management"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
       ]
@@ -2418,6 +3593,7 @@
         "Content Security Policy",
         "csp"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/cockpit-project/cockpit/pull/23897",
         "https://github.com/cockpit-project/cockpit/pull/23910"
@@ -2429,6 +3605,7 @@
       "terms": [
         "xterm.js"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/cockpit-project/cockpit/pull/23897",
         "https://github.com/cockpit-project/cockpit/pull/23910"
@@ -2440,7 +3617,11 @@
       "terms": [
         "Svelte"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/podman-desktop/podman-desktop/pull/20128",
+        "https://github.com/podman-desktop/podman-desktop/pull/20152"
+      ]
     },
     {
       "name": "React",
@@ -2448,6 +3629,7 @@
       "terms": [
         "React"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780"
@@ -2459,6 +3641,7 @@
       "terms": [
         "HTML/CSS"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2467,6 +3650,7 @@
       "terms": [
         "Tailwind CSS"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2475,6 +3659,7 @@
       "terms": [
         "Vite"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2483,6 +3668,7 @@
       "terms": [
         "Chrome Extensions"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2491,6 +3677,7 @@
       "terms": [
         "Dashboard UI"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2499,6 +3686,7 @@
       "terms": [
         "Component Design"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2507,6 +3695,7 @@
       "terms": [
         "Responsive Design"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2515,6 +3704,7 @@
       "terms": [
         "Full Stack"
       ],
+      "merged": false,
       "sources": []
     },
     {
@@ -2523,8 +3713,10 @@
       "terms": [
         "pytest"
       ],
+      "merged": true,
       "sources": [
-        "https://github.com/The-PR-Agent/pr-agent/pull/4706"
+        "https://github.com/The-PR-Agent/pr-agent/pull/4706",
+        "https://github.com/opensearch-project/opensearch-py-ml/pull/625"
       ]
     },
     {
@@ -2533,6 +3725,7 @@
       "terms": [
         "JUnit"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/873"
       ]
@@ -2543,6 +3736,7 @@
       "terms": [
         "Playwright"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/keycloak/keycloak/pull/54773",
         "https://github.com/keycloak/keycloak/pull/54780",
@@ -2555,6 +3749,7 @@
       "terms": [
         "Integration Testing"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -2569,7 +3764,14 @@
         "https://github.com/keycloak/keycloak/pull/54780",
         "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
         "https://github.com/anefzaoui/misterdownloadmanager/pull/489",
-        "https://github.com/Seagey/couch-tv/pull/60"
+        "https://github.com/Seagey/couch-tv/pull/60",
+        "https://github.com/numaproj/numaflow/pull/3756",
+        "https://github.com/numaproj/numaflow/pull/3759",
+        "https://github.com/numaproj/numaflow/pull/3760",
+        "https://github.com/numaproj/numaflow/pull/3787",
+        "https://github.com/opensearch-project/opensearch-py-ml/pull/625",
+        "https://github.com/ansible/molecule/pull/4734",
+        "https://github.com/PackageKit/PackageKit/pull/1035"
       ]
     },
     {
@@ -2578,6 +3780,7 @@
       "terms": [
         "Regression Testing"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/nvkr/pull/453",
         "https://github.com/dsx-ai-factory/nvkr/pull/460",
@@ -2612,7 +3815,35 @@
         "https://github.com/redhat-developer/mapt/pull/958",
         "https://github.com/EthanHenrickson/math-mcp/pull/9",
         "https://github.com/The-PR-Agent/pr-agent/pull/4706",
-        "https://github.com/Seagey/couch-tv/pull/60"
+        "https://github.com/Seagey/couch-tv/pull/60",
+        "https://github.com/neo4j/graph-data-science/pull/379",
+        "https://github.com/intuit/stunt-double/pull/94",
+        "https://github.com/intuit/stunt-double/pull/93",
+        "https://github.com/mezmo/rig/pull/19",
+        "https://github.com/mezmo/rig/pull/20",
+        "https://github.com/numaproj/numaflow/pull/3756",
+        "https://github.com/NVIDIA/nodewright/pull/1048",
+        "https://github.com/dsx-ai-factory/nvke/pull/2336",
+        "https://github.com/dsx-ai-factory/nvke/pull/2288",
+        "https://github.com/dsx-ai-factory/nvke/pull/2337",
+        "https://github.com/dsx-ai-factory/nvke/pull/2246",
+        "https://github.com/dsx-ai-factory/infra-controller/pull/9248",
+        "https://github.com/ansible/ansible-lint/pull/5250",
+        "https://github.com/ansible/ansible-lint/pull/5253",
+        "https://github.com/ansible/vscode-ansible/pull/3287",
+        "https://github.com/ansible/molecule/pull/4734",
+        "https://github.com/ustaxes/UsTaxes/pull/2650",
+        "https://github.com/podman-desktop/podman-desktop/pull/20128",
+        "https://github.com/podman-desktop/podman-desktop/pull/20152",
+        "https://github.com/PackageKit/PackageKit/pull/1035",
+        "https://github.com/FrostyX/tracer/pull/233",
+        "https://github.com/emilk/egui/pull/8895",
+        "https://github.com/emilk/egui/pull/8892",
+        "https://github.com/tonl-dev/tonl/pull/35",
+        "https://github.com/redhat-developer/gitops-operator/pull/1563",
+        "https://github.com/redhat-developer/mapt/pull/971",
+        "https://github.com/redhat-developer/mapt/pull/966",
+        "https://github.com/redhat-developer/mapt/pull/962"
       ]
     },
     {
@@ -2621,11 +3852,13 @@
       "terms": [
         "Failure Injection"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/numaproj/numaflow-rs/pull/191",
         "https://github.com/mezmo/aura/pull/904",
         "https://github.com/anefzaoui/misterdownloadmanager/pull/477",
-        "https://github.com/redhat-developer/mapt/pull/960"
+        "https://github.com/redhat-developer/mapt/pull/960",
+        "https://github.com/dsx-ai-factory/nvke/pull/2337"
       ]
     },
     {
@@ -2634,8 +3867,10 @@
       "terms": [
         "Concurrency Testing"
       ],
+      "merged": true,
       "sources": [
-        "https://github.com/mezmo/aura/pull/904"
+        "https://github.com/mezmo/aura/pull/904",
+        "https://github.com/intuit/stunt-double/pull/95"
       ]
     },
     {
@@ -2644,6 +3879,7 @@
       "terms": [
         "Table-Driven Testing"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/dsx-ai-factory/workload-map/pull/668",
         "https://github.com/dsx-ai-factory/workload-map/pull/674",
@@ -2657,6 +3893,7 @@
       "terms": [
         "Cross-Browser Testing"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/anefzaoui/misterdownloadmanager/pull/483"
       ]
@@ -2667,7 +3904,10 @@
       "terms": [
         "pytest-xdist"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/opensearch-project/opensearch-py-ml/pull/625"
+      ]
     },
     {
       "name": "ML Test Infrastructure",
@@ -2675,7 +3915,10 @@
       "terms": [
         "ML Test Infrastructure"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/opensearch-project/opensearch-py-ml/pull/625"
+      ]
     },
     {
       "name": "Ansible",
@@ -2683,7 +3926,13 @@
       "terms": [
         "Ansible"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/ansible/ansible-lint/pull/5250",
+        "https://github.com/ansible/ansible-lint/pull/5253",
+        "https://github.com/ansible/vscode-ansible/pull/3287",
+        "https://github.com/ansible/molecule/pull/4734"
+      ]
     },
     {
       "name": "Jinja",
@@ -2691,7 +3940,11 @@
       "terms": [
         "Jinja"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/ansible/ansible-lint/pull/5250",
+        "https://github.com/ansible/ansible-lint/pull/5253"
+      ]
     },
     {
       "name": "ESLint",
@@ -2699,7 +3952,12 @@
       "terms": [
         "ESLint"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/ustaxes/UsTaxes/pull/2650",
+        "https://github.com/podman-desktop/podman-desktop/pull/20128",
+        "https://github.com/podman-desktop/podman-desktop/pull/20152"
+      ]
     },
     {
       "name": "TypeScript Compiler API",
@@ -2707,7 +3965,10 @@
       "terms": [
         "TypeScript Compiler API"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/ustaxes/UsTaxes/pull/2650"
+      ]
     },
     {
       "name": "libdnf5",
@@ -2715,7 +3976,10 @@
       "terms": [
         "libdnf5"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/PackageKit/PackageKit/pull/1035"
+      ]
     },
     {
       "name": "psutil",
@@ -2723,7 +3987,10 @@
       "terms": [
         "psutil"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/FrostyX/tracer/pull/233"
+      ]
     },
     {
       "name": "wgpu",
@@ -2731,7 +3998,11 @@
       "terms": [
         "wgpu"
       ],
-      "sources": []
+      "merged": false,
+      "sources": [
+        "https://github.com/emilk/egui/pull/8895",
+        "https://github.com/emilk/egui/pull/8892"
+      ]
     },
     {
       "name": "Tokio",
@@ -2739,6 +4010,7 @@
       "terms": [
         "Tokio"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/904"
       ]
@@ -2749,6 +4021,7 @@
       "terms": [
         "Serde"
       ],
+      "merged": true,
       "sources": [
         "https://github.com/mezmo/aura/pull/862",
         "https://github.com/mezmo/aura/pull/890"
